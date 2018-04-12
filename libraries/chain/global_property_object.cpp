@@ -1,4 +1,4 @@
-#include <eosio/chain/global_property_object.hpp>
+#include <enumivo/chain/global_property_object.hpp>
 
 namespace eosio { namespace chain {
 

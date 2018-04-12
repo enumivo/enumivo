@@ -8,7 +8,7 @@
 
 #include <cstdint>
 
-#include <eosio/chain/config.hpp>
+#include <enumivo/chain/config.hpp>
 
 namespace eosio { namespace chain {
 

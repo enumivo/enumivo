@@ -1,8 +1,8 @@
 #include <boost/test/unit_test.hpp>
-#include <eosio/testing/tester.hpp>
-#include <eosio/chain/contracts/abi_serializer.hpp>
-#include <eosio/chain/wast_to_wasm.hpp>
-#include <eosio/chain_plugin/chain_plugin.hpp>
+#include <enumivo/testing/tester.hpp>
+#include <enumivo/chain/contracts/abi_serializer.hpp>
+#include <enumivo/chain/wast_to_wasm.hpp>
+#include <enumivo/chain_plugin/chain_plugin.hpp>
 
 #include <enumivo.msig/enumivo.msig.wast.hpp>
 #include <enumivo.msig/enumivo.msig.abi.hpp>

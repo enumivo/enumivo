@@ -2,17 +2,17 @@
  *  @file
  *  @copyright defined in eos/LICENSE.txt
  */
-#include <eosio/chain/types.hpp>
+#include <enumivo/chain/types.hpp>
 
-#include <eosio/net_plugin/net_plugin.hpp>
-#include <eosio/net_plugin/protocol.hpp>
-#include <eosio/net_plugin/message_buffer.hpp>
-#include <eosio/chain/chain_controller.hpp>
-#include <eosio/chain/exceptions.hpp>
-#include <eosio/chain/block.hpp>
-#include <eosio/producer_plugin/producer_plugin.hpp>
-#include <eosio/utilities/key_conversion.hpp>
-#include <eosio/chain/contracts/types.hpp>
+#include <enumivo/net_plugin/net_plugin.hpp>
+#include <enumivo/net_plugin/protocol.hpp>
+#include <enumivo/net_plugin/message_buffer.hpp>
+#include <enumivo/chain/chain_controller.hpp>
+#include <enumivo/chain/exceptions.hpp>
+#include <enumivo/chain/block.hpp>
+#include <enumivo/producer_plugin/producer_plugin.hpp>
+#include <enumivo/utilities/key_conversion.hpp>
+#include <enumivo/chain/contracts/types.hpp>
 
 #include <fc/network/ip.hpp>
 #include <fc/io/json.hpp>

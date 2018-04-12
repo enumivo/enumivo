@@ -4,8 +4,8 @@
  */
 #pragma once
 
-#include <eosio/chain/contracts/types.hpp>
-#include <eosio/chain/multi_index_includes.hpp>
+#include <enumivo/chain/contracts/types.hpp>
+#include <enumivo/chain/multi_index_includes.hpp>
 #include <softfloat.hpp>
 
 #include <chainbase/chainbase.hpp>

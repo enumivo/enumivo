@@ -1,6 +1,6 @@
 #include <boost/test/unit_test.hpp>
-#include <eosio/testing/tester_network.hpp>
-#include <eosio/chain/producer_object.hpp>
+#include <enumivo/testing/tester_network.hpp>
+#include <enumivo/chain/producer_object.hpp>
 #include <enumivo.system/enumivo.system.wast.hpp>
 #include <enumivo.system/enumivo.system.abi.hpp>
 #include <currency/currency.wast.hpp>

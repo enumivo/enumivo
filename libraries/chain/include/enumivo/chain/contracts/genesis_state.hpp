@@ -4,9 +4,9 @@
  */
 #pragma once
 
-#include <eosio/chain/chain_config.hpp>
-#include <eosio/chain/types.hpp>
-#include <eosio/chain/immutable_chain_parameters.hpp>
+#include <enumivo/chain/chain_config.hpp>
+#include <enumivo/chain/types.hpp>
+#include <enumivo/chain/immutable_chain_parameters.hpp>
 
 #include <fc/crypto/sha256.hpp>
 

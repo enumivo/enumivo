@@ -1,9 +1,9 @@
 #include <boost/test/unit_test.hpp>
-#include <eosio/testing/tester.hpp>
-#include <eosio/chain/contracts/abi_serializer.hpp>
-#include <eosio/chain/wasm_eosio_constraints.hpp>
-#include <eosio/chain/exceptions.hpp>
-#include <eosio/chain/wast_to_wasm.hpp>
+#include <enumivo/testing/tester.hpp>
+#include <enumivo/chain/contracts/abi_serializer.hpp>
+#include <enumivo/chain/wasm_eosio_constraints.hpp>
+#include <enumivo/chain/exceptions.hpp>
+#include <enumivo/chain/wast_to_wasm.hpp>
 #include <asserter/asserter.wast.hpp>
 #include <asserter/asserter.abi.hpp>
 

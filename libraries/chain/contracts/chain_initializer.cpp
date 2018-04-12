@@ -2,12 +2,12 @@
  *  @file
  *  @copyright defined in eos/LICENSE.txt
  */
-#include <eosio/chain/contracts/chain_initializer.hpp>
-#include <eosio/chain/contracts/eos_contract.hpp>
-#include <eosio/chain/contracts/types.hpp>
+#include <enumivo/chain/contracts/chain_initializer.hpp>
+#include <enumivo/chain/contracts/eos_contract.hpp>
+#include <enumivo/chain/contracts/types.hpp>
 
-#include <eosio/chain/producer_object.hpp>
-#include <eosio/chain/permission_object.hpp>
+#include <enumivo/chain/producer_object.hpp>
+#include <enumivo/chain/permission_object.hpp>
 
 #include <fc/io/json.hpp>
 

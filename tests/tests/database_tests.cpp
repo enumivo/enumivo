@@ -3,7 +3,7 @@
  *  @copyright defined in eos/LICENSE.txt
  */
 
-#include <eosio/testing/tester.hpp>
+#include <enumivo/testing/tester.hpp>
 #include <fc/crypto/digest.hpp>
 
 #include <boost/test/unit_test.hpp>

@@ -1,11 +1,11 @@
 #include <boost/test/unit_test.hpp>
-#include <eosio/testing/tester.hpp>
-#include <eosio/chain/asset.hpp>
-#include <eosio/chain/wast_to_wasm.hpp>
-#include <eosio/chain/contracts/types.hpp>
-#include <eosio/chain/contracts/eos_contract.hpp>
-#include <eosio/chain/contracts/contract_table_objects.hpp>
-#include <eosio/chain_plugin/chain_plugin.hpp>
+#include <enumivo/testing/tester.hpp>
+#include <enumivo/chain/asset.hpp>
+#include <enumivo/chain/wast_to_wasm.hpp>
+#include <enumivo/chain/contracts/types.hpp>
+#include <enumivo/chain/contracts/eos_contract.hpp>
+#include <enumivo/chain/contracts/contract_table_objects.hpp>
+#include <enumivo/chain_plugin/chain_plugin.hpp>
 
 #include <enumivo.bios/enumivo.bios.wast.hpp>
 #include <enumivo.bios/enumivo.bios.abi.hpp>

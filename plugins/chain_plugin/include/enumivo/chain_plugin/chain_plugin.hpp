@@ -4,14 +4,14 @@
  */
 #pragma once
 #include <appbase/application.hpp>
-#include <eosio/chain/asset.hpp>
-#include <eosio/chain/authority.hpp>
-#include <eosio/chain/account_object.hpp>
-#include <eosio/chain/block.hpp>
-#include <eosio/chain/chain_controller.hpp>
-#include <eosio/chain/contracts/contract_table_objects.hpp>
-#include <eosio/chain/transaction.hpp>
-#include <eosio/chain/contracts/abi_serializer.hpp>
+#include <enumivo/chain/asset.hpp>
+#include <enumivo/chain/authority.hpp>
+#include <enumivo/chain/account_object.hpp>
+#include <enumivo/chain/block.hpp>
+#include <enumivo/chain/chain_controller.hpp>
+#include <enumivo/chain/contracts/contract_table_objects.hpp>
+#include <enumivo/chain/transaction.hpp>
+#include <enumivo/chain/contracts/abi_serializer.hpp>
 
 #include <boost/container/flat_set.hpp>
 #include <boost/algorithm/string.hpp>

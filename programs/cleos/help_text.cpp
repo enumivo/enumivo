@@ -271,7 +271,7 @@ const std::map<int64_t, std::string> error_advice = {
 namespace eosio { namespace client { namespace help {
 bool print_recognized_errors(const fc::exception& e, const bool verbose_errors) {
    // eos recognized error code is from 3000000 to 3999999
-   // refer to libraries/chain/include/eosio/chain/exceptions.hpp
+   // refer to libraries/chain/include/enumivo/chain/exceptions.hpp
    if (e.code() >= 3000000 && e.code() <= 3999999) {
       std::string advice, explanation, stack_trace;
 

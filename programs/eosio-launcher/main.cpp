@@ -32,7 +32,7 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <net/if.h>
-#include <eosio/chain/contracts/genesis_state.hpp>
+#include <enumivo/chain/contracts/genesis_state.hpp>
 
 #include "config.hpp"
 

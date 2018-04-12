@@ -1,5 +1,5 @@
 #include <boost/test/unit_test.hpp>
-#include <eosio/testing/tester.hpp>
+#include <enumivo/testing/tester.hpp>
 
 #ifdef NON_VALIDATING_TEST
 #define TESTER tester

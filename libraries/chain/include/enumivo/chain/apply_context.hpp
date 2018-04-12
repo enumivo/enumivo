@@ -3,10 +3,10 @@
  *  @copyright defined in eos/LICENSE.txt
  */
 #pragma once
-#include <eosio/chain/block_trace.hpp>
-#include <eosio/chain/transaction.hpp>
-#include <eosio/chain/transaction_metadata.hpp>
-#include <eosio/chain/contracts/contract_table_objects.hpp>
+#include <enumivo/chain/block_trace.hpp>
+#include <enumivo/chain/transaction.hpp>
+#include <enumivo/chain/transaction_metadata.hpp>
+#include <enumivo/chain/contracts/contract_table_objects.hpp>
 #include <fc/utility.hpp>
 #include <sstream>
 #include <algorithm>

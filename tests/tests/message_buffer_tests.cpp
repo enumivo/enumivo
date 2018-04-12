@@ -3,7 +3,7 @@
  *  @copyright defined in eos/LICENSE.txt
  */
 
-#include <eosio/net_plugin/message_buffer.hpp>
+#include <enumivo/net_plugin/message_buffer.hpp>
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 

@@ -2,9 +2,9 @@
  *  @file
  *  @copyright defined in eos/LICENSE.txt
  */
-#include <eosio/producer_plugin/producer_plugin.hpp>
-#include <eosio/net_plugin/net_plugin.hpp>
-#include <eosio/chain/producer_object.hpp>
+#include <enumivo/producer_plugin/producer_plugin.hpp>
+#include <enumivo/net_plugin/net_plugin.hpp>
+#include <enumivo/chain/producer_object.hpp>
 
 #include <fc/io/json.hpp>
 #include <fc/smart_ref_impl.hpp>

@@ -2,22 +2,22 @@
  *  @file
  *  @copyright defined in eos/LICENSE.txt
  */
-#include <eosio/chain_plugin/chain_plugin.hpp>
-#include <eosio/chain/fork_database.hpp>
-#include <eosio/chain/block_log.hpp>
-#include <eosio/chain/exceptions.hpp>
-#include <eosio/chain/permission_object.hpp>
-#include <eosio/chain/producer_object.hpp>
-#include <eosio/chain/config.hpp>
-#include <eosio/chain/types.hpp>
-#include <eosio/chain/wasm_interface.hpp>
+#include <enumivo/chain_plugin/chain_plugin.hpp>
+#include <enumivo/chain/fork_database.hpp>
+#include <enumivo/chain/block_log.hpp>
+#include <enumivo/chain/exceptions.hpp>
+#include <enumivo/chain/permission_object.hpp>
+#include <enumivo/chain/producer_object.hpp>
+#include <enumivo/chain/config.hpp>
+#include <enumivo/chain/types.hpp>
+#include <enumivo/chain/wasm_interface.hpp>
 
-#include <eosio/chain/contracts/chain_initializer.hpp>
-#include <eosio/chain/contracts/genesis_state.hpp>
-#include <eosio/chain/contracts/eos_contract.hpp>
+#include <enumivo/chain/contracts/chain_initializer.hpp>
+#include <enumivo/chain/contracts/genesis_state.hpp>
+#include <enumivo/chain/contracts/eos_contract.hpp>
 
-#include <eosio/utilities/key_conversion.hpp>
-#include <eosio/chain/wast_to_wasm.hpp>
+#include <enumivo/utilities/key_conversion.hpp>
+#include <enumivo/chain/wast_to_wasm.hpp>
 
 #include <fc/io/json.hpp>
 #include <fc/variant.hpp>

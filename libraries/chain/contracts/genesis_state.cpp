@@ -3,7 +3,7 @@
  *  @copyright defined in eos/LICENSE.txt
  */
 
-#include <eosio/chain/contracts/genesis_state.hpp>
+#include <enumivo/chain/contracts/genesis_state.hpp>
 
 // these are required to serialize a genesis_state
 #include <fc/smart_ref_impl.hpp>   // required for gcc in release mode

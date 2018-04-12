@@ -14,9 +14,9 @@
 #include <fc/exception/exception.hpp>
 #include <fc/log/logger.hpp>
 
-#include <eosio/chain/contracts/chain_initializer.hpp>
-#include <eosio/chain/contracts/abi_serializer.hpp>
-#include <eosio/abi_generator/abi_generator.hpp>
+#include <enumivo/chain/contracts/chain_initializer.hpp>
+#include <enumivo/chain/contracts/abi_serializer.hpp>
+#include <enumivo/abi_generator/abi_generator.hpp>
 
 #include "config.hpp"
 #include <boost/test/framework.hpp>

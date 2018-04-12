@@ -1,9 +1,9 @@
 #include <algorithm>
-#include <eosio/chain/apply_context.hpp>
-#include <eosio/chain/chain_controller.hpp>
-#include <eosio/chain/wasm_interface.hpp>
-#include <eosio/chain/generated_transaction_object.hpp>
-#include <eosio/chain/scope_sequence_object.hpp>
+#include <enumivo/chain/apply_context.hpp>
+#include <enumivo/chain/chain_controller.hpp>
+#include <enumivo/chain/wasm_interface.hpp>
+#include <enumivo/chain/generated_transaction_object.hpp>
+#include <enumivo/chain/scope_sequence_object.hpp>
 #include <boost/container/flat_set.hpp>
 
 using boost::container::flat_set;

@@ -5,8 +5,8 @@
 #include <algorithm>
 #include <memory>
 
-#include <eosio/chain/contracts/abi_serializer.hpp>
-#include <eosio/chain/contracts/types.hpp>
+#include <enumivo/chain/contracts/abi_serializer.hpp>
+#include <enumivo/chain/contracts/types.hpp>
 #include <fc/io/json.hpp>
 
 //clashes with something deep in the AST includes in clang 6 and possibly other versions of clang

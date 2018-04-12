@@ -1,6 +1,6 @@
 #include <boost/test/unit_test.hpp>
-#include <eosio/testing/tester.hpp>
-#include <eosio/chain/contracts/abi_serializer.hpp>
+#include <enumivo/testing/tester.hpp>
+#include <enumivo/chain/contracts/abi_serializer.hpp>
 
 #ifdef NON_VALIDATING_TEST
 #define TESTER tester

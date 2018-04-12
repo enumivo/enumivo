@@ -4,9 +4,9 @@
  */
 #pragma once
 
-#include <eosio/chain/contracts/genesis_state.hpp>
-#include <eosio/chain/contracts/types.hpp>
-#include <eosio/chain/chain_controller.hpp>
+#include <enumivo/chain/contracts/genesis_state.hpp>
+#include <enumivo/chain/contracts/types.hpp>
+#include <enumivo/chain/chain_controller.hpp>
 
 namespace eosio { namespace chain {  namespace contracts {
 

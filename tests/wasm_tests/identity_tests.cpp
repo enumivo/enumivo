@@ -1,9 +1,9 @@
 #include <boost/test/unit_test.hpp>
-#include <eosio/testing/tester.hpp>
-#include <eosio/chain/contracts/abi_serializer.hpp>
-#include <eosio/chain_plugin/chain_plugin.hpp>
+#include <enumivo/testing/tester.hpp>
+#include <enumivo/chain/contracts/abi_serializer.hpp>
+#include <enumivo/chain_plugin/chain_plugin.hpp>
 #include <chainbase/chainbase.hpp>
-#include <eosio/chain/fixed_key.hpp>
+#include <enumivo/chain/fixed_key.hpp>
 
 #include <identity/identity.wast.hpp>
 #include <identity/identity.abi.hpp>

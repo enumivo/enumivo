@@ -5,7 +5,7 @@
 #pragma once
 
 #include <fc/exception/exception.hpp>
-#include <eosio/chain/exceptions.hpp>
+#include <enumivo/chain/exceptions.hpp>
 
 #define EOS_DECLARE_INTERNAL_EXCEPTION( exc_name, seqnum, msg )  \
    FC_DECLARE_DERIVED_EXCEPTION(                                      \

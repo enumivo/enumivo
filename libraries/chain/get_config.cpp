@@ -3,9 +3,9 @@
  *  @copyright defined in eos/LICENSE.txt
  */
 
-#include <eosio/chain/get_config.hpp>
-#include <eosio/chain/config.hpp>
-#include <eosio/chain/types.hpp>
+#include <enumivo/chain/get_config.hpp>
+#include <enumivo/chain/config.hpp>
+#include <enumivo/chain/types.hpp>
 
 namespace eosio { namespace chain {
 

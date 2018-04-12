@@ -1,9 +1,9 @@
 #pragma once
 
-#include <eosio/chain/wasm_eosio_binary_ops.hpp>
-#include <eosio/chain/webassembly/common.hpp>
+#include <enumivo/chain/wasm_eosio_binary_ops.hpp>
+#include <enumivo/chain/webassembly/common.hpp>
 #include <fc/exception/exception.hpp>
-#include <eosio/chain/exceptions.hpp>
+#include <enumivo/chain/exceptions.hpp>
 #include <functional>
 #include <vector>
 #include <iostream>

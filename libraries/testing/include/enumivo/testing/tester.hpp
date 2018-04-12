@@ -1,6 +1,6 @@
 #pragma once
-#include <eosio/chain/chain_controller.hpp>
-#include <eosio/chain/contracts/abi_serializer.hpp>
+#include <enumivo/chain/chain_controller.hpp>
+#include <enumivo/chain/contracts/abi_serializer.hpp>
 #include <fc/io/json.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/test/unit_test.hpp>

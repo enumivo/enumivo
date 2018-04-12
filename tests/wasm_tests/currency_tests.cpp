@@ -3,8 +3,8 @@
 #include <boost/test/unit_test.hpp>
 #pragma GCC diagnostic pop
 #include <boost/algorithm/string/predicate.hpp>
-#include <eosio/testing/tester.hpp>
-#include <eosio/chain/contracts/abi_serializer.hpp>
+#include <enumivo/testing/tester.hpp>
+#include <enumivo/chain/contracts/abi_serializer.hpp>
 
 #include <currency/currency.wast.hpp>
 #include <currency/currency.abi.hpp>

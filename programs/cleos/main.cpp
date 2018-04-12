@@ -79,12 +79,12 @@ Options:
 #include <fc/io/json.hpp>
 #include <fc/io/console.hpp>
 #include <fc/exception/exception.hpp>
-#include <eosio/utilities/key_conversion.hpp>
+#include <enumivo/utilities/key_conversion.hpp>
 
-#include <eosio/chain/config.hpp>
-#include <eosio/chain/wast_to_wasm.hpp>
-#include <eosio/chain/transaction_trace.hpp>
-#include <eosio/chain_plugin/chain_plugin.hpp>
+#include <enumivo/chain/config.hpp>
+#include <enumivo/chain/wast_to_wasm.hpp>
+#include <enumivo/chain/transaction_trace.hpp>
+#include <enumivo/chain_plugin/chain_plugin.hpp>
 
 #include <boost/range/algorithm/find_if.hpp>
 #include <boost/range/algorithm/sort.hpp>

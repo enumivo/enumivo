@@ -3,8 +3,8 @@
  *  @copyright defined in eos/LICENSE.txt
  */
 #pragma once
-#include <eosio/chain/block.hpp>
-#include <eosio/chain/transaction_trace.hpp>
+#include <enumivo/chain/block.hpp>
+#include <enumivo/chain/transaction_trace.hpp>
 
 namespace eosio { namespace chain {
 

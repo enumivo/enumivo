@@ -329,7 +329,7 @@ namespace eosiosystem {
                std::sort( percent_of_max_inflation_rate.begin(), percent_of_max_inflation_rate.begin()+n );
             }
 
-            // should use producer_schedule_type from libraries/chain/include/eosio/chain/producer_schedule.hpp
+            // should use producer_schedule_type from libraries/chain/include/enumivo/chain/producer_schedule.hpp
             bytes packed_schedule = pack(schedule);
             set_active_producers( packed_schedule.data(),  packed_schedule.size() );
             size_t median = n/2;

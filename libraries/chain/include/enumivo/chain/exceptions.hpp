@@ -5,8 +5,8 @@
 #pragma once
 
 #include <fc/exception/exception.hpp>
-#include <eosio/chain/protocol.hpp>
-#include <eosio/utilities/exception_macros.hpp>
+#include <enumivo/chain/protocol.hpp>
+#include <enumivo/utilities/exception_macros.hpp>
 
 namespace eosio { namespace chain {
 
