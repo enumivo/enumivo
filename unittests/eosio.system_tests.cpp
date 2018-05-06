@@ -4,8 +4,8 @@
 #include <eosio/chain/contract_table_objects.hpp>
 #include <eosio/chain/global_property_object.hpp>
 
-#include <eosio.system/eosio.system.wast.hpp>
-#include <eosio.system/eosio.system.abi.hpp>
+#include <enumivo.system/eosio.system.wast.hpp>
+#include <enumivo.system/eosio.system.abi.hpp>
 
 #include <eosio.token/eosio.token.wast.hpp>
 #include <eosio.token/eosio.token.abi.hpp>

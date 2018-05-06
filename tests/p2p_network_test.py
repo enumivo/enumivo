@@ -156,8 +156,8 @@ for i in range(len(hosts)):
     Print("host %s: %s" % (hosts[i], trans))
 
 
-wastFile="contracts/eosio.system/eosio.system.wast"
-abiFile="contracts/eosio.system/eosio.system.abi"
+wastFile="contracts/enumivo.system/eosio.system.wast"
+abiFile="contracts/enumivo.system/eosio.system.abi"
 Print("\nPush system contract %s %s" % (wastFile, abiFile))
 trans=node0.publishContract(eosio.name, wastFile, abiFile, waitForTransBlock=True)
 if trans is None:
