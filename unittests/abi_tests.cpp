@@ -16,7 +16,7 @@
 
 #include <enumivo/chain/contract_types.hpp>
 #include <enumivo/chain/abi_serializer.hpp>
-#include <enumivo/chain/eosio_contract.hpp>
+#include <enumivo/chain/enumivo_contract.hpp>
 #include <eosio/abi_generator/abi_generator.hpp>
 
 #include <boost/test/framework.hpp>

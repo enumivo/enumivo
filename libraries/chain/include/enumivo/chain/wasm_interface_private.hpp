@@ -4,7 +4,7 @@
 #include <enumivo/chain/webassembly/wavm.hpp>
 #include <enumivo/chain/webassembly/binaryen.hpp>
 #include <enumivo/chain/webassembly/runtime_interface.hpp>
-#include <enumivo/chain/wasm_eosio_injection.hpp>
+#include <enumivo/chain/wasm_enumivo_injection.hpp>
 
 #include "IR/Module.h"
 #include "Runtime/Intrinsics.h"
