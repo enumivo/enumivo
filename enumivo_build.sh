@@ -150,7 +150,7 @@
 
 	. $FILE
 
-	printf "\n\n>>>>>>>> ALL dependencies sucessfully found or installed . Installing EOS.IO\n\n"
+	printf "\n\n>>>>>>>> ALL dependencies sucessfully found or installed . Installing Enumivo\n\n"
 
 	COMPILE_EOS=1
 	COMPILE_CONTRACTS=1
@@ -205,16 +205,16 @@
 	printf "\t| (____/\| (___) |/\____) |___) (___| (___) |\n"
 	printf "\t(_______/(_______)\_______)\_______/(_______)\n${txtrst}"
 
-	printf "\n\tEOS.IO has been successfully built. %d:%d:%d\n\n" $(($TIME_END/3600)) $(($TIME_END%3600/60)) $(($TIME_END%60))
+	printf "\n\tEnumivo has been successfully built. %d:%d:%d\n\n" $(($TIME_END/3600)) $(($TIME_END%3600/60)) $(($TIME_END%60))
 	printf "\tTo verify your installation run the following commands:\n"
 	
 	print_instructions
 
 	printf "\tFor more information:\n"
-	printf "\tEOS.IO website: https://eos.io\n"
-	printf "\tEOS.IO Telegram channel @ https://t.me/EOSProject\n"
-	printf "\tEOS.IO resources: https://eos.io/resources/\n"
-	printf "\tEOS.IO wiki: https://github.com/EOSIO/eos/wiki\n\n\n"
+	printf "\tEnumivo website: https://eos.io\n"
+	printf "\tEnumivo Telegram channel @ https://t.me/EOSProject\n"
+	printf "\tEnumivo resources: https://eos.io/resources/\n"
+	printf "\tEnumivo wiki: https://github.com/EOSIO/eos/wiki\n\n\n"
 				
    if [ "x${ENUMIVO_BUILD_PACKAGE}" != "x" ]; then
       # Build eos.io package
