@@ -8,8 +8,8 @@
 #include <eosio/chain/symbol.hpp>
 
 /// eos with 8 digits of precision
-#define EOS_SYMBOL_VALUE  (int64_t(4) | (uint64_t('E') << 8) | (uint64_t('O') << 16) | (uint64_t('S') << 24))
-static const eosio::chain::symbol EOS_SYMBOL(EOS_SYMBOL_VALUE);
+#define ENU_SYMBOL_VALUE  (int64_t(4) | (uint64_t('E') << 8) | (uint64_t('O') << 16) | (uint64_t('S') << 24))
+static const eosio::chain::symbol EOS_SYMBOL(ENU_SYMBOL_VALUE);
 
 /// Defined to be largest power of 10 that fits in 53 bits of precision
 #define EOS_MAX_SHARE_SUPPLY   int64_t(1'000'000'000'000'000ll)
