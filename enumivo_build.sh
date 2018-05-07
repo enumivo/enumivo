@@ -155,17 +155,17 @@
 	COMPILE_EOS=1
 	COMPILE_CONTRACTS=1
 
-# 	export EOS_BUILD_TYPE=[Debug|Release|RelWithDebInfo|MinSizeRel|CodeCoverage] to enable
+# 	export ENU_BUILD_TYPE=[Debug|Release|RelWithDebInfo|MinSizeRel|CodeCoverage] to enable
 	CMAKE_BUILD_TYPE=Release
 	CODE_COVERAGE_OPTS=
 	export ENABLE_CODE_COVERAGE=false
-	if [ ! -z $EOS_BUILD_TYPE ]; then
-            if [[ $EOS_BUILD_TYPE == "CodeCoverage" ]]; then
+	if [ ! -z $ENU_BUILD_TYPE ]; then
+            if [[ $ENU_BUILD_TYPE == "CodeCoverage" ]]; then
                 ENABLE_CODE_COVERAGE=true
-                EOS_BUILD_TYPE=Debug
+                ENU_BUILD_TYPE=Debug
             fi
 
-	    CMAKE_BUILD_TYPE=$EOS_BUILD_TYPE
+	    CMAKE_BUILD_TYPE=$ENU_BUILD_TYPE
 	fi
 
 	cd ${WORK_DIR}
