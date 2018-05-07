@@ -9,7 +9,7 @@ use File::Spec;
 use File::Path;
 use Cwd;
 
-my $eos_home = defined $ENV{EOS_HOME} ? $ENV{EOS_HOME} : getcwd;
+my $eos_home = defined $ENV{ENU_HOME} ? $ENV{ENU_HOME} : getcwd;
 my $eosd = $eos_home . "/programs/eosd/eosd";
 my $eosc = $eos_home . "/programs/eosc/eosc";
 
