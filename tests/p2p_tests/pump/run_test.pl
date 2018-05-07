@@ -14,7 +14,7 @@ my $eosd = $eos_home . "/programs/eosd/eosd";
 my $eosc = $eos_home . "/programs/eosc/eosc";
 
 my $nodes = defined $ENV{ENU_TEST_RING} ? $ENV{ENU_TEST_RING} : "1";
-my $pnodes = defined $ENV{EOS_TEST_PRODUCERS} ? $ENV{EOS_TEST_PRODUCERS} : "1";
+my $pnodes = defined $ENV{ENU_TEST_PRODUCERS} ? $ENV{ENU_TEST_PRODUCERS} : "1";
 
 my $prods = 21;
 my $genesis = "$eos_home/genesis.json";
