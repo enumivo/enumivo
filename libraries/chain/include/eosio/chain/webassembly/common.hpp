@@ -3,7 +3,7 @@
 #include <eosio/chain/wasm_interface.hpp>
 #include <eosio/chain/wasm_eosio_constraints.hpp>
 
-#define EOSIO_INJECTED_MODULE_NAME "eosio_injection"
+#define ENUMIVO_INJECTED_MODULE_NAME "eosio_injection"
 
 using namespace fc;
 
