@@ -15,7 +15,7 @@ COPY --from=builder /tmp/build/bin /opt/eosio/bin
 COPY --from=builder /tmp/build/contracts /contracts
 COPY --from=builder /eos/Docker/config.ini /
 COPY nodeosd.sh /opt/eosio/bin/nodeosd.sh
-ENV EOSIO_ROOT=/opt/eosio
+ENV ENUMIVO_ROOT=/opt/eosio
 RUN chmod +x /opt/eosio/bin/nodeosd.sh
 ENV LD_LIBRARY_PATH /usr/local/lib
 VOLUME /opt/eosio/bin/data-dir
