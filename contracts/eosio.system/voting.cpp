@@ -5,6 +5,7 @@
 #include "eosio.system.hpp"
 
 #include <eosiolib/eosio.hpp>
+#include <eosiolib/crypto.h>
 #include <eosiolib/print.hpp>
 #include <eosiolib/datastream.hpp>
 #include <eosiolib/serialize.hpp>
@@ -15,7 +16,6 @@
 #include <eosio.token/eosio.token.hpp>
 
 #include <algorithm>
-#include <array>
 #include <cmath>
 
 namespace eosiosystem {
@@ -25,11 +25,6 @@ namespace eosiosystem {
    using eosio::print;
    using eosio::singleton;
    using eosio::transaction;
-
-
-   static constexpr uint32_t blocks_per_year = 52*7*24*2*3600; // half seconds per year
-   static constexpr uint32_t blocks_per_producer = 12;
-
 
    /**
     *  This method will create a producer_config and producer_info object for 'producer'
@@ -71,52 +66,40 @@ namespace eosiosystem {
       });
    }
 
+   void system_contract::update_elected_producers( block_timestamp block_time ) {
+      _gstate.last_producer_schedule_update = block_time;
 
-   eosio::asset system_contract::payment_per_block(uint32_t percent_of_max_inflation_rate) {
-      const eosio::asset token_supply = eosio::token(N(eosio.token)).get_supply(eosio::symbol_type(system_token_symbol).name());
-      const double annual_rate = double(max_inflation_rate * percent_of_max_inflation_rate) / double(10000);
-      const double continuous_rate = std::log1p(annual_rate);
-      int64_t payment = static_cast<int64_t>((continuous_rate * double(token_supply.amount)) / double(blocks_per_year));
-      return eosio::asset(payment, system_token_symbol);
-   }
-
-   void system_contract::update_elected_producers(time cycle_time) {
       auto idx = _producers.get_index<N(prototalvote)>();
 
-      eosio::producer_schedule schedule;
-      schedule.producers.reserve(21);
-      size_t n = 0;
-      for ( auto it = idx.crbegin(); it != idx.crend() && n < 21 && 0 < it->total_votes; ++it ) {
-         if ( it->active() ) {
-            schedule.producers.emplace_back();
-            schedule.producers.back().producer_name = it->owner;
-            schedule.producers.back().block_signing_key = it->producer_key; 
-            ++n;
-         }
-      }
-      if ( n == 0 ) { //no active producers with votes > 0
-         return;
+      std::vector< std::pair<eosio::producer_key,uint16_t> > top_producers;
+      top_producers.reserve(21);
+
+      for ( auto it = idx.cbegin(); it != idx.cend() && top_producers.size() < 21 && 0 < it->total_votes; ++it ) {
+         if( !it->active() ) continue;
+         top_producers.emplace_back( std::pair<eosio::producer_key,uint16_t>({{it->owner, it->producer_key}, it->location}));
       }
 
-      // should use producer_schedule_type from libraries/chain/include/eosio/chain/producer_schedule.hpp
-      bytes packed_schedule = pack(schedule);
-      set_active_producers( packed_schedule.data(),  packed_schedule.size() );
 
-      // not voted on
-      _gstate.first_block_time_in_cycle = cycle_time;
+      /// sort by producer name
+      std::sort( top_producers.begin(), top_producers.end() );
 
-      // derived parameters
-      auto half_of_percentage = _gstate.percent_of_max_inflation_rate / 2;
-      auto other_half_of_percentage = _gstate.percent_of_max_inflation_rate - half_of_percentage;
-      _gstate.payment_per_block = payment_per_block(half_of_percentage);
-      _gstate.payment_to_eos_bucket = payment_per_block(other_half_of_percentage);
-      _gstate.blocks_per_cycle = blocks_per_producer * schedule.producers.size();
+      std::vector<eosio::producer_key> producers;
 
-      auto issue_quantity =_gstate.blocks_per_cycle * (_gstate.payment_per_block +_gstate.payment_to_eos_bucket);
-      INLINE_ACTION_SENDER(eosio::token, issue)( N(eosio.token), {{N(eosio),N(active)}},
-                                                 {N(eosio), issue_quantity, std::string("producer pay")} );
+      producers.reserve(top_producers.size());
+      for( const auto& item : top_producers )
+         producers.push_back(item.first);
 
+      bytes packed_schedule = pack(producers);
+      checksum160 new_id;
+      sha1( packed_schedule.data(), packed_schedule.size(), &new_id );
+
+      if( new_id != _gstate.last_producer_schedule_id ) {
+         _gstate.last_producer_schedule_id = new_id;
+         set_active_producers( packed_schedule.data(),  packed_schedule.size() );
+      }
+      _gstate.last_producer_schedule_update = block_time;
    }
+
 
    /**
     *  @pre producers must be sorted from lowest to highest and must be registered and active
@@ -151,6 +134,15 @@ namespace eosiosystem {
 
       auto voter = _voters.find(voter_name);
       eosio_assert( voter != _voters.end(), "user must stake before they can vote" ); /// staking creates voter object
+
+      /**
+       * The first time someone votes we calculate and set last_vote_weight, since they cannot unstake until
+       * after total_activiated_stake hits threshold, we can use last_vote_weight to determine that this is
+       * their first vote and should consider their stake activated.
+       */
+      if( voter->last_vote_weight <= 0.0 ) {
+         _gstate.total_activiated_stake += voter->staked;
+      }
 
       auto weight = int64_t(now() / (seconds_per_day * 7)) / double( 52 );
       double new_vote_weight = double(voter->staked) * std::pow(2,weight);
@@ -230,4 +222,4 @@ namespace eosiosystem {
       });
    }
 
-}
+} /// namespace eosiosystem
