@@ -603,7 +603,7 @@ struct controller_impl {
             required_delay = limit_delay( authorization.check_authorization( trx->trx.actions, trx->recover_keys() ) );
          }
          trx_context.delay = fc::seconds(trx->trx.delay_sec);
-         EOS_ASSERT( trx_context.delay >= required_delay, transaction_exception,
+         ENU_ASSERT( trx_context.delay >= required_delay, transaction_exception,
                      "authorization imposes a delay (${required_delay} sec) greater than the delay specified in transaction header (${specified_delay} sec)",
                      ("required_delay", required_delay.to_seconds())("specified_delay", trx_context.delay.to_seconds()) );
 
@@ -954,7 +954,7 @@ struct controller_impl {
       const auto& tapos_block_summary = db.get<block_summary_object>((uint16_t)trx.ref_block_num);
 
       //Verify TaPoS block summary has correct ID prefix, and that this block's time is not past the expiration
-      EOS_ASSERT(trx.verify_reference_block(tapos_block_summary.block_id), invalid_ref_block_exception,
+      ENU_ASSERT(trx.verify_reference_block(tapos_block_summary.block_id), invalid_ref_block_exception,
                  "Transaction's reference block did not match. Is this transaction from a different fork?",
                  ("tapos_summary", tapos_block_summary));
    }
@@ -1305,38 +1305,38 @@ fc::microseconds controller::limit_delay( fc::microseconds delay )const {
 void controller::validate_referenced_accounts( const transaction& trx )const {
    for( const auto& a : trx.context_free_actions ) {
       auto* code = my->db.find<account_object, by_name>(a.account);
-      EOS_ASSERT( code != nullptr, transaction_exception,
+      ENU_ASSERT( code != nullptr, transaction_exception,
                   "action's code account ${account} does not exist", ("account", a.account) );
-      EOS_ASSERT( a.authorization.size() == 0, transaction_exception,
+      ENU_ASSERT( a.authorization.size() == 0, transaction_exception,
                   "context-free actions cannot have authorizations" );
    }
    bool one_auth = false;
    for( const auto& a : trx.actions ) {
       auto* code = my->db.find<account_object, by_name>(a.account);
-      EOS_ASSERT( code != nullptr, transaction_exception,
+      ENU_ASSERT( code != nullptr, transaction_exception,
                   "action's code account ${account} does not exist", ("account", a.account) );
       for( const auto& auth : a.authorization ) {
          one_auth = true;
          auto* actor = my->db.find<account_object, by_name>(auth.actor);
-         EOS_ASSERT( actor  != nullptr, transaction_exception,
+         ENU_ASSERT( actor  != nullptr, transaction_exception,
                      "action's authorizing actor ${account} does not exist", ("account", auth.actor) );
-         EOS_ASSERT( my->authorization.find_permission(auth) != nullptr, transaction_exception,
+         ENU_ASSERT( my->authorization.find_permission(auth) != nullptr, transaction_exception,
                      "action's authorizations include a non-existent permission: {permission}",
                      ("permission", auth) );
       }
    }
-   EOS_ASSERT( one_auth, tx_no_auths, "transaction must have at least one authorization" );
+   ENU_ASSERT( one_auth, tx_no_auths, "transaction must have at least one authorization" );
 }
 
 void controller::validate_expiration( const transaction& trx )const { try {
    const auto& chain_configuration = get_global_properties().configuration;
 
-   EOS_ASSERT( time_point(trx.expiration) >= pending_block_time(),
+   ENU_ASSERT( time_point(trx.expiration) >= pending_block_time(),
                expired_tx_exception,
                "transaction has expired, "
                "expiration is ${trx.expiration} and pending block time is ${pending_block_time}",
                ("trx.expiration",trx.expiration)("pending_block_time",pending_block_time()));
-   EOS_ASSERT( time_point(trx.expiration) <= pending_block_time() + fc::seconds(chain_configuration.max_transaction_lifetime),
+   ENU_ASSERT( time_point(trx.expiration) <= pending_block_time() + fc::seconds(chain_configuration.max_transaction_lifetime),
                tx_exp_too_far_exception,
                "Transaction expiration is too far in the future relative to the reference time of ${reference_time}, "
                "expiration is ${trx.expiration} and the maximum transaction lifetime is ${max_til_exp} seconds",
@@ -1348,7 +1348,7 @@ void controller::validate_tapos( const transaction& trx )const { try {
    const auto& tapos_block_summary = db().get<block_summary_object>((uint16_t)trx.ref_block_num);
 
    //Verify TaPoS block summary has correct ID prefix, and that this block's time is not past the expiration
-   EOS_ASSERT(trx.verify_reference_block(tapos_block_summary.block_id), invalid_ref_block_exception,
+   ENU_ASSERT(trx.verify_reference_block(tapos_block_summary.block_id), invalid_ref_block_exception,
               "Transaction's reference block did not match. Is this transaction from a different fork?",
               ("tapos_summary", tapos_block_summary));
 } FC_CAPTURE_AND_RETHROW() }
