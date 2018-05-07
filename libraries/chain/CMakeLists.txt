@@ -15,15 +15,15 @@ add_library( eosio_chain
              block_log.cpp
              genesis_state.cpp
              transaction_context.cpp
-             eosio_contract.cpp
-             eosio_contract_abi.cpp
+             enumivo_contract.cpp
+             enumivo_contract_abi.cpp
 
 #             chain_config.cpp
 #             block_trace.cpp
               wast_to_wasm.cpp
               wasm_interface.cpp
-              wasm_eosio_validation.cpp
-              wasm_eosio_injection.cpp
+              wasm_enumivo_validation.cpp
+              wasm_enumivo_injection.cpp
               apply_context.cpp
               abi_serializer.cpp
               asset.cpp

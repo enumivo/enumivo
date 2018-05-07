@@ -20,7 +20,7 @@
 #include <fc/io/json.hpp>
 #include <fc/scoped_exit.hpp>
 
-#include <enumivo/chain/eosio_contract.hpp>
+#include <enumivo/chain/enumivo_contract.hpp>
 
 namespace eosio { namespace chain {
 
