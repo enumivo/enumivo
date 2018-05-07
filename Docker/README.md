@@ -14,7 +14,7 @@ Simple and fast setup of Enumivo on Docker is also available.
 ## Build eos image
 
 ```bash
-git clone https://github.com/EOSIO/eos.git --recursive
+git clone https://github.com/enumivo/enumivo.git --recursive
 cd eos/Docker
 docker build . -t eosio/eos
 ```
