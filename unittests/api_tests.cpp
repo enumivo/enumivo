@@ -19,12 +19,12 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <eosio/testing/tester.hpp>
-#include <eosio/chain/exceptions.hpp>
-#include <eosio/chain/account_object.hpp>
-#include <eosio/chain/contract_table_objects.hpp>
-#include <eosio/chain/block_summary_object.hpp>
-#include <eosio/chain/global_property_object.hpp>
-#include <eosio/chain/wasm_interface.hpp>
+#include <enumivo/chain/exceptions.hpp>
+#include <enumivo/chain/account_object.hpp>
+#include <enumivo/chain/contract_table_objects.hpp>
+#include <enumivo/chain/block_summary_object.hpp>
+#include <enumivo/chain/global_property_object.hpp>
+#include <enumivo/chain/wasm_interface.hpp>
 
 #include <fc/crypto/digest.hpp>
 #include <fc/crypto/sha256.hpp>

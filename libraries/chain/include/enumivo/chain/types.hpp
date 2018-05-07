@@ -3,7 +3,7 @@
  *  @copyright defined in enumivo/LICENSE.txt
  */
 #pragma once
-#include <eosio/chain/name.hpp>
+#include <enumivo/chain/name.hpp>
 
 #include <chainbase/chainbase.hpp>
 

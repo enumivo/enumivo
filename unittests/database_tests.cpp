@@ -4,7 +4,7 @@
  */
 
 #include <eosio/testing/tester.hpp>
-#include <eosio/chain/global_property_object.hpp>
+#include <enumivo/chain/global_property_object.hpp>
 #include <fc/crypto/digest.hpp>
 
 #include <boost/test/unit_test.hpp>

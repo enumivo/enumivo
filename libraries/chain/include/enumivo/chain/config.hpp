@@ -3,7 +3,7 @@
  *  @copyright defined in enumivo/LICENSE.txt
  */
 #pragma once
-#include <eosio/chain/wasm_interface.hpp>
+#include <enumivo/chain/wasm_interface.hpp>
 #include <fc/time.hpp>
 
 #pragma GCC diagnostic ignored "-Wunused-variable"

@@ -3,7 +3,7 @@
  *  @copyright defined in enumivo/LICENSE.txt
  */
 #include <eosio/history_api_plugin/history_api_plugin.hpp>
-#include <eosio/chain/exceptions.hpp>
+#include <enumivo/chain/exceptions.hpp>
 
 #include <fc/io/json.hpp>
 

@@ -1,7 +1,7 @@
 #include <boost/test/unit_test.hpp>
 #include <eosio/testing/tester.hpp>
-#include <eosio/chain/generated_transaction_object.hpp>
-#include <eosio/chain/authorization_manager.hpp>
+#include <enumivo/chain/generated_transaction_object.hpp>
+#include <enumivo/chain/authorization_manager.hpp>
 
 #ifdef NON_VALIDATING_TEST
 #define TESTER tester

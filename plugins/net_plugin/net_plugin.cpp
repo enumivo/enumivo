@@ -2,16 +2,16 @@
  *  @file
  *  @copyright defined in enumivo/LICENSE.txt
  */
-#include <eosio/chain/types.hpp>
+#include <enumivo/chain/types.hpp>
 
 #include <eosio/net_plugin/net_plugin.hpp>
 #include <eosio/net_plugin/protocol.hpp>
-#include <eosio/chain/controller.hpp>
-#include <eosio/chain/exceptions.hpp>
-#include <eosio/chain/block.hpp>
+#include <enumivo/chain/controller.hpp>
+#include <enumivo/chain/exceptions.hpp>
+#include <enumivo/chain/block.hpp>
 #include <eosio/producer_plugin/producer_plugin.hpp>
 #include <eosio/utilities/key_conversion.hpp>
-#include <eosio/chain/contract_types.hpp>
+#include <enumivo/chain/contract_types.hpp>
 
 #include <fc/network/message_buffer.hpp>
 #include <fc/network/ip.hpp>

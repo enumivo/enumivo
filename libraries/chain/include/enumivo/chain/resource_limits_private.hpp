@@ -1,6 +1,6 @@
 #pragma once
-#include <eosio/chain/types.hpp>
-#include <eosio/chain/config.hpp>
+#include <enumivo/chain/types.hpp>
+#include <enumivo/chain/config.hpp>
 
 #include "multi_index_includes.hpp"
 

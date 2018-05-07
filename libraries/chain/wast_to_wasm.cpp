@@ -2,7 +2,7 @@
  *  @file
  *  @copyright defined in enumivo/LICENSE.txt
  */
-#include <eosio/chain/wast_to_wasm.hpp>
+#include <enumivo/chain/wast_to_wasm.hpp>
 #include <Inline/BasicTypes.h>
 #include <IR/Module.h>
 #include <IR/Validate.h>
