@@ -97,7 +97,7 @@ void resource_limits_manager::add_transaction_usage(const flat_set<account_name>
          uint128_t  consumed_cpu_ex = usage.cpu_usage.consumed * config::rate_limiting_precision;
          uint128_t  capacity_cpu_ex = state.virtual_cpu_limit * config::rate_limiting_precision;
 
-         EOS_ASSERT( state.total_cpu_weight > 0 && (consumed_cpu_ex * state.total_cpu_weight) <= (limits.cpu_weight * capacity_cpu_ex),
+         ENU_ASSERT( state.total_cpu_weight > 0 && (consumed_cpu_ex * state.total_cpu_weight) <= (limits.cpu_weight * capacity_cpu_ex),
                      tx_cpu_usage_exceeded,
                      "authorizing account '${n}' has insufficient cpu resources for this transaction",
                      ("n",                    name(a))
@@ -112,7 +112,7 @@ void resource_limits_manager::add_transaction_usage(const flat_set<account_name>
          uint128_t  consumed_net_ex = usage.net_usage.consumed * config::rate_limiting_precision;
          uint128_t  capacity_net_ex = state.virtual_net_limit * config::rate_limiting_precision;
 
-         EOS_ASSERT( state.total_net_weight > 0 && (consumed_net_ex * state.total_net_weight) <= (limits.net_weight * capacity_net_ex),
+         ENU_ASSERT( state.total_net_weight > 0 && (consumed_net_ex * state.total_net_weight) <= (limits.net_weight * capacity_net_ex),
                      tx_net_usage_exceeded,
                      "authorizing account '${n}' has insufficient net resources for this transaction",
                      ("n",                    name(a))
@@ -130,8 +130,8 @@ void resource_limits_manager::add_transaction_usage(const flat_set<account_name>
       rls.pending_net_usage += net_usage;
    });
 
-   EOS_ASSERT( state.pending_cpu_usage <= config.cpu_limit_parameters.max, block_resource_exhausted, "Block has insufficient cpu resources" );
-   EOS_ASSERT( state.pending_net_usage <= config.net_limit_parameters.max, block_resource_exhausted, "Block has insufficient net resources" );
+   ENU_ASSERT( state.pending_cpu_usage <= config.cpu_limit_parameters.max, block_resource_exhausted, "Block has insufficient cpu resources" );
+   ENU_ASSERT( state.pending_net_usage <= config.net_limit_parameters.max, block_resource_exhausted, "Block has insufficient net resources" );
 }
 
 void resource_limits_manager::add_pending_ram_usage( const account_name account, int64_t ram_delta ) {
@@ -141,9 +141,9 @@ void resource_limits_manager::add_pending_ram_usage( const account_name account,
 
    const auto& usage  = _db.get<resource_usage_object,by_owner>( account );
 
-   EOS_ASSERT( ram_delta <= 0 || UINT64_MAX - usage.ram_usage >= (uint64_t)ram_delta, transaction_exception,
+   ENU_ASSERT( ram_delta <= 0 || UINT64_MAX - usage.ram_usage >= (uint64_t)ram_delta, transaction_exception,
               "Ram usage delta would overflow UINT64_MAX");
-   EOS_ASSERT(ram_delta >= 0 || usage.ram_usage >= (uint64_t)(-ram_delta), transaction_exception,
+   ENU_ASSERT(ram_delta >= 0 || usage.ram_usage >= (uint64_t)(-ram_delta), transaction_exception,
               "Ram usage delta would underflow UINT64_MAX");
 
    _db.modify( usage, [&]( auto& u ) {
@@ -157,7 +157,7 @@ void resource_limits_manager::verify_account_ram_usage( const account_name accou
    const auto& usage  = _db.get<resource_usage_object,by_owner>( account );
 
    if( ram_bytes >= 0 ) {
-      EOS_ASSERT( usage.ram_usage <= ram_bytes, ram_usage_exceeded,
+      ENU_ASSERT( usage.ram_usage <= ram_bytes, ram_usage_exceeded,
                   "account ${account} has insufficient ram bytes; needs ${available} has ${needs}",
                   ("account", account)("available",usage.ram_usage)("needs",ram_bytes)              );
    }
@@ -202,9 +202,9 @@ bool resource_limits_manager::set_account_limits( const account_name& account, i
 
       /*
       if( limits.ram_bytes < 0 ) {
-         EOS_ASSERT(ram_bytes >= usage.ram_usage, wasm_execution_error, "converting unlimited account would result in overcommitment [commit=${c}, desired limit=${l}]", ("c", usage.ram_usage)("l", ram_bytes));
+         ENU_ASSERT(ram_bytes >= usage.ram_usage, wasm_execution_error, "converting unlimited account would result in overcommitment [commit=${c}, desired limit=${l}]", ("c", usage.ram_usage)("l", ram_bytes));
       } else {
-         EOS_ASSERT(ram_bytes >= usage.ram_usage, wasm_execution_error, "attempting to release committed ram resources [commit=${c}, desired limit=${l}]", ("c", usage.ram_usage)("l", ram_bytes));
+         ENU_ASSERT(ram_bytes >= usage.ram_usage, wasm_execution_error, "attempting to release committed ram resources [commit=${c}, desired limit=${l}]", ("c", usage.ram_usage)("l", ram_bytes));
       }
       */
    }
@@ -241,12 +241,12 @@ void resource_limits_manager::process_account_limit_updates() {
    // convenience local lambda to reduce clutter
    auto update_state_and_value = [](uint64_t &total, int64_t &value, int64_t pending_value, const char* debug_which) -> void {
       if (value > 0) {
-         EOS_ASSERT(total >= value, rate_limiting_state_inconsistent, "underflow when reverting old value to ${which}", ("which", debug_which));
+         ENU_ASSERT(total >= value, rate_limiting_state_inconsistent, "underflow when reverting old value to ${which}", ("which", debug_which));
          total -= value;
       }
 
       if (pending_value > 0) {
-         EOS_ASSERT(UINT64_MAX - total >= pending_value, rate_limiting_state_inconsistent, "overflow when applying new value to ${which}", ("which", debug_which));
+         ENU_ASSERT(UINT64_MAX - total >= pending_value, rate_limiting_state_inconsistent, "overflow when applying new value to ${which}", ("which", debug_which));
          total += pending_value;
       }
 

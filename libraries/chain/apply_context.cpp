@@ -96,7 +96,7 @@ void apply_context::exec()
    }
 
    if( _cfa_inline_actions.size() > 0 || _inline_actions.size() > 0 ) {
-      EOS_ASSERT( recurse_depth < control.get_global_properties().configuration.max_inline_action_depth,
+      ENU_ASSERT( recurse_depth < control.get_global_properties().configuration.max_inline_action_depth,
                   transaction_exception, "inline action recursion depth reached" );
    }
 
@@ -141,7 +141,7 @@ void apply_context::require_authorization( const account_name& account ) {
         return;
      }
    }
-   EOS_ASSERT( false, missing_auth_exception, "missing authority of ${account}", ("account",account));
+   ENU_ASSERT( false, missing_auth_exception, "missing authority of ${account}", ("account",account));
 }
 
 bool apply_context::has_authorization( const account_name& account )const {
@@ -160,7 +160,7 @@ void apply_context::require_authorization(const account_name& account,
            return;
         }
      }
-  EOS_ASSERT( false, missing_auth_exception, "missing authority of ${account}/${permission}",
+  ENU_ASSERT( false, missing_auth_exception, "missing authority of ${account}/${permission}",
               ("account",account)("permission",permission) );
 }
 
@@ -195,14 +195,14 @@ void apply_context::require_recipient( account_name recipient ) {
  */
 void apply_context::execute_inline( action&& a ) {
    auto* code = control.db().find<account_object, by_name>(a.account);
-   EOS_ASSERT( code != nullptr, action_validate_exception,
+   ENU_ASSERT( code != nullptr, action_validate_exception,
                "inline action's code account ${account} does not exist", ("account", a.account) );
 
    for( const auto& auth : a.authorization ) {
       auto* actor = control.db().find<account_object, by_name>(auth.actor);
-      EOS_ASSERT( actor != nullptr, action_validate_exception,
+      ENU_ASSERT( actor != nullptr, action_validate_exception,
                   "inline action's authorizing actor ${account} does not exist", ("account", auth.actor) );
-      EOS_ASSERT( control.get_authorization_manager().find_permission(auth) != nullptr, action_validate_exception,
+      ENU_ASSERT( control.get_authorization_manager().find_permission(auth) != nullptr, action_validate_exception,
                   "inline action's authorizations include a non-existent permission: {permission}",
                   ("permission", auth) );
    }
@@ -228,10 +228,10 @@ void apply_context::execute_inline( action&& a ) {
 
 void apply_context::execute_context_free_inline( action&& a ) {
    auto* code = control.db().find<account_object, by_name>(a.account);
-   EOS_ASSERT( code != nullptr, action_validate_exception,
+   ENU_ASSERT( code != nullptr, action_validate_exception,
                "inline action's code account ${account} does not exist", ("account", a.account) );
 
-   EOS_ASSERT( a.authorization.size() == 0, action_validate_exception,
+   ENU_ASSERT( a.authorization.size() == 0, action_validate_exception,
                "context-free actions cannot have authorizations" );
 
    _cfa_inline_actions.emplace_back( move(a) );
@@ -277,7 +277,7 @@ void apply_context::schedule_deferred_transaction( const uint128_t& sender_id, a
    }
 
    auto delay = fc::seconds(trx.delay_sec);
-   EOS_ASSERT( delay >= required_delay, transaction_exception,
+   ENU_ASSERT( delay >= required_delay, transaction_exception,
                "authorization imposes a delay (${required_delay} sec) greater than the delay specified in transaction header (${specified_delay} sec)",
                ("required_delay", required_delay.to_seconds())("specified_delay", delay.to_seconds()) );
 
@@ -316,7 +316,7 @@ void apply_context::schedule_deferred_transaction( const uint128_t& sender_id, a
 void apply_context::cancel_deferred_transaction( const uint128_t& sender_id, account_name sender ) {
    auto& generated_transaction_idx = db.get_mutable_index<generated_transaction_multi_index>();
    const auto* gto = db.find<generated_transaction_object,by_sender_id>(boost::make_tuple(sender, sender_id));
-   EOS_ASSERT( gto != nullptr, transaction_exception,
+   ENU_ASSERT( gto != nullptr, transaction_exception,
                "there is no generated transaction created by account ${sender} with sender id ${sender_id}",
                ("sender", sender)("sender_id", sender_id) );
 
@@ -367,7 +367,7 @@ void apply_context::reset_console() {
 
 void apply_context::checktime(uint32_t instruction_count) {
    cpu_usage += instruction_count;
-   EOS_ASSERT( BOOST_LIKELY(cpu_usage <= cpu_usage_limit), action_cpu_usage_exceeded, "action cpu usage exceeded" );
+   ENU_ASSERT( BOOST_LIKELY(cpu_usage <= cpu_usage_limit), action_cpu_usage_exceeded, "action cpu usage exceeded" );
    trx_context.check_time();
 }
 

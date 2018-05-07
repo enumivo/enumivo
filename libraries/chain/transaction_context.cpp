@@ -286,11 +286,11 @@ namespace eosio { namespace chain {
    void transaction_context::check_net_usage()const {
       if( BOOST_UNLIKELY(net_usage > eager_net_limit) ) {
          if( BOOST_UNLIKELY( net_limit_due_to_block ) ) {
-            EOS_THROW( tx_soft_net_usage_exceeded,
+            ENU_THROW( tx_soft_net_usage_exceeded,
                        "not enough space left in block: ${actual_net_usage} > ${net_usage_limit}",
                        ("actual_net_usage", net_usage)("net_usage_limit", max_net) );
          } else {
-            EOS_THROW( tx_net_usage_exceeded,
+            ENU_THROW( tx_net_usage_exceeded,
                        "net usage of transaction is too high: ${actual_net_usage} > ${net_usage_limit}",
                        ("actual_net_usage", net_usage)("net_usage_limit", max_net) );
          }
@@ -300,11 +300,11 @@ namespace eosio { namespace chain {
    void transaction_context::check_cpu_usage()const {
       if( BOOST_UNLIKELY(cpu_usage > eager_cpu_limit) ) {
          if( BOOST_UNLIKELY( cpu_limit_due_to_block ) ) {
-            EOS_THROW( tx_soft_cpu_usage_exceeded,
+            ENU_THROW( tx_soft_cpu_usage_exceeded,
                        "not enough CPU usage allotment left in block: ${actual_cpu_usage} > ${cpu_usage_limit}",
                        ("actual_cpu_usage", cpu_usage)("cpu_usage_limit", max_cpu) );
          } else {
-            EOS_THROW( tx_cpu_usage_exceeded,
+            ENU_THROW( tx_cpu_usage_exceeded,
                        "cpu usage of transaction is too high: ${actual_cpu_usage} > ${eager_cpu_limit}",
                        ("actual_cpu_usage", cpu_usage)("cpu_usage_limit", max_cpu)("eager_cpu_limit", eager_cpu_limit) );
          }
@@ -312,7 +312,7 @@ namespace eosio { namespace chain {
    }
 
    void transaction_context::check_time()const {
-      EOS_ASSERT( BOOST_LIKELY(fc::time_point::now() <= deadline), tx_deadline_exceeded, "deadline exceeded" );
+      ENU_ASSERT( BOOST_LIKELY(fc::time_point::now() <= deadline), tx_deadline_exceeded, "deadline exceeded" );
    }
 
    void transaction_context::add_ram_usage( account_name account, int64_t ram_delta ) {
@@ -375,7 +375,7 @@ namespace eosio { namespace chain {
               transaction.expiration = expire;
           });
       } catch ( ... ) {
-          EOS_ASSERT( false, tx_duplicate,
+          ENU_ASSERT( false, tx_duplicate,
                      "duplicate transaction ${id}", ("id", id ) );
       }
    } /// record_transaction
