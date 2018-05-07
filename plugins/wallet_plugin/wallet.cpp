@@ -24,7 +24,7 @@
 #ifndef WIN32
 # include <sys/types.h>
 # include <sys/stat.h>
-#include <eosio/chain/exceptions.hpp>
+#include <enumivo/chain/exceptions.hpp>
 
 #endif
 

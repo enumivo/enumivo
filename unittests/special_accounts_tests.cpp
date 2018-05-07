@@ -7,10 +7,10 @@
 #include <iterator>
 #include <boost/test/unit_test.hpp>
 
-#include <eosio/chain/controller.hpp>
-#include <eosio/chain/exceptions.hpp>
-#include <eosio/chain/permission_object.hpp>
-#include <eosio/chain/global_property_object.hpp>
+#include <enumivo/chain/controller.hpp>
+#include <enumivo/chain/exceptions.hpp>
+#include <enumivo/chain/permission_object.hpp>
+#include <enumivo/chain/global_property_object.hpp>
 
 #include <eosio/testing/tester.hpp>
 

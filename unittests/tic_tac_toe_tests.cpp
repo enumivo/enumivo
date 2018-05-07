@@ -4,7 +4,7 @@
 #pragma GCC diagnostic pop
 #include <boost/algorithm/string/predicate.hpp>
 #include <eosio/testing/tester.hpp>
-#include <eosio/chain/abi_serializer.hpp>
+#include <enumivo/chain/abi_serializer.hpp>
 
 #include <tic_tac_toe/tic_tac_toe.wast.hpp>
 #include <tic_tac_toe/tic_tac_toe.abi.hpp>

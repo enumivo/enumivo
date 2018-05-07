@@ -3,21 +3,21 @@
  *  @copyright defined in enumivo/LICENSE.txt
  */
 #include <eosio/chain_plugin/chain_plugin.hpp>
-#include <eosio/chain/fork_database.hpp>
-#include <eosio/chain/block_log.hpp>
-#include <eosio/chain/exceptions.hpp>
-#include <eosio/chain/authorization_manager.hpp>
-#include <eosio/chain/producer_object.hpp>
-#include <eosio/chain/config.hpp>
-#include <eosio/chain/types.hpp>
-#include <eosio/chain/wasm_interface.hpp>
-#include <eosio/chain/resource_limits.hpp>
+#include <enumivo/chain/fork_database.hpp>
+#include <enumivo/chain/block_log.hpp>
+#include <enumivo/chain/exceptions.hpp>
+#include <enumivo/chain/authorization_manager.hpp>
+#include <enumivo/chain/producer_object.hpp>
+#include <enumivo/chain/config.hpp>
+#include <enumivo/chain/types.hpp>
+#include <enumivo/chain/wasm_interface.hpp>
+#include <enumivo/chain/resource_limits.hpp>
 
-#include <eosio/chain/eosio_contract.hpp>
+#include <enumivo/chain/eosio_contract.hpp>
 
 #include <eosio/utilities/key_conversion.hpp>
 #include <eosio/utilities/common.hpp>
-#include <eosio/chain/wast_to_wasm.hpp>
+#include <enumivo/chain/wast_to_wasm.hpp>
 
 #include <eosio/chain/plugin_interface.hpp>
 

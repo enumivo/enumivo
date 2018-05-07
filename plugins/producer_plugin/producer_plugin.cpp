@@ -3,7 +3,7 @@
  *  @copyright defined in enumivo/LICENSE.txt
  */
 #include <eosio/producer_plugin/producer_plugin.hpp>
-#include <eosio/chain/producer_object.hpp>
+#include <enumivo/chain/producer_object.hpp>
 #include <eosio/chain/plugin_interface.hpp>
 
 #include <fc/io/json.hpp>

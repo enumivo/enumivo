@@ -3,7 +3,7 @@
  *  @copyright defined in enumivo/LICENSE.txt
  */
 #pragma once
-#include <eosio/chain/transaction.hpp>
+#include <enumivo/chain/transaction.hpp>
 #include <eosio/wallet_plugin/wallet.hpp>
 #include <boost/filesystem/path.hpp>
 #include <chrono>

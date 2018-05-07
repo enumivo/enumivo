@@ -8,7 +8,7 @@
 #include <eosio/wallet_plugin/wallet_manager.hpp>
 
 #include <boost/test/unit_test.hpp>
-#include <eosio/chain/authority.hpp>
+#include <enumivo/chain/authority.hpp>
 
 namespace eosio {
 
