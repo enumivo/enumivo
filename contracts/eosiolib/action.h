@@ -19,7 +19,7 @@ extern "C" {
     * @brief Define API for querying action properties
     *
     *
-    * A EOS.IO action has the following abstract structure:
+    * An Enumivo action has the following abstract structure:
     *
     * ```
     *   struct action {
