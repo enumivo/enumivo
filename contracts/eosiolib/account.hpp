@@ -1,6 +1,6 @@
 /**
 * @file account.hpp
-* @copyright defined in eos/LICENSE.txt
+* @copyright defined in enumivo/LICENSE.txt
 * @brief Defines types and ABI for account API interactions
 *
 */

@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE.txt
  */
 #include <eosio/validator_plugin/validator_plugin.hpp>
 #include <eosio/chain/plugin_interface.hpp>

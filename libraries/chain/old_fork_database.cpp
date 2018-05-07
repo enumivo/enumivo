@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE.txt
  */
 #include <eosio/chain/fork_database.hpp>
 #include <eosio/chain/exceptions.hpp>
