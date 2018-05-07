@@ -18,7 +18,7 @@ struct check_auth_msg {
    permission_name      permission;
    std::vector<public_key>   pubkeys;
 
-   EOSLIB_SERIALIZE( check_auth_msg, (account)(permission)(pubkeys)  )
+   ENULIB_SERIALIZE( check_auth_msg, (account)(permission)(pubkeys)  )
 };
 
 void test_permission::check_authorization(uint64_t receiver, uint64_t code, uint64_t action) {
