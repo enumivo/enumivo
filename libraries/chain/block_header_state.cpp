@@ -14,7 +14,7 @@ namespace eosio { namespace chain {
     for( const auto& item : producer_to_last_produced )
        irb.push_back(item.second);
 
-    size_t offset = EOS_PERCENT(irb.size(), config::percent_100- config::irreversible_threshold_percent);
+    size_t offset = ENU_PERCENT(irb.size(), config::percent_100- config::irreversible_threshold_percent);
     std::nth_element( irb.begin(), irb.begin() + offset, irb.end() );
 
     return irb[offset];
