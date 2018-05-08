@@ -468,7 +468,7 @@ namespace eosio { namespace chain {
                                         checktime
                                       );
 
-      EOS_ASSERT( checker.satisfied({account, permission}), tx_missing_sigs, "permission was not satisfied" );
+      ENU_ASSERT( checker.satisfied({account, permission}), tx_missing_sigs, "permission was not satisfied" );
 
       fc::microseconds max_delay = checker.get_permission_visitor().get_max_delay();
 

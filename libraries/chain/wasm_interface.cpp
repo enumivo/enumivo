@@ -810,7 +810,7 @@ class permission_api : public context_aware_api {
                                               uint64_t delay_us
                                             )
       {
-         EOS_ASSERT( delay_us <= static_cast<uint64_t>(std::numeric_limits<int64_t>::max()),
+         ENU_ASSERT( delay_us <= static_cast<uint64_t>(std::numeric_limits<int64_t>::max()),
                      action_validate_exception, "provided delay is too large" );
 
          flat_set<public_key_type> provided_keys;

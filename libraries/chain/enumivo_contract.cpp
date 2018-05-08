@@ -549,7 +549,7 @@ void apply_eosio_canceldelay(apply_context& context) {
       if( found ) break;
    }
 
-   EOS_ASSERT( found, action_validate_exception,
+   ENU_ASSERT( found, action_validate_exception,
                "canceling_auth in canceldelay action was not found as authorization in the original delayed transaction" );
 
    context.cancel_deferred_transaction(transaction_id_to_sender_id(trx_id), account_name());
