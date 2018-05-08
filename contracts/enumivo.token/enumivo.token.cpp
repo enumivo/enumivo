@@ -3,7 +3,7 @@
  *  @copyright defined in enumivo/LICENSE.txt
  */
 
-#include <eosio.token/eosio.token.hpp>
+#include <enumivo.token/enumivo.token.hpp>
 
 namespace eosio {
 

@@ -7,8 +7,8 @@
 #include <enumivo/chain/abi_serializer.hpp>
 #include <enumivo/chain/generated_transaction_object.hpp>
 
-#include <eosio.token/eosio.token.wast.hpp>
-#include <eosio.token/eosio.token.abi.hpp>
+#include <enumivo.token/enumivo.token.wast.hpp>
+#include <enumivo.token/enumivo.token.abi.hpp>
 
 #include <proxy/proxy.wast.hpp>
 #include <proxy/proxy.abi.hpp>

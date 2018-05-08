@@ -7,8 +7,8 @@
 #include <eosio.system/eosio.system.wast.hpp>
 #include <eosio.system/eosio.system.abi.hpp>
 
-#include <eosio.token/eosio.token.wast.hpp>
-#include <eosio.token/eosio.token.abi.hpp>
+#include <enumivo.token/enumivo.token.wast.hpp>
+#include <enumivo.token/enumivo.token.abi.hpp>
 
 #include <Runtime/Runtime.h>
 

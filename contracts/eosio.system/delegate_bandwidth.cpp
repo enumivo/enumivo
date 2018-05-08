@@ -12,7 +12,7 @@
 #include <enumivolib/privileged.h>
 #include <enumivolib/transaction.hpp>
 
-#include <eosio.token/eosio.token.hpp>
+#include <enumivo.token/enumivo.token.hpp>
 
 
 #include <cmath>

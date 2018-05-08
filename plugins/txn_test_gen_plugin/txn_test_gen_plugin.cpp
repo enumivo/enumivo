@@ -23,8 +23,8 @@
 #include <WASM/WASM.h>
 #include <Runtime/Runtime.h>
 
-#include <eosio.token/eosio.token.wast.hpp>
-#include <eosio.token/eosio.token.abi.hpp>
+#include <enumivo.token/enumivo.token.wast.hpp>
+#include <enumivo.token/enumivo.token.abi.hpp>
 
 namespace eosio { namespace detail {
   struct txn_test_gen_empty {};
