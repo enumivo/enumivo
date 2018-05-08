@@ -2,9 +2,9 @@
  *  @file
  *  @copyright defined in enumivo/LICENSE.txt
  */
-#include <eosiolib/eosio.hpp>
-#include <eosiolib/crypto.h>
-#include <eosiolib/print.hpp>
+#include <enumivolib/enumivo.hpp>
+#include <enumivolib/crypto.h>
+#include <enumivolib/print.hpp>
 
 #include "test_api.hpp"
 #define WASM_TEST_FAIL 1

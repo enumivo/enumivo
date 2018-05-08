@@ -2,7 +2,7 @@
  *  @file
  *  @copyright defined in enumivo/LICENSE.txt
  */
-#include <eosiolib/print.hpp> /// defines transfer struct (abi)
+#include <enumivolib/print.hpp> /// defines transfer struct (abi)
 
 extern "C" {
 

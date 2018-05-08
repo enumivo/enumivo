@@ -1,4 +1,4 @@
-#include <eosiolib/eosio.hpp>
+#include <enumivolib/enumivo.hpp>
 
 class simpletoken : public eosio::contract {
    public:

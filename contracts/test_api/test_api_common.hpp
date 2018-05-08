@@ -5,7 +5,7 @@
 #pragma once
 
 #ifdef DISABLE_ENULIB_SERIALIZE
-#include <eosiolib/serialize.hpp>
+#include <enumivolib/serialize.hpp>
 #undef ENULIB_SERIALIZE
 #define ENULIB_SERIALIZE(...)
 #endif
