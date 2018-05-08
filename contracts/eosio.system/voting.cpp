@@ -45,6 +45,7 @@ namespace eosiosystem {
          if( producer_key != prod->producer_key ) {
              _producers.modify( prod, producer, [&]( producer_info& info ){
                   info.producer_key = producer_key;
+                  info.url = url;
              });
          }
       } else {
@@ -52,6 +53,7 @@ namespace eosiosystem {
                info.owner       = producer;
                info.total_votes = 0;
                info.producer_key =  producer_key;
+               info.url         = url;
          });
       }
    }
@@ -137,11 +139,11 @@ namespace eosiosystem {
 
       /**
        * The first time someone votes we calculate and set last_vote_weight, since they cannot unstake until
-       * after total_activiated_stake hits threshold, we can use last_vote_weight to determine that this is
+       * after total_activated_stake hits threshold, we can use last_vote_weight to determine that this is
        * their first vote and should consider their stake activated.
        */
       if( voter->last_vote_weight <= 0.0 ) {
-         _gstate.total_activiated_stake += voter->staked;
+         _gstate.total_activated_stake += voter->staked;
       }
 
       auto weight = int64_t(now() / (seconds_per_day * 7)) / double( 52 );
