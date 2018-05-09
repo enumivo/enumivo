@@ -63,7 +63,7 @@ cleos create account eosio eosio.token EOS7ijWCBmoXBi3CgtK7DJxentZZeTkeUnaSDvyro
 
 ##### Set eosio.token contract to eosio.token account
 ````bash
-cleos set contract eosio.token build/contracts/eosio.token -p eosio.token
+cleos set contract eosio.token build/contracts/enumivo.token -p eosio.token
 ````
 
 ##### Create dice account

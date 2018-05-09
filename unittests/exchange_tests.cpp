@@ -4,8 +4,8 @@
 #include <eosio/chain/abi_serializer.hpp>
 #include <eosio/chain/symbol.hpp>
 
-#include <eosio.token/eosio.token.wast.hpp>
-#include <eosio.token/eosio.token.abi.hpp>
+#include <enumivo.token/enumivo.token.wast.hpp>
+#include <enumivo.token/enumivo.token.abi.hpp>
 
 #include <exchange/exchange.wast.hpp>
 #include <exchange/exchange.abi.hpp>
@@ -147,7 +147,7 @@ class exchange_tester : public TESTER {
 
       void deploy_currency( account_name ac ) {
          create_account( ac );
-         set_code( ac, eosio_token_wast /*currency_wast*/ );
+         set_code( ac, enumivo_token_wast /*currency_wast*/ );
       }
 
       void deploy_exchange( account_name ac ) {
