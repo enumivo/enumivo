@@ -540,7 +540,9 @@ BOOST_FIXTURE_TEST_CASE(cpu_usage_tests, tester ) try {
    produce_blocks(10);
 
    uint32_t start = config::default_per_signature_cpu_usage + config::default_base_per_transaction_cpu_usage;
-   start += 100 * (config::default_base_per_action_cpu_usage + config::determine_payers_cpu_overhead_per_authorization);
+   start += 100 * ( config::default_base_per_action_cpu_usage
+                    + config::determine_payers_cpu_overhead_per_authorization
+                    + config::base_check_authorization_cpu_per_authorization );
    start += config::resource_processing_cpu_overhead_per_billed_account;
    start /= 1024;
    start += 3077; // injected checktime amount
@@ -667,6 +669,31 @@ BOOST_FIXTURE_TEST_CASE( check_entry_behavior, TESTER ) try {
    const auto& receipt = get_transaction_receipt(trx.id());
    BOOST_CHECK_EQUAL(transaction_receipt::executed, receipt.status);
 } FC_LOG_AND_RETHROW()
+
+BOOST_FIXTURE_TEST_CASE( check_entry_behavior_2, TESTER ) try {
+   produce_blocks(2);
+   create_accounts( {N(entrycheck)} );
+   produce_block();
+
+   set_code(N(entrycheck), entry_wast_2);
+   produce_blocks(10);
+
+   signed_transaction trx;
+   action act;
+   act.account = N(entrycheck);
+   act.name = N();
+   act.authorization = vector<permission_level>{{N(entrycheck),config::active_name}};
+   trx.actions.push_back(act);
+
+   set_transaction_headers(trx);
+   trx.sign(get_private_key( N(entrycheck), "active" ), chain_id_type());
+   push_transaction(trx);
+   produce_blocks(1);
+   BOOST_REQUIRE_EQUAL(true, chain_has_transaction(trx.id()));
+   const auto& receipt = get_transaction_receipt(trx.id());
+   BOOST_CHECK_EQUAL(transaction_receipt::executed, receipt.status);
+} FC_LOG_AND_RETHROW()
+
 
 /**
  * Ensure we can load a wasm w/o memory
@@ -1021,8 +1048,7 @@ BOOST_FIXTURE_TEST_CASE(eosio_abi, TESTER) try {
                                    .creator  = config::system_account_name,
                                    .name     = a,
                                    .owner    = owner_auth,
-                                   .active   = authority( get_public_key( a, "active" ) ),
-                                   .recovery = authority( get_public_key( a, "recovery" ) ),
+                                   .active   = authority( get_public_key( a, "active" ) )
                              });
    set_transaction_headers(trx);
    trx.sign( get_private_key( config::system_account_name, "active" ), chain_id_type()  );

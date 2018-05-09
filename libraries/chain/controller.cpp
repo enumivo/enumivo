@@ -6,7 +6,6 @@
 #include <eosio/chain/fork_database.hpp>
 
 #include <eosio/chain/account_object.hpp>
-#include <eosio/chain/scope_sequence_object.hpp>
 #include <eosio/chain/block_summary_object.hpp>
 #include <eosio/chain/global_property_object.hpp>
 #include <eosio/chain/contract_table_objects.hpp>
@@ -104,9 +103,12 @@ struct controller_impl {
    SET_APP_HANDLER( eosio, eosio, deleteauth );
    SET_APP_HANDLER( eosio, eosio, linkauth );
    SET_APP_HANDLER( eosio, eosio, unlinkauth );
+/*
    SET_APP_HANDLER( eosio, eosio, postrecovery );
    SET_APP_HANDLER( eosio, eosio, passrecovery );
    SET_APP_HANDLER( eosio, eosio, vetorecovery );
+*/
+
    SET_APP_HANDLER( eosio, eosio, canceldelay );
 
    fork_db.irreversible.connect( [&]( auto b ) {
@@ -169,6 +171,11 @@ struct controller_impl {
          initialize_fork_db(); // set head to genesis state
       }
 
+      while( db.revision() > head->block_num ) {
+         wlog( "warning database revision greater than head block, undoing pending changes" );
+         db.undo();
+      }
+
       FC_ASSERT( db.revision() == head->block_num, "fork database is inconsistent with shared memory",
                  ("db",db.revision())("head",head->block_num) );
 
@@ -208,7 +215,6 @@ struct controller_impl {
       db.add_index<block_summary_multi_index>();
       db.add_index<transaction_multi_index>();
       db.add_index<generated_transaction_multi_index>();
-      db.add_index<scope_sequence_multi_index>();
 
       authorization.add_indices();
       resource_limits.add_indices();
@@ -578,7 +584,9 @@ struct controller_impl {
    void push_transaction( const transaction_metadata_ptr& trx,
                           fc::time_point deadline = fc::time_point::maximum(),
                           bool implicit = false )
-   { try {
+   {
+      transaction_trace_ptr trace;
+   try {
       if( deadline == fc::time_point() && !implicit ) {
          unapplied_transactions[trx->signed_id] = trx;
          return;
@@ -586,7 +594,7 @@ struct controller_impl {
 
       auto start = fc::time_point::now();
       transaction_context trx_context( self, trx->trx, trx->id);
-      transaction_trace_ptr trace = trx_context.trace;
+      trace = trx_context.trace;
       try {
          if( implicit ) {
             trx_context.init_for_implicit_trx( deadline );
@@ -598,14 +606,18 @@ struct controller_impl {
                                             trx->trx.signatures.size()             );
          }
 
-         fc::microseconds required_delay(0);
-         if( !implicit ) {
-            required_delay = limit_delay( authorization.check_authorization( trx->trx.actions, trx->recover_keys() ) );
-         }
          trx_context.delay = fc::seconds(trx->trx.delay_sec);
-         EOS_ASSERT( trx_context.delay >= required_delay, transaction_exception,
-                     "authorization imposes a delay (${required_delay} sec) greater than the delay specified in transaction header (${specified_delay} sec)",
-                     ("required_delay", required_delay.to_seconds())("specified_delay", trx_context.delay.to_seconds()) );
+
+         if( !implicit ) {
+            authorization.check_authorization(
+               trx->trx.actions,
+               trx->recover_keys(),
+               {},
+               trx_context.delay,
+               std::bind(&transaction_context::add_cpu_usage_and_check_time, &trx_context, std::placeholders::_1),
+               false
+            );
+         }
 
          trx_context.exec();
          trx_context.finalize(); // Automatically rounds up network and CPU usage in trace and bills payers if successful
@@ -641,7 +653,7 @@ struct controller_impl {
          trace->except_ptr = std::current_exception();
       }
       transaction_trace_notify( trx, trace );
-   } FC_CAPTURE_AND_RETHROW() } /// push_transaction
+   } FC_CAPTURE_AND_RETHROW((trace)) } /// push_transaction
 
 
    void start_block( block_timestamp_type when, uint16_t confirm_block_count ) {
@@ -650,8 +662,11 @@ struct controller_impl {
       FC_ASSERT( db.revision() == head->block_num, "",
                 ("db.revision()", db.revision())("controller_head_block", head->block_num)("fork_db_head_block", fork_db.head()->block_num) );
 
-      pending = db.start_undo_session(true);
+      auto guard_pending = fc::make_scoped_exit([this](){
+         pending.reset();
+      });
 
+      pending = db.start_undo_session(true);
 
       pending->_pending_block_state = std::make_shared<block_state>( *head, when ); // promotes pending schedule (if any) to active
       pending->_pending_block_state->in_current_chain = true;
@@ -686,6 +701,7 @@ struct controller_impl {
 
       clear_expired_input_transactions();
       update_producers_authority();
+      guard_pending.cancel();
    } // start_block
 
 
@@ -940,11 +956,6 @@ struct controller_impl {
       }
    }
 
-   fc::microseconds limit_delay( fc::microseconds delay )const {
-      auto max_delay = fc::seconds( self.get_global_properties().configuration.max_transaction_delay );
-      return std::min(delay, max_delay);
-   }
-
    /*
    bool should_check_tapos()const { return true; }
 
@@ -1006,6 +1017,7 @@ controller::controller( const controller::config& cfg )
 }
 
 controller::~controller() {
+   my->abort_block();
 }
 
 
@@ -1298,15 +1310,11 @@ const map<digest_type, transaction_metadata_ptr>&  controller::unapplied_transac
    return my->unapplied_transactions;
 }
 
-fc::microseconds controller::limit_delay( fc::microseconds delay )const {
-   return my->limit_delay( delay );
-}
-
 void controller::validate_referenced_accounts( const transaction& trx )const {
    for( const auto& a : trx.context_free_actions ) {
       auto* code = my->db.find<account_object, by_name>(a.account);
       EOS_ASSERT( code != nullptr, transaction_exception,
-                  "action's code account ${account} does not exist", ("account", a.account) );
+                  "action's code account '${account}' does not exist", ("account", a.account) );
       EOS_ASSERT( a.authorization.size() == 0, transaction_exception,
                   "context-free actions cannot have authorizations" );
    }
@@ -1314,12 +1322,12 @@ void controller::validate_referenced_accounts( const transaction& trx )const {
    for( const auto& a : trx.actions ) {
       auto* code = my->db.find<account_object, by_name>(a.account);
       EOS_ASSERT( code != nullptr, transaction_exception,
-                  "action's code account ${account} does not exist", ("account", a.account) );
+                  "action's code account '${account}' does not exist", ("account", a.account) );
       for( const auto& auth : a.authorization ) {
          one_auth = true;
          auto* actor = my->db.find<account_object, by_name>(auth.actor);
          EOS_ASSERT( actor  != nullptr, transaction_exception,
-                     "action's authorizing actor ${account} does not exist", ("account", auth.actor) );
+                     "action's authorizing actor '${account}' does not exist", ("account", auth.actor) );
          EOS_ASSERT( my->authorization.find_permission(auth) != nullptr, transaction_exception,
                      "action's authorizations include a non-existent permission: {permission}",
                      ("permission", auth) );

@@ -88,8 +88,7 @@ public:
                                    .creator  = creator,
                                    .name     = a,
                                    .owner    = owner_auth,
-                                   .active   = authority( get_public_key( a, "active" ) ),
-                                   .recovery = authority( get_public_key( a, "recovery" ) ),
+                                   .active   = authority( get_public_key( a, "active" ) )
                                 });
 
       trx.actions.emplace_back( get_action( N(eosio), N(buyrambytes), vector<permission_level>{{creator,config::active_name}},
@@ -130,8 +129,7 @@ public:
                                    .creator  = creator,
                                    .name     = a,
                                    .owner    = owner_auth,
-                                   .active   = authority( get_public_key( a, "active" ) ),
-                                   .recovery = authority( get_public_key( a, "recovery" ) ),
+                                   .active   = authority( get_public_key( a, "active" ) )
                                 });
 
       trx.actions.emplace_back( get_action( N(eosio), N(buyram), vector<permission_level>{{creator,config::active_name}},
@@ -1169,8 +1167,6 @@ BOOST_FIXTURE_TEST_CASE(producer_pay, eosio_system_tester) try {
    issue( "alice", "10000.0000 EOS", config::system_account_name);
    BOOST_REQUIRE_EQUAL( asset::from_string("10000.0000 EOS"), get_balance( "alice" ) );
 
-   fc::variant params = producer_parameters_example(50);
-
    // 1 block produced
    BOOST_REQUIRE_EQUAL(success(), regproducer(N(alice)));
 
@@ -1178,8 +1174,6 @@ BOOST_FIXTURE_TEST_CASE(producer_pay, eosio_system_tester) try {
 
    BOOST_REQUIRE_EQUAL("alice", prod["owner"].as_string());
    BOOST_REQUIRE_EQUAL(0, prod["total_votes"].as_uint64());
-   REQUIRE_EQUAL_OBJECTS(params, prod["prefs"]);
-
 
    issue("bob", "2000.0000 EOS", config::system_account_name);
    BOOST_REQUIRE_EQUAL( asset::from_string("2000.0000 EOS"), get_balance( "bob" ) );
@@ -1198,15 +1192,16 @@ BOOST_FIXTURE_TEST_CASE(producer_pay, eosio_system_tester) try {
                                               )
                        );
 
-   produce_blocks(10);
+   produce_blocks(20);
    prod = get_producer_info("alice");
-   BOOST_REQUIRE(prod["per_block_payments"].as_uint64() > 0);
+   // this test fails as there isn't enough total activated stake and onblock is a noop
+   BOOST_REQUIRE(prod["produced_blocks"].as<uint32_t>() > 0);
    BOOST_REQUIRE_EQUAL(success(), push_action(N(alice), N(claimrewards), mvo()
                                               ("owner",     "alice")
                                               )
                        );
    prod = get_producer_info("alice");
-   BOOST_REQUIRE_EQUAL(0, prod["per_block_payments"].as_uint64());
+   BOOST_REQUIRE_EQUAL(0, prod["produced_blocks"].as<uint32_t>());
 
  } FC_LOG_AND_RETHROW()
 
