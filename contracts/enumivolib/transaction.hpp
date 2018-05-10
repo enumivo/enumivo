@@ -32,10 +32,10 @@ namespace eosio {
       uint16_t        ref_block_num;
       uint32_t        ref_block_prefix;
       unsigned_int    net_usage_words = 0UL; /// number of 8 byte words this transaction can serialize into after compressions
-      unsigned_int    kcpu_usage = 0UL; /// number of CPU usage units to bill transaction for
+      uint8_t         max_cpu_usage_ms = 0UL; /// number of CPU usage units to bill transaction for
       unsigned_int    delay_sec = 0UL; /// number of CPU usage units to bill transaction for
 
-      EOSLIB_SERIALIZE( transaction_header, (expiration)(ref_block_num)(ref_block_prefix)(net_usage_words)(kcpu_usage)(delay_sec) )
+      EOSLIB_SERIALIZE( transaction_header, (expiration)(ref_block_num)(ref_block_prefix)(net_usage_words)(max_cpu_usage_ms)(delay_sec) )
    };
 
    class transaction : public transaction_header {
@@ -55,11 +55,15 @@ namespace eosio {
    };
 
    struct onerror {
-      uint128_t    sender_id;
-      transaction  sent_trx;
+      uint128_t sender_id;
+      bytes     sent_trx;
 
       static onerror from_current_action() {
          return unpack_action_data<onerror>();
+      }
+
+      transaction unpack_sent_trx() const {
+         return unpack<transaction>(sent_trx);
       }
 
       EOSLIB_SERIALIZE( onerror, (sender_id)(sent_trx) )

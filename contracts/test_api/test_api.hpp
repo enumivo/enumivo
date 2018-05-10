@@ -31,7 +31,7 @@ namespace eosio {
 
 #define WASM_TEST_ERROR_HANDLER(CALLED_CLASS_STR, CALLED_METHOD_STR, HANDLER_CLASS, HANDLER_METHOD) \
 if( error_action == WASM_TEST_ACTION(CALLED_CLASS_STR, CALLED_METHOD_STR) ) { \
-   HANDLER_CLASS::HANDLER_METHOD(error.sent_trx); \
+   HANDLER_CLASS::HANDLER_METHOD(error_trx); \
    return; \
 }
 
@@ -252,6 +252,8 @@ struct test_softfloat {
 
 struct test_permission {
   static void check_authorization(uint64_t receiver, uint64_t code, uint64_t action);
+  static void test_permission_last_used(uint64_t receiver, uint64_t code, uint64_t action);
+  static void test_account_creation_time(uint64_t receiver, uint64_t code, uint64_t action);
 };
 
 struct test_datastream {
