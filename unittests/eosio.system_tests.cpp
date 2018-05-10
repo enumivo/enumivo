@@ -1375,7 +1375,7 @@ BOOST_FIXTURE_TEST_CASE(producer_pay, enumivo_system_tester) try {
 
 } FC_LOG_AND_RETHROW()
 
-BOOST_FIXTURE_TEST_CASE(multiple_producer_pay, eosio_system_tester) try {
+BOOST_FIXTURE_TEST_CASE(multiple_producer_pay, enumivo_system_tester) try {
 
    const auto tol = boost::test_tools::tolerance(0.0000000001);
 
