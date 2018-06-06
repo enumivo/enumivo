@@ -605,7 +605,7 @@ string get_table_type( const abi_def& abi, const name& table_name ) {
 }
 
 read_only::get_table_rows_result read_only::get_table_rows( const read_only::get_table_rows_params& p )const {
-   const abi_def abi = eosio::chain_apis::get_abi( db, p.code );
+   const abi_def abi = enumivo::chain_apis::get_abi( db, p.code );
    auto table_type = get_table_type( abi, p.table );
 
    if( table_type == KEYi64 ) {
@@ -617,7 +617,7 @@ read_only::get_table_rows_result read_only::get_table_rows( const read_only::get
 
 vector<asset> read_only::get_currency_balance( const read_only::get_currency_balance_params& p )const {
 
-   const abi_def abi = eosio::chain_apis::get_abi( db, p.code );
+   const abi_def abi = enumivo::chain_apis::get_abi( db, p.code );
    auto table_type = get_table_type( abi, "accounts" );
 
    vector<asset> results;
@@ -644,7 +644,7 @@ vector<asset> read_only::get_currency_balance( const read_only::get_currency_bal
 fc::variant read_only::get_currency_stats( const read_only::get_currency_stats_params& p )const {
    fc::mutable_variant_object results;
 
-   const abi_def abi = eosio::chain_apis::get_abi( db, p.code );
+   const abi_def abi = enumivo::chain_apis::get_abi( db, p.code );
    auto table_type = get_table_type( abi, "stat" );
 
    uint64_t scope = ( enumivo::chain::string_to_symbol( 0, boost::algorithm::to_upper_copy(p.symbol).c_str() ) >> 8 );
