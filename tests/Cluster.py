@@ -32,7 +32,7 @@ class Cluster(object):
     __BiosPort=8788
 
     # pylint: disable=too-many-arguments
-    # walletd [True|False] Is enuwallet running. If not load the wallet plugin
+    # enuwalletd [True|False] Is enuwallet running. If not load the wallet plugin
     def __init__(self, enuwalletd=False, localCluster=True, host="localhost", port=8888, walletHost="localhost", walletPort=9899, enableMongo=False
                  , mongoHost="localhost", mongoPort=27017, mongoDb="ENUtest", defproduceraPrvtKey=None, defproducerbPrvtKey=None, staging=False):
         """Cluster container.
@@ -130,7 +130,7 @@ class Cluster(object):
             cmdArr.append("--nogen")
 
         enunodeArgs="--max-transaction-time 5000 --abi-serializer-max-time-ms 5000 --filter-on * --p2p-max-nodes-per-host %d" % (totalNodes)
-        if not self.walletd:
+        if not self.enuwalletd:
             enunodeArgs += " --plugin enumivo::wallet_api_plugin"
         if self.enableMongo:
             enunodeArgs += " --plugin enumivo::mongo_db_plugin --mongodb-wipe --delete-all-blocks --mongodb-uri %s" % self.mongoUri
