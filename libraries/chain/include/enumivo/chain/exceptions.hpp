@@ -229,6 +229,14 @@ namespace enumivo { namespace chain {
       FC_DECLARE_DERIVED_EXCEPTION( contract_query_exception,       database_exception,
                                     3060004, "Contract Query Exception" )
 
+   FC_DECLARE_DERIVED_EXCEPTION( guard_exception, database_exception,
+                                 3060100, "Database exception" )
+
+      FC_DECLARE_DERIVED_EXCEPTION( database_guard_exception, guard_exception,
+                                    3060101, "Database usage is at unsafe levels" )
+      FC_DECLARE_DERIVED_EXCEPTION( reversible_guard_exception, guard_exception,
+                                    3060102, "Reversible block log usage is at unsafe levels" )
+
    FC_DECLARE_DERIVED_EXCEPTION( wasm_exception, chain_exception,
                                  3070000, "WASM Exception" )
       FC_DECLARE_DERIVED_EXCEPTION( page_memory_error,        wasm_exception,
@@ -469,12 +477,14 @@ namespace enumivo { namespace chain {
                                     3200001, "invalid http client root certificate" )
       FC_DECLARE_DERIVED_EXCEPTION( invalid_http_response, http_exception,
                                     3200002, "invalid http response" )
-      FC_DECLARE_DERIVED_EXCEPTION( resolved_to_multiple_ports, block_log_exception,
+      FC_DECLARE_DERIVED_EXCEPTION( resolved_to_multiple_ports, http_exception,
                                     3200003, "service resolved to multiple ports" )
-      FC_DECLARE_DERIVED_EXCEPTION( fail_to_resolve_host, block_log_exception,
+      FC_DECLARE_DERIVED_EXCEPTION( fail_to_resolve_host, http_exception,
                                     3200004, "fail to resolve host" )
-      FC_DECLARE_DERIVED_EXCEPTION( http_request_fail, block_log_exception,
+      FC_DECLARE_DERIVED_EXCEPTION( http_request_fail, http_exception,
                                     3200005, "http request fail" )
+      FC_DECLARE_DERIVED_EXCEPTION( invalid_http_request, http_exception,
+                                    3200006, "invalid http request" )
 
    FC_DECLARE_DERIVED_EXCEPTION( resource_limit_exception, chain_exception,
                                  3210000, "Resource limit exception" )
