@@ -12,6 +12,8 @@ import datetime
 import sys
 import random
 import json
+import socket
+import errno
 
 from core_symbol import CORE_SYMBOL
 from testUtils import Utils
@@ -30,8 +32,8 @@ class Cluster(object):
     __BiosPort=8788
 
     # pylint: disable=too-many-arguments
-    # enuwalletd [True|False] Is enuwallet running. If not load the wallet plugin
-    def __init__(self, enuwalletd=False, localCluster=True, host="localhost", port=8888, walletHost="localhost", walletPort=8899, enableMongo=False
+    # walletd [True|False] Is enuwallet running. If not load the wallet plugin
+    def __init__(self, walletd=False, localCluster=True, host="localhost", port=8888, walletHost="localhost", walletPort=9899, enableMongo=False
                  , mongoHost="localhost", mongoPort=27017, mongoDb="ENUtest", defproduceraPrvtKey=None, defproducerbPrvtKey=None, staging=False):
         """Cluster container.
         enuwalletd [True|False] Is wallet enuwallet running. If not load the wallet plugin
@@ -70,9 +72,11 @@ class Cluster(object):
             self.mongoEndpointArgs += "--host %s --port %d %s" % (mongoHost, mongoPort, mongoDb)
         self.staging=staging
         # init accounts
-        self.defproduceraAccount=Account("defproducera")
-        self.defproducerbAccount=Account("defproducerb")
-        self.enumivoAccount=Account("enumivo")
+        self.defProducerAccounts={}
+        self.defproduceraAccount=self.defProducerAccounts["defproducera"]= Account("defproducera")
+        self.defproducerbAccount=self.defProducerAccounts["defproducerb"]= Account("defproducerb")
+        self.enumivoAccount=self.defProducerAccounts["enumivo"]= Account("enumivo")
+
         self.defproduceraAccount.ownerPrivateKey=defproduceraPrvtKey
         self.defproduceraAccount.activePrivateKey=defproduceraPrvtKey
         self.defproducerbAccount.ownerPrivateKey=defproducerbPrvtKey
@@ -109,10 +113,15 @@ class Cluster(object):
         if len(self.nodes) > 0:
             raise RuntimeError("Cluster already running.")
 
-        if totalProducers!=None:
+        producerFlag=""
+        if totalProducers:
+            assert(isinstance(totalProducers, (str,int)))
             producerFlag="--producers %s" % (totalProducers)
-        else:
-            producerFlag=""
+
+        if not Cluster.arePortsAvailable(set(range(self.port, self.port+totalNodes+1))):
+            Utils.Print("ERROR: Another process is listening on enunode default port.")
+            return False
+
         cmd="%s -p %s -n %s -s %s -d %s -i %s -f --p2p-plugin %s %s" % (
             Utils.EnuLauncherPath, pnodes, totalNodes, topo, delay, datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3],
             p2pPlugin, producerFlag)
@@ -120,11 +129,13 @@ class Cluster(object):
         if self.staging:
             cmdArr.append("--nogen")
 
-        enunodeArgs="--max-transaction-time 5000 --filter-on * --p2p-max-nodes-per-host %d" % (totalNodes)
-        if not self.enuwalletd:
+        enunodeArgs="--max-transaction-time 5000 --abi-serializer-max-time-ms 5000 --filter-on * --p2p-max-nodes-per-host %d" % (totalNodes)
+        if not self.walletd:
             enunodeArgs += " --plugin enumivo::wallet_api_plugin"
         if self.enableMongo:
-            enunodeArgs += " --plugin enumivo::mongo_db_plugin --delete-all-blocks --mongodb-uri %s" % self.mongoUri
+            enunodeArgs += " --plugin enumivo::mongo_db_plugin --mongodb-wipe --delete-all-blocks --mongodb-uri %s" % self.mongoUri
+        if Utils.Debug:
+            enunodeArgs += " --contracts-console"
 
         if enunodeArgs:
             cmdArr.append("--enunode")
@@ -183,11 +194,44 @@ class Cluster(object):
             account.activePrivateKey=keys["private"]
             account.activePublicKey=keys["public"]
 
-        initAccountKeys(self.enumivoAccount, producerKeys["enumivo"])
-        initAccountKeys(self.defproduceraAccount, producerKeys["defproducera"])
-        initAccountKeys(self.defproducerbAccount, producerKeys["defproducerb"])
+        for name,_ in producerKeys.items():
+            account=Account(name)
+            initAccountKeys(account, producerKeys[name])
+            self.defProducerAccounts[name] = account
+
+        self.enunodeAccount=self.defProducerAccounts["enumivo"]
+        self.defproduceraAccount=self.defProducerAccounts["defproducera"]
+        self.defproducerbAccount=self.defProducerAccounts["defproducerb"]
 
         return True
+
+    @staticmethod
+    def arePortsAvailable(ports):
+        """Check if specified ports are available for listening on."""
+        assert(ports)
+        assert(isinstance(ports, set))
+
+        for port in ports:
+            if Utils.Debug: Utils.Print("Checking if port %d is available." % (port))
+            assert(isinstance(port, int))
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+            try:
+                s.bind(("127.0.0.1", port))
+            except socket.error as e:
+                if e.errno == errno.EADDRINUSE:
+                    Utils.Print("ERROR: Port %d is already in use" % (port))
+                else:
+                    # something else raised the socket.error exception
+                    Utils.Print("ERROR: Unknown exception while trying to listen on port %d" % (port))
+                    Utils.Print(e)
+                return False
+            finally:
+                s.close()
+
+        return True
+
 
     # Initialize the default nodes (at present just the root node)
     def initializeNodes(self, defproduceraPrvtKey=None, defproducerbPrvtKey=None, onlyBios=False):
@@ -195,7 +239,7 @@ class Cluster(object):
         host=Cluster.__BiosHost if onlyBios else self.host
         node=Node(host, port, enableMongo=self.enableMongo, mongoHost=self.mongoHost, mongoPort=self.mongoPort, mongoDb=self.mongoDb)
         node.setWalletEndpointArgs(self.walletEndpointArgs)
-        if Utils.Debug: Utils.Print("Node:", node)
+        if Utils.Debug: Utils.Print("Node: %s", str(node))
 
         node.checkPulse()
         self.nodes=[node]
@@ -277,6 +321,29 @@ class Cluster(object):
         lam = lambda: doNodesHaveBlockNum(self.nodes, targetBlockNum)
         ret=Utils.waitForBool(lam, timeout)
         return ret
+
+    @staticmethod
+    def getClientVersion(verbose=False):
+        """Returns client version (string)"""
+        p = re.compile(r'^Build version:\s(\w+)\n$')
+        try:
+            cmd="%s version client" % (Utils.EnuClientPath)
+            if verbose: Utils.Print("cmd: %s" % (cmd))
+            response=Utils.checkOutput(cmd.split())
+            assert(response)
+            assert(isinstance(response, str))
+            if verbose: Utils.Print("response: <%s>" % (response))
+            m=p.match(response)
+            if m is None:
+                Utils.Print("ERROR: client version regex mismatch")
+                return None
+
+            verStr=m.group(1)
+            return verStr
+        except subprocess.CalledProcessError as ex:
+            msg=ex.output.decode("utf-8")
+            Utils.Print("ERROR: Exception during client version query. %s" % (msg))
+            raise
 
     @staticmethod
     def createAccountKeys(count):
@@ -412,7 +479,7 @@ class Cluster(object):
             node=self.nodes[nextEnuIdx]
             if Utils.Debug: Utils.Print("Wait for transaction id %s on node port %d" % (transId, node.port))
             if node.waitForTransInBlock(transId) is False:
-                Utils.Print("ERROR: Selected node never received transaction id %s" % (transId))
+                Utils.Print("ERROR: Failed to validate transaction %s got rolled into a block on server port %d." % (transId, node.port))
                 return False
 
             transferAmount -= amount
@@ -433,7 +500,7 @@ class Cluster(object):
         node=self.nodes[0]
         if Utils.Debug: Utils.Print("Wait for transaction id %s on node port %d" % (transId, node.port))
         if node.waitForTransInBlock(transId) is False:
-            Utils.Print("ERROR: Selected node never received transaction id %s" % (transId))
+            Utils.Print("ERROR: Failed to validate transaction %s got rolled into a block on server port %d." % (transId, node.port))
             return False
 
         return True
@@ -568,6 +635,25 @@ class Cluster(object):
         return producerKeys
 
     @staticmethod
+    def parseProducers(nodeNum):
+        """Parse node config file for producers."""
+
+        node="node_%02d" % (nodeNum)
+        configFile="etc/enumivo/%s/config.ini" % (node)
+        if Utils.Debug: Utils.Print("Parsing config file %s" % configFile)
+        configStr=None
+        with open(configFile, 'r') as f:
+            configStr=f.read()
+
+        pattern=r"^\s*producer-name\s*=\W*(\w+)\W*$"
+        producerMatches=re.findall(pattern, configStr, re.MULTILINE)
+        if producerMatches is None:
+            if Utils.Debug: Utils.Print("Failed to find producers.")
+            return None
+
+        return producerMatches
+
+    @staticmethod
     def parseClusterKeys(totalNodes):
         """Parse cluster config file. Updates producer keys data members."""
 
@@ -664,7 +750,9 @@ class Cluster(object):
                 accounts.append(initx)
 
             transId=Node.getTransId(trans)
-            biosNode.waitForTransInBlock(transId)
+            if not biosNode.waitForTransInBlock(transId):
+                Utils.Print("ERROR: Failed to validate transaction %s got rolled into a block on server port %d." % (transId, biosNode.port))
+                return False
 
             Utils.Print("Validating system accounts within bootstrap")
             biosNode.validateAccounts(accounts)
@@ -712,6 +800,7 @@ class Cluster(object):
                 trans=trans[1]
                 transId=Node.getTransId(trans)
                 if not biosNode.waitForTransInBlock(transId):
+                    Utils.Print("ERROR: Failed to validate transaction %s got rolled into a block on server port %d." % (transId, biosNode.port))
                     return False
 
                 # wait for block production handover (essentially a block produced by anyone but enumivo).
@@ -751,7 +840,9 @@ class Cluster(object):
 
             Node.validateTransaction(trans)
             transId=Node.getTransId(trans)
-            biosNode.waitForTransInBlock(transId)
+            if not biosNode.waitForTransInBlock(transId):
+                Utils.Print("ERROR: Failed to validate transaction %s got rolled into a block on server port %d." % (transId, biosNode.port))
+                return False
 
             contract="enu.token"
             contractDir="contracts/%s" % (contract)
@@ -776,7 +867,9 @@ class Cluster(object):
 
             Node.validateTransaction(trans[1])
             transId=Node.getTransId(trans[1])
-            biosNode.waitForTransInBlock(transId)
+            if not biosNode.waitForTransInBlock(transId):
+                Utils.Print("ERROR: Failed to validate transaction %s got rolled into a block on server port %d." % (transId, biosNode.port))
+                return False
 
             contract=enumivoTokenAccount.name
             Utils.Print("push issue action to %s contract" % (contract))
@@ -792,7 +885,11 @@ class Cluster(object):
             Utils.Print("Wait for issue action transaction to become finalized.")
             transId=Node.getTransId(trans[1])
             # biosNode.waitForTransInBlock(transId)
-            biosNode.waitForTransFinalization(transId)
+            # guesstimating block finalization timeout. Two production rounds of 12 blocks per node, plus 60 seconds buffer
+            timeout = .5 * 12 * 2 * len(producerKeys) + 60
+            if not biosNode.waitForTransFinalization(transId, timeout=timeout):
+                Utils.Print("ERROR: Failed to validate transaction %s got rolled into a finalized block on server port %d." % (transId, biosNode.port))
+                return False
 
             expectedAmount="1000000000.0000 {0}".format(CORE_SYMBOL)
             Utils.Print("Verify enumivo issue, Expected: %s" % (expectedAmount))
@@ -832,6 +929,7 @@ class Cluster(object):
             Utils.Print("Wait for last transfer transaction to become finalized.")
             transId=Node.getTransId(trans[1])
             if not biosNode.waitForTransInBlock(transId):
+                Utils.Print("ERROR: Failed to validate transaction %s got rolled into a block on server port %d." % (transId, biosNode.port))
                 return False
 
             Utils.Print("Cluster bootstrap done.")
@@ -1009,8 +1107,7 @@ class Cluster(object):
             node=self.nodes[0]
             if Utils.Debug: Utils.Print("Wait for transaction id %s on server port %d." % ( transId, node.port))
             if node.waitForTransInBlock(transId) is False:
-                Utils.Print("ERROR: Failed waiting for transaction id %s on server port %d." % (
-                    transId, node.port))
+                Utils.Print("ERROR: Failed to validate transaction %s got rolled into a block on server port %d." % (transId, node.port))
                 return False
 
         return True

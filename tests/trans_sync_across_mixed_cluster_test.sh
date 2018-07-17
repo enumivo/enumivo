@@ -157,13 +157,13 @@ PASSWORD_INITA="$(echo "$PASSWORD_INITA" | awk '/PW/ {print $1}')"
 # remove leading/trailing quotes
 PASSWORD_INITA=${PASSWORD_INITA#\"}
 PASSWORD_INITA=${PASSWORD_INITA%\"}
-programs/enucli/enucli wallet import --name inita $INITA_PRV_KEY
+programs/enucli/enucli wallet import --name inita --private-key $INITA_PRV_KEY
 verifyErrorCode "enucli wallet import"
-programs/enucli/enucli wallet import --name inita $PRV_KEY1
+programs/enucli/enucli wallet import --name inita --private-key $PRV_KEY1
 verifyErrorCode "enucli wallet import"
-programs/enucli/enucli wallet import --name inita $PRV_KEY2
+programs/enucli/enucli wallet import --name inita --private-key $PRV_KEY2
 verifyErrorCode "enucli wallet import"
-programs/enucli/enucli wallet import --name inita $PRV_KEY3
+programs/enucli/enucli wallet import --name inita --private-key $PRV_KEY3
 verifyErrorCode "enucli wallet import"
 
 #

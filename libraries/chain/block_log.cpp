@@ -3,6 +3,7 @@
  *  @copyright defined in enumivo/LICENSE.txt
  */
 #include <enumivo/chain/block_log.hpp>
+#include <enumivo/chain/exceptions.hpp>
 #include <fstream>
 #include <fc/io/raw.hpp>
 
@@ -125,8 +126,8 @@ namespace enumivo { namespace chain {
          my->block_stream.seekg( 0 );
          uint32_t version = 0;
          my->block_stream.read( (char*)&version, sizeof(version) );
-         FC_ASSERT( version > 0, "Block log was not setup properly with genesis information." );
-         FC_ASSERT( version == block_log::supported_version,
+         ENU_ASSERT( version > 0, block_log_exception, "Block log was not setup properly with genesis information." );
+         ENU_ASSERT( version == block_log::supported_version, block_log_unsupported_version,
                     "Unsupported version of block log. Block log version is ${version} while code supports version ${supported}",
                     ("version", version)("supported", block_log::supported_version) );
 
@@ -169,13 +170,14 @@ namespace enumivo { namespace chain {
 
    uint64_t block_log::append(const signed_block_ptr& b) {
       try {
-         FC_ASSERT( my->genesis_written_to_block_log, "Cannot append to block log until the genesis is first written" );
+         ENU_ASSERT( my->genesis_written_to_block_log, block_log_append_fail, "Cannot append to block log until the genesis is first written" );
 
          my->check_block_write();
          my->check_index_write();
 
          uint64_t pos = my->block_stream.tellp();
-         FC_ASSERT(my->index_stream.tellp() == sizeof(uint64_t) * (b->block_num() - 1),
+         ENU_ASSERT(my->index_stream.tellp() == sizeof(uint64_t) * (b->block_num() - 1),
+                   block_log_append_fail,
                    "Append to index file occuring at wrong position.",
                    ("position", (uint64_t) my->index_stream.tellp())
                    ("expected", (b->block_num() - 1) * sizeof(uint64_t)));
@@ -255,7 +257,7 @@ namespace enumivo { namespace chain {
          uint64_t pos = get_block_pos(block_num);
          if (pos != npos) {
             b = read_block(pos).first;
-            FC_ASSERT(b->block_num() == block_num,
+            ENU_ASSERT(b->block_num() == block_num, reversible_blocks_exception,
                       "Wrong block was read from block log.", ("returned", b->block_num())("expected", block_num));
          }
          return b;
@@ -321,7 +323,7 @@ namespace enumivo { namespace chain {
 
    fc::path block_log::repair_log( const fc::path& data_dir, uint32_t truncate_at_block ) {
       ilog("Recovering Block Log...");
-      FC_ASSERT( fc::is_directory(data_dir) && fc::is_regular_file(data_dir / "blocks.log"),
+      ENU_ASSERT( fc::is_directory(data_dir) && fc::is_regular_file(data_dir / "blocks.log"), block_log_not_found,
                  "Block log not found in '${blocks_dir}'", ("blocks_dir", data_dir)          );
 
       auto now = fc::time_point::now();
@@ -332,10 +334,10 @@ namespace enumivo { namespace chain {
       }
       auto backup_dir = blocks_dir.parent_path();
       auto blocks_dir_name = blocks_dir.filename();
-      FC_ASSERT( blocks_dir_name.generic_string() != ".", "Invalid path to blocks directory" );
+      ENU_ASSERT( blocks_dir_name.generic_string() != ".", block_log_exception, "Invalid path to blocks directory" );
       backup_dir = backup_dir / blocks_dir_name.generic_string().append("-").append( now );
 
-      FC_ASSERT( !fc::exists(backup_dir),
+      ENU_ASSERT( !fc::exists(backup_dir), block_log_backup_dir_exist,
                  "Cannot move existing blocks directory to already existing directory '${new_blocks_dir}'",
                  ("new_blocks_dir", backup_dir) );
 
@@ -359,8 +361,8 @@ namespace enumivo { namespace chain {
 
       uint32_t version = 0;
       old_block_stream.read( (char*)&version, sizeof(version) );
-      FC_ASSERT( version > 0, "Block log was not setup properly with genesis information." );
-      FC_ASSERT( version == block_log::supported_version,
+      ENU_ASSERT( version > 0, block_log_exception, "Block log was not setup properly with genesis information." );
+      ENU_ASSERT( version == block_log::supported_version, block_log_unsupported_version,
                  "Unsupported version of block log. Block log version is ${version} while code supports version ${supported}",
                  ("version", version)("supported", block_log::supported_version) );
 
@@ -462,7 +464,7 @@ namespace enumivo { namespace chain {
    }
 
    genesis_state block_log::extract_genesis_state( const fc::path& data_dir ) {
-      FC_ASSERT( fc::is_directory(data_dir) && fc::is_regular_file(data_dir / "blocks.log"),
+      ENU_ASSERT( fc::is_directory(data_dir) && fc::is_regular_file(data_dir / "blocks.log"), block_log_not_found,
                  "Block log not found in '${blocks_dir}'", ("blocks_dir", data_dir)          );
 
       std::fstream  block_stream;
@@ -470,8 +472,8 @@ namespace enumivo { namespace chain {
 
       uint32_t version = 0;
       block_stream.read( (char*)&version, sizeof(version) );
-      FC_ASSERT( version > 0, "Block log was not setup properly with genesis information." );
-      FC_ASSERT( version == block_log::supported_version,
+      ENU_ASSERT( version > 0, block_log_exception, "Block log was not setup properly with genesis information." );
+      ENU_ASSERT( version == block_log::supported_version, block_log_unsupported_version,
                  "Unsupported version of block log. Block log version is ${version} while code supports version ${supported}",
                  ("version", version)("supported", block_log::supported_version) );
 

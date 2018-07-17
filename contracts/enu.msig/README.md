@@ -45,7 +45,7 @@ Execute a proposal
 enucli usage example.
 
 Prerequisites:
-   - enu.token contract installed to enu.token accountm, enu.msig contract installed on enu.msig account which is a priviliged account.
+   - enu.token contract installed to enu.token account, enu.msig contract installed on enu.msig account which is a privileged account.
    - account 'treasury' is the issuer of ENU token.
    - account 'tester' exists.
    - keys to accounts 'treasury' and 'tester' imported into local wallet, the wallet is unlocked.
