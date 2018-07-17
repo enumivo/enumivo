@@ -112,13 +112,13 @@ namespace enumivo { namespace chain {
 
    const permission_object*  authorization_manager::find_permission( const permission_level& level )const
    { try {
-      EOS_ASSERT( !level.actor.empty() && !level.permission.empty(), invalid_permission, "Invalid permission" );
+      ENU_ASSERT( !level.actor.empty() && !level.permission.empty(), invalid_permission, "Invalid permission" );
       return _db.find<permission_object, by_owner>( boost::make_tuple(level.actor,level.permission) );
    } ENU_RETHROW_EXCEPTIONS( chain::permission_query_exception, "Failed to retrieve permission: ${level}", ("level", level) ) }
 
    const permission_object&  authorization_manager::get_permission( const permission_level& level )const
    { try {
-      EOS_ASSERT( !level.actor.empty() && !level.permission.empty(), invalid_permission, "Invalid permission" );
+      ENU_ASSERT( !level.actor.empty() && !level.permission.empty(), invalid_permission, "Invalid permission" );
       return _db.get<permission_object, by_owner>( boost::make_tuple(level.actor,level.permission) );
    } ENU_RETHROW_EXCEPTIONS( chain::permission_query_exception, "Failed to retrieve permission: ${level}", ("level", level) ) }
 
@@ -154,7 +154,7 @@ namespace enumivo { namespace chain {
    {
       // Special case native actions cannot be linked to a minimum permission, so there is no need to check.
       if( scope == config::system_account_name ) {
-          EOS_ASSERT( act_name != updateauth::get_name() &&
+          ENU_ASSERT( act_name != updateauth::get_name() &&
                      act_name != deleteauth::get_name() &&
                      act_name != linkauth::get_name() &&
                      act_name != unlinkauth::get_name() &&
@@ -293,7 +293,7 @@ namespace enumivo { namespace chain {
       const auto& generated_transaction_idx = _control.db().get_index<generated_transaction_multi_index>();
       const auto& generated_index = generated_transaction_idx.indices().get<by_trx_id>();
       const auto& itr = generated_index.lower_bound(trx_id);
-      EOS_ASSERT( itr != generated_index.end() && itr->sender == account_name() && itr->trx_id == trx_id,
+      ENU_ASSERT( itr != generated_index.end() && itr->sender == account_name() && itr->trx_id == trx_id,
                   tx_not_found,
                  "cannot cancel trx_id=${tid}, there is no deferred transaction with that transaction id",
                  ("tid", trx_id) );

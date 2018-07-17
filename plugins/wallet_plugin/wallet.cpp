@@ -138,7 +138,7 @@ public:
    private_key_type get_private_key(const public_key_type& id)const
    {
       auto has_key = try_get_private_key( id );
-      EOS_ASSERT( has_key, chain::key_nonexistent_exception, "Key doesn't exist!" );
+      ENU_ASSERT( has_key, chain::key_nonexistent_exception, "Key doesn't exist!" );
       return *has_key;
    }
 
@@ -157,7 +157,7 @@ public:
          _keys[wif_pub_key] = priv;
          return true;
       }
-      EOS_THROW( chain::key_exist_exception, "Key already in wallet" );
+      ENU_THROW( chain::key_exist_exception, "Key already in wallet" );
    }
 
    // Removes a key from the wallet
@@ -171,7 +171,7 @@ public:
          _keys.erase(pub);
          return true;
       }
-      EOS_THROW( chain::key_nonexistent_exception, "Key not in wallet" );
+      ENU_THROW( chain::key_nonexistent_exception, "Key not in wallet" );
    }
 
    string create_key(string key_type)
@@ -185,7 +185,7 @@ public:
       else if(key_type == "R1")
          priv_key = fc::crypto::private_key::generate<fc::crypto::r1::private_key_shim>();
       else
-         EOS_THROW(chain::unsupported_key_type_exception, "Key type \"${kt}\" not supported by software wallet", ("kt", key_type));
+         ENU_THROW(chain::unsupported_key_type_exception, "Key type \"${kt}\" not supported by software wallet", ("kt", key_type));
 
       import_key((string)priv_key);
       return (string)priv_key.get_public_key();
@@ -235,7 +235,7 @@ public:
          ofstream outfile{ wallet_filename };
          if (!outfile) {
             elog("Unable to open file: ${fn}", ("fn", wallet_filename));
-            EOS_THROW(wallet_exception, "Unable to open file: ${fn}", ("fn", wallet_filename));
+            ENU_THROW(wallet_exception, "Unable to open file: ${fn}", ("fn", wallet_filename));
          }
          outfile.write( data.c_str(), data.length() );
          outfile.flush();
@@ -286,7 +286,7 @@ string soft_wallet::get_wallet_filename() const
 
 bool soft_wallet::import_key(string wif_key)
 {
-   EOS_ASSERT(!is_locked(), wallet_locked_exception, "Unable to import key on a locked wallet");
+   ENU_ASSERT(!is_locked(), wallet_locked_exception, "Unable to import key on a locked wallet");
 
    if( my->import_key(wif_key) )
    {
@@ -298,7 +298,7 @@ bool soft_wallet::import_key(string wif_key)
 
 bool soft_wallet::remove_key(string key)
 {
-   EOS_ASSERT(!is_locked(), wallet_locked_exception, "Unable to remove key from a locked wallet");
+   ENU_ASSERT(!is_locked(), wallet_locked_exception, "Unable to remove key from a locked wallet");
 
    if( my->remove_key(key) )
    {
@@ -310,7 +310,7 @@ bool soft_wallet::remove_key(string key)
 
 string soft_wallet::create_key(string key_type)
 {
-   EOS_ASSERT(!is_locked(), wallet_locked_exception, "Unable to create key on a locked wallet");
+   ENU_ASSERT(!is_locked(), wallet_locked_exception, "Unable to create key on a locked wallet");
 
    string ret = my->create_key(key_type);
    save_wallet_file();
@@ -344,7 +344,7 @@ void soft_wallet::encrypt_keys()
 
 void soft_wallet::lock()
 { try {
-   EOS_ASSERT( !is_locked(), wallet_locked_exception, "Unable to lock a locked wallet" );
+   ENU_ASSERT( !is_locked(), wallet_locked_exception, "Unable to lock a locked wallet" );
    encrypt_keys();
    for( auto key : my->_keys )
       key.second = private_key_type();
@@ -378,19 +378,19 @@ void soft_wallet::check_password(string password)
 void soft_wallet::set_password( string password )
 {
    if( !is_new() )
-      EOS_ASSERT( !is_locked(), wallet_locked_exception, "The wallet must be unlocked before the password can be set" );
+      ENU_ASSERT( !is_locked(), wallet_locked_exception, "The wallet must be unlocked before the password can be set" );
    my->_checksum = fc::sha512::hash( password.c_str(), password.size() );
    lock();
 }
 
 map<public_key_type, private_key_type> soft_wallet::list_keys()
 {
-   EOS_ASSERT(!is_locked(), wallet_locked_exception, "Unable to list public keys of a locked wallet");
+   ENU_ASSERT(!is_locked(), wallet_locked_exception, "Unable to list public keys of a locked wallet");
    return my->_keys;
 }
 
 flat_set<public_key_type> soft_wallet::list_public_keys() {
-   EOS_ASSERT(!is_locked(), wallet_locked_exception, "Unable to list private keys of a locked wallet");
+   ENU_ASSERT(!is_locked(), wallet_locked_exception, "Unable to list private keys of a locked wallet");
    flat_set<public_key_type> keys;
    boost::copy(my->_keys | boost::adaptors::map_keys, std::inserter(keys, keys.end()));
    return keys;
@@ -407,7 +407,7 @@ optional<signature_type> soft_wallet::try_sign_digest( const digest_type digest,
 
 pair<public_key_type,private_key_type> soft_wallet::get_private_key_from_password( string account, string role, string password )const {
    auto seed = account + role + password;
-   EOS_ASSERT( seed.size(), wallet_exception, "seed should not be empty" );
+   ENU_ASSERT( seed.size(), wallet_exception, "seed should not be empty" );
    auto secret = fc::sha256::hash( seed.c_str(), seed.size() );
    auto priv = private_key_type::regenerate<fc::ecc::private_key_shim>( secret );
    return std::make_pair(  priv.get_public_key(), priv );
