@@ -192,7 +192,7 @@
 				export PATH=${HOME}/opt/mongodb/bin:$PATH
 			;;
 			"Debian GNU/Linux")
-				FILE=${PWD}/scripts/eosio_build_ubuntu.sh
+				FILE=${PWD}/scripts/enumivo_build_ubuntu.sh
 				CXX_COMPILER=clang++-4.0
 				C_COMPILER=clang-4.0
 				MONGOD_CONF=${HOME}/opt/mongodb/mongod.conf

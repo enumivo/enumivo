@@ -5,15 +5,15 @@ namespace enumivo {
 /**
  * @defgroup contracttype Contract Type
  * @ingroup types
- * @brief Defines contract type which is %base class for every EOSIO contract
+ * @brief Defines contract type which is %base class for every Enumivo contract
  * 
  * @{
  * 
  */
 
 /**
- * @brief %Base class for EOSIO contract.
- * @details %Base class for EOSIO contract. %A new contract should derive from this class, so it can make use of EOSIO_ABI macro.
+ * @brief %Base class for Enumivo contract.
+ * @details %Base class for Enumivo contract. %A new contract should derive from this class, so it can make use of ENUMIVO_ABI macro.
  */
 class contract {
    public:

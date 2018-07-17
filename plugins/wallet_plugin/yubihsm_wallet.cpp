@@ -1,12 +1,12 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE.txt
  */
 #include <appbase/application.hpp>
 
-#include <eosio/wallet_plugin/yubihsm_wallet.hpp>
-#include <eosio/chain/exceptions.hpp>
-#include <eosio/wallet_plugin/yubihsm.h>
+#include <enumivo/wallet_plugin/yubihsm_wallet.hpp>
+#include <enumivo/chain/exceptions.hpp>
+#include <enumivo/wallet_plugin/yubihsm.h>
 
 #include <fc/crypto/openssl.hpp>
 
@@ -17,7 +17,7 @@
 
 #include <dlfcn.h>
 
-namespace eosio { namespace wallet {
+namespace enumivo { namespace wallet {
 
 using namespace fc::crypto::r1;
 

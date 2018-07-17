@@ -1,10 +1,10 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE.txt
  */
-#include <eosio/wallet_plugin/se_wallet.hpp>
-#include <eosio/wallet_plugin/macos_user_auth.h>
-#include <eosio/chain/exceptions.hpp>
+#include <enumivo/wallet_plugin/se_wallet.hpp>
+#include <enumivo/wallet_plugin/macos_user_auth.h>
+#include <enumivo/chain/exceptions.hpp>
 
 #include <fc/crypto/openssl.hpp>
 
@@ -15,7 +15,7 @@
 
 #include <future>
 
-namespace eosio { namespace wallet {
+namespace enumivo { namespace wallet {
 
 using namespace fc::crypto::r1;
 
@@ -241,7 +241,7 @@ struct se_wallet_impl {
 
       promise<bool> prom;
       future<bool> fut = prom.get_future();
-      macos_user_auth(auth_callback, &prom, CFSTR("remove a key from your EOSIO wallet"));
+      macos_user_auth(auth_callback, &prom, CFSTR("remove a key from your Enumivo wallet"));
       if(!fut.get())
          FC_THROW_EXCEPTION(chain::wallet_invalid_password_exception, "Local user authentication failed");
 
@@ -331,7 +331,7 @@ void se_wallet::lock() {
 void se_wallet::unlock(string password) {
    promise<bool> prom;
    future<bool> fut = prom.get_future();
-   macos_user_auth(detail::auth_callback, &prom, CFSTR("unlock your EOSIO wallet"));
+   macos_user_auth(detail::auth_callback, &prom, CFSTR("unlock your Enumivo wallet"));
    if(!fut.get())
       FC_THROW_EXCEPTION(chain::wallet_invalid_password_exception, "Local user authentication failed");
    my->locked = false;

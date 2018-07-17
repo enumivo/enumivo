@@ -1,12 +1,12 @@
 #pragma once
 
-#include <eosio/chain/types.hpp>
-#include <eosio/wallet_plugin/wallet_api.hpp>
+#include <enumivo/chain/types.hpp>
+#include <enumivo/wallet_plugin/wallet_api.hpp>
 
 using namespace std;
-using namespace eosio::chain;
+using namespace enumivo::chain;
 
-namespace eosio { namespace wallet {
+namespace enumivo { namespace wallet {
 
 namespace detail {
 struct yubihsm_wallet_impl;

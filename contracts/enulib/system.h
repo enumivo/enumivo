@@ -30,8 +30,8 @@ extern "C" {
     *  Example:
 *
     *  @code
-    *  eosio_assert(1 == 2, "One is not equal to two.");
-    *  eosio_assert(1 == 1, "One is not equal to one.");
+    *  enumivo_assert(1 == 2, "One is not equal to two.");
+    *  enumivo_assert(1 == 1, "One is not equal to one.");
     *  @endcode
     *
     *  @param msg - a null terminated string explaining the reason for failure
@@ -62,10 +62,10 @@ extern "C" {
     *  Example:
 *
     *  @code
-    *  eosio_exit(0);
-    *  eosio_exit(1);
-    *  eosio_exit(2);
-    *  eosio_exit(3);
+    *  enumivo_exit(0);
+    *  enumivo_exit(1);
+    *  enumivo_exit(2);
+    *  enumivo_exit(3);
     *  @endcode
     */
    [[noreturn]] void  enumivo_exit( int32_t code );

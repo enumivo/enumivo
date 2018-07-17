@@ -1,18 +1,18 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE.txt
  */
-#include <eosio/chain/authorization_manager.hpp>
-#include <eosio/chain/exceptions.hpp>
-#include <eosio/login_plugin/login_plugin.hpp>
+#include <enumivo/chain/authorization_manager.hpp>
+#include <enumivo/chain/exceptions.hpp>
+#include <enumivo/login_plugin/login_plugin.hpp>
 
 #include <fc/io/json.hpp>
 
-namespace eosio {
+namespace enumivo {
 
 static appbase::abstract_plugin& _login_plugin = app().register_plugin<login_plugin>();
 
-using namespace eosio;
+using namespace enumivo;
 
 struct login_request {
    chain::private_key_type server_ephemeral_priv_key{};
@@ -161,4 +161,4 @@ login_plugin::do_not_use_get_secret(const login_plugin::do_not_use_get_secret_pa
    return {params.priv_key.generate_shared_secret(params.pub_key)};
 }
 
-} // namespace eosio
+} // namespace enumivo

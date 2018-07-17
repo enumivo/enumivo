@@ -47,7 +47,7 @@
 		;;
 		"Debian")
 			if [ $OS_MAJ -lt 10 ]; then
-				printf "\tYou must be running Debian 10 to install EOSIO, and resolve missing dependencies from unstable (sid).\n"
+				printf "\tYou must be running Debian 10 to install Enumivo, and resolve missing dependencies from unstable (sid).\n"
 				printf "\tExiting now.\n"
 				exit 1
 		fi

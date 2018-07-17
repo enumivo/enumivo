@@ -72,7 +72,7 @@ const char* failed_to_find_transaction_text = _("Failed to fetch information for
 
 const char* failed_to_find_transaction_with_block_text = _("Failed to fetch information for transaction: \033[1m${1}\033[0m from the history plugin and the transaction was not present in block \033[1m${2}\033[0m\n");
 
-const char* history_plugin_advice_text = _("\033[32mPlease ensure that the \033[2meosio::history_plugin\033[22m is enabled on the RPC node you are connecting to and that an account involved in this transaction was configured in the \033[2mfilter-on\033[22m setting.\033[0m\n");
+const char* history_plugin_advice_text = _("\033[32mPlease ensure that the \033[2menumivo::history_plugin\033[22m is enabled on the RPC node you are connecting to and that an account involved in this transaction was configured in the \033[2mfilter-on\033[22m setting.\033[0m\n");
 
 const char* help_regex_error = _("Error locating help text: ${code} ${what}");
 

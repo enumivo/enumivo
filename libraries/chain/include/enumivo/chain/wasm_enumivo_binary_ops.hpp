@@ -5,7 +5,7 @@
 #include <boost/preprocessor/seq/remove.hpp>
 #include <boost/preprocessor/seq/push_back.hpp>
 #include <fc/reflect/reflect.hpp>
-#include <eosio/chain/exceptions.hpp>
+#include <enumivo/chain/exceptions.hpp>
 
 #include <cstdint>
 #include <functional>
