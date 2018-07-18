@@ -6,6 +6,7 @@
 #include <enumivo/chain/webassembly/runtime_interface.hpp>
 #include <enumivo/chain/wasm_enumivo_injection.hpp>
 #include <enumivo/chain/transaction_context.hpp>
+#include <enumivo/chain/exceptions.hpp>
 #include <fc/scoped_exit.hpp>
 
 #include "IR/Module.h"
@@ -28,15 +29,15 @@ namespace enumivo { namespace chain {
          else if(vm == wasm_interface::vm_type::binaryen)
             runtime_interface = std::make_unique<webassembly::binaryen::binaryen_runtime>();
          else
-            FC_THROW("wasm_interface_impl fall through");
+            ENU_THROW(wasm_exception, "wasm_interface_impl fall through");
       }
 
       std::vector<uint8_t> parse_initial_memory(const Module& module) {
          std::vector<uint8_t> mem_image;
 
          for(const DataSegment& data_segment : module.dataSegments) {
-            FC_ASSERT(data_segment.baseOffset.type == InitializerExpression::Type::i32_const);
-            FC_ASSERT(module.memories.defs.size());
+            ENU_ASSERT(data_segment.baseOffset.type == InitializerExpression::Type::i32_const, wasm_exception, "");
+            ENU_ASSERT(module.memories.defs.size(), wasm_exception, "");
             const U32 base_offset = data_segment.baseOffset.i32;
             const Uptr memory_size = (module.memories.defs[0].type.size.min << IR::numBytesPerPageLog2);
             if(base_offset >= memory_size || base_offset + data_segment.data.size() > memory_size)

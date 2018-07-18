@@ -54,6 +54,12 @@ namespace enumivo {
       ENULIB_SERIALIZE_DERIVED( transaction, transaction_header, (context_free_actions)(actions)(transaction_extensions) )
    };
 
+   /**
+    *
+    *
+    *
+    *
+    */
    struct onerror {
       uint128_t sender_id;
       bytes     sent_trx;

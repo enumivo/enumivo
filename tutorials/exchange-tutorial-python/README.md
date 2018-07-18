@@ -20,9 +20,9 @@ Deleting the `transactions.txt` file will prevent replay from working.
 
 `enucli create key`
 
-`enucli wallet import <private key from step 1>`
+`enucli wallet import  --private-key <private key from step 1>`
 
-`enucli wallet import <private key from step 2>`
+`enucli wallet import  --private-key <private key from step 2>`
 
 `enucli create account enumivo <account_name> <public key from step 1> <public key from step 2>`
 

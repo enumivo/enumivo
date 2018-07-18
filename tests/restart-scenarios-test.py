@@ -56,6 +56,8 @@ cluster=Cluster(enuwalletd=True)
 walletMgr=WalletMgr(True)
 
 try:
+    TestHelper.printSystemInfo("BEGIN")
+
     cluster.setChainStrategy(chainSyncStrategyStr)
     cluster.setWalletMgr(walletMgr)
 

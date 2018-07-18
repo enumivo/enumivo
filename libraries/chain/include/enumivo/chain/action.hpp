@@ -5,6 +5,7 @@
 #pragma once
 
 #include <enumivo/chain/types.hpp>
+#include <enumivo/chain/exceptions.hpp>
 
 namespace enumivo { namespace chain {
 
@@ -86,8 +87,8 @@ namespace enumivo { namespace chain {
 
       template<typename T>
       T data_as()const {
-         FC_ASSERT( account == T::get_account() );
-         FC_ASSERT( name == T::get_name()  );
+         ENU_ASSERT( account == T::get_account(), action_type_exception, "account is not consistent with action struct" );
+         ENU_ASSERT( name == T::get_name(), action_type_exception, "action name is not consistent with action struct"  );
          return fc::raw::unpack<T>(data);
       }
    };

@@ -12,6 +12,7 @@
 #include <sstream>
 #include <iomanip>
 #include <fc/exception/exception.hpp>
+#include <enumivo/chain/exceptions.hpp>
 
 namespace enumivo { namespace chain {
 
@@ -33,7 +34,7 @@ namespace enumivo { namespace chain {
             ss << error.locus.sourceLine << std::endl;
             ss << std::setw(error.locus.column(8)) << "^" << std::endl;
          }
-         FC_ASSERT( !"error parsing wast", "${msg}", ("msg",ss.str()) );
+         ENU_ASSERT( false, wasm_exception, "error parsing wast: ${msg}", ("msg",ss.str()) );
       }
 
       for(auto sectionIt = module.userSections.begin();sectionIt != module.userSections.end();++sectionIt)
@@ -52,11 +53,11 @@ namespace enumivo { namespace chain {
       {
          ss << "Error serializing WebAssembly binary file:" << std::endl;
          ss << exception.message << std::endl;
-         FC_ASSERT( !"error converting to wasm", "${msg}", ("msg",ss.get()) );
+         ENU_ASSERT( false, wasm_exception, "error converting to wasm: ${msg}", ("msg",ss.get()) );
       } catch(const IR::ValidationException& e) {
          ss << "Error validating WebAssembly binary file:" << std::endl;
          ss << e.message << std::endl;
-         FC_ASSERT( !"error converting to wasm", "${msg}", ("msg",ss.get()) );
+         ENU_ASSERT( false, wasm_exception, "error converting to wasm: ${msg}", ("msg",ss.get()) );
       }
 
    } FC_CAPTURE_AND_RETHROW( (wast) ) }  /// wast_to_wasm

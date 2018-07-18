@@ -1223,7 +1223,7 @@ launcher_def::write_bios_boot () {
          }
          else if (key == "prodkeys" ) {
             for (auto &node : network.nodes) {
-               brb << "wcmd import -n ignition " << string(node.second.keys[0]) << "\n";
+               brb << "wcmd import -n ignition --private-key " << string(node.second.keys[0]) << "\n";
             }
          }
          else if (key == "cacmd") {
@@ -1505,7 +1505,7 @@ launcher_def::launch (enudaemon_def &instance, string &gts) {
   }
 
   enudaemoncmd += " --config-dir " + instance.config_dir_name + " --data-dir " + instance.data_dir_name;
-  enudaemoncmd += " --genesis-json " + genesis.string();
+  enudaemoncmd += " --genesis-json " + instance.config_dir_name + "/genesis.json";
   if (gts.length()) {
     enudaemoncmd += " --genesis-timestamp " + gts;
   }
