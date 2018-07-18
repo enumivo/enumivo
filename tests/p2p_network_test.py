@@ -105,7 +105,7 @@ exchangeAccount.ownerPublicKey=PUB_KEY2
 
 print("Stand up enuwalletd")
 if walletMgr.launch() is False:
-    cmdError("%s" % (WalletDName))
+    cmdError("%s" % (WalletdName))
     errorExit("Failed to stand up enuwalletd.")
 
 testWalletName="test"
