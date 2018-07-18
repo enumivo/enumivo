@@ -199,7 +199,7 @@ class Cluster(object):
             initAccountKeys(account, producerKeys[name])
             self.defProducerAccounts[name] = account
 
-        self.enunodeAccount=self.defProducerAccounts["enumivo"]
+        self.enumivoAccount=self.defProducerAccounts["enumivo"]
         self.defproduceraAccount=self.defProducerAccounts["defproducera"]
         self.defproducerbAccount=self.defProducerAccounts["defproducerb"]
 
