@@ -16,7 +16,7 @@ class WalletMgr(object):
     __walletDataDir="test_wallet_0"
 
     # pylint: disable=too-many-arguments
-    # walletd [True|False] True=Launch wallet(enuwallet) process; False=Manage launch process externally.
+    # enuwalletd [True|False] True=Launch wallet(enuwallet) process; False=Manage launch process externally.
     def __init__(self, enuwalletd, enunodePort=8888, enunodeHost="localhost", port=9899, host="localhost"):
         self.enuwalletd=enuwalletd
         self.enunodePort=enunodePort
