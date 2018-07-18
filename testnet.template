@@ -81,22 +81,22 @@ ecmd set contract enumivo contracts/enu.bios contracts/enu.bios/enu.bios.wast co
 ecmd create key
 pubsyskey=`grep "^Public key:" $logfile | tail -1 | sed "s/^Public key://"`
 prisyskey=`grep "^Private key:" $logfile | tail -1 | sed "s/^Private key://"`
-echo eosio.* keys: $prisyskey $pubsyskey >> $logfile
+echo enu.* keys: $prisyskey $pubsyskey >> $logfile
 wcmd import -n ignition --private-key $prisyskey
-ecmd create account eosio eosio.bpay $pubsyskey $pubsyskey
-ecmd create account eosio eosio.msig $pubsyskey $pubsyskey
-ecmd create account eosio eosio.names $pubsyskey $pubsyskey
-ecmd create account eosio eosio.ram $pubsyskey $pubsyskey
-ecmd create account eosio eosio.ramfee $pubsyskey $pubsyskey
-ecmd create account eosio eosio.saving $pubsyskey $pubsyskey
-ecmd create account eosio eosio.stake $pubsyskey $pubsyskey
-ecmd create account eosio eosio.token $pubsyskey $pubsyskey
-ecmd create account eosio eosio.vpay $pubsyskey $pubsyskey
-ecmd create account eosio eosio.sudo $pubsyskey $pubsyskey
+ecmd create account enumivo enu.blockpay $pubsyskey $pubsyskey
+ecmd create account enumivo enu.msig $pubsyskey $pubsyskey
+ecmd create account enumivo enu.names $pubsyskey $pubsyskey
+ecmd create account enumivo enu.ram $pubsyskey $pubsyskey
+ecmd create account enumivo enu.ramfee $pubsyskey $pubsyskey
+ecmd create account enumivo enu.savings $pubsyskey $pubsyskey
+ecmd create account enumivo enu.stake $pubsyskey $pubsyskey
+ecmd create account enumivo enu.token $pubsyskey $pubsyskey
+ecmd create account enumivo enu.votepay $pubsyskey $pubsyskey
+ecmd create account enumivo enu.sudo $pubsyskey $pubsyskey
 
-ecmd set contract eosio.token contracts/eosio.token contracts/eosio.token/eosio.token.wast contracts/eosio.token/eosio.token.abi
-ecmd set contract eosio.msig contracts/eosio.msig contracts/eosio.msig/eosio.msig.wast contracts/eosio.msig/eosio.msig.abi
-ecmd set contract eosio.sudo contracts/eosio.sudo contracts/eosio.sudo/eosio.sudo.wast contracts/eosio.sudo/eosio.sudo.abi
+ecmd set contract enu.token contracts/enu.token contracts/enu.token/enu.token.wast contracts/enu.token/enu.token.abi
+ecmd set contract enu.msig contracts/enu.msig contracts/enu.msig/enu.msig.wast contracts/enu.msig/enu.msig.abi
+ecmd set contract enu.sudo contracts/enu.sudo contracts/enu.sudo/enu.sudo.wast contracts/enu.sudo/enu.sudo.abi
 
 echo ===== Start: $step ============ >> $logfile
 echo executing: enucli --wallet-url $wdurl --url http://$bioshost:$biosport push action enu.token create '[ "enumivo", "10000000000.0000 ENU" ]' -p enu.token | tee -a $logfile

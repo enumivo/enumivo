@@ -1,7 +1,7 @@
 #! /bin/bash
 
-if [ -d "/usr/local/include/eosio" ]; then
-   printf "\n\tOld eosio install needs to be removed.\n\n"
+if [ -d "/usr/local/include/enumivo" ]; then
+   printf "\n\tOld enumivo install needs to be removed.\n\n"
    printf "\tDo you wish to remove this install? (requires sudo)\n"
    select yn in "Yes" "No"; do
       case $yn in
@@ -12,31 +12,31 @@ if [ -d "/usr/local/include/eosio" ]; then
             fi
             pushd /usr/local &> /dev/null
             pushd include &> /dev/null
-            rm -rf appbase chainbase eosio eosio.system eosiolib fc libc++ musl &> /dev/null
+            rm -rf appbase chainbase enumivo enu.system enulib fc libc++ musl &> /dev/null
             popd &> /dev/null
 
             pushd bin &> /dev/null
-            rm cleos eosio-abigen eosio-applesdemo eosio-launcher eosio-s2wasm eosio-wast2wasm eosiocpp keosd nodeos &> /dev/null
+            rm enucli enugenabi enuapplesdemo enulauncher enumivo-s2wasm enumivo-wast2wasm enumivocpp enuwallet enunode &> /dev/null
             popd &> /dev/null
 
             pushd etc &> /dev/null
-            rm eosio &> /dev/null
+            rm enumivo &> /dev/null
             popd &> /dev/null
 
             pushd share &> /dev/null
-            rm eosio &> /dev/null
+            rm enumivo &> /dev/null
             popd &> /dev/null
 
             pushd usr/share &> /dev/null
-            rm eosio &> /dev/null
+            rm enumivo &> /dev/null
             popd &> /dev/null
 
             pushd var/lib &> /dev/null
-            rm eosio &> /dev/null
+            rm enumivo &> /dev/null
             popd &> /dev/null
 
             pushd var/log &> /dev/null
-            rm eosio &> /dev/null
+            rm enumivo &> /dev/null
             popd &> /dev/null
             break;;
          [Nn]* ) 

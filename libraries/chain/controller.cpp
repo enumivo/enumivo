@@ -1620,13 +1620,13 @@ void controller::validate_tapos( const transaction& trx )const { try {
 void controller::validate_db_available_size() const {
    const auto free = db().get_segment_manager()->get_free_memory();
    const auto guard = my->conf.state_guard_size;
-   EOS_ASSERT(free >= guard, database_guard_exception, "database free: ${f}, guard size: ${g}", ("f", free)("g",guard));
+   ENU_ASSERT(free >= guard, database_guard_exception, "database free: ${f}, guard size: ${g}", ("f", free)("g",guard));
 }
 
 void controller::validate_reversible_available_size() const {
    const auto free = my->reversible_blocks.get_segment_manager()->get_free_memory();
    const auto guard = my->conf.reversible_guard_size;
-   EOS_ASSERT(free >= guard, reversible_guard_exception, "reversible free: ${f}, guard size: ${g}", ("f", free)("g",guard));
+   ENU_ASSERT(free >= guard, reversible_guard_exception, "reversible free: ${f}, guard size: ${g}", ("f", free)("g",guard));
 }
 
 bool controller::is_known_unexpired_transaction( const transaction_id_type& id) const {
