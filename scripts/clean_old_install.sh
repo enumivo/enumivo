@@ -11,12 +11,33 @@ if [ -d "/usr/local/include/enumivo" ]; then
                exit -1
             fi
             pushd /usr/local &> /dev/null
+
             pushd include &> /dev/null
             rm -rf appbase chainbase enumivo enu.system enulib fc libc++ musl &> /dev/null
             popd &> /dev/null
 
             pushd bin &> /dev/null
             rm enucli enugenabi enuapplesdemo enulauncher enumivo-s2wasm enumivo-wast2wasm enumivocpp enuwallet enunode &> /dev/null
+            popd &> /dev/null
+
+            libraries=(libenumivo_testing
+            libenumivo_chain
+            libfc
+            libbinaryen
+            libWAST
+            libWASM
+            libRuntime
+            libPlatform
+            libIR
+            libLogging
+            libsoftfloat
+            libchainbase
+            libappbase
+            libbuiltins)
+            pushd lib &> /dev/null
+            for lib in ${libraries[@]}; do
+               rm ${lib}.a ${lib}.dylib ${lib}.so &> /dev/null
+            done
             popd &> /dev/null
 
             pushd etc &> /dev/null
@@ -38,8 +59,10 @@ if [ -d "/usr/local/include/enumivo" ]; then
             pushd var/log &> /dev/null
             rm enumivo &> /dev/null
             popd &> /dev/null
+
+            popd &> /dev/null
             break;;
-         [Nn]* ) 
+         [Nn]* )
             printf "\tAborting uninstall\n\n"
             exit -1;;
       esac
