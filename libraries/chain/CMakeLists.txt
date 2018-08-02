@@ -2,7 +2,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/enumivo/chain/core_symbol.hpp
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/genesis_state_root_key.cpp.in ${CMAKE_CURRENT_BINARY_DIR}/genesis_state_root_key.cpp)
 
 file(GLOB HEADERS "include/enumivo/chain/*.hpp"
-                  "include/enumivo/chain/contracts/*.hpp"
+                  "include/enumivo/chain/webassembly/*.hpp"
                   "${CMAKE_CURRENT_BINARY_DIR}/include/enumivo/chain/core_symbol.hpp" )
 
 ## SORT .cpp by most likely to change / break compile
@@ -58,14 +58,16 @@ target_include_directories( enumivo_chain
                                    "${CMAKE_CURRENT_SOURCE_DIR}/../../externals/binaryen/src"
                             )
 
-set_target_properties( enumivo_chain PROPERTIES PUBLIC_HEADER "${HEADERS}" )
-install( TARGETS enumivo_chain 
+install( TARGETS enumivo_chain
    RUNTIME DESTINATION ${CMAKE_INSTALL_FULL_BINDIR}
    LIBRARY DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
    ARCHIVE DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
-   PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR}/enumivo/chain
 )
-install_directory_permissions( DIRECTORY ${CMAKE_INSTALL_FULL_INCLUDEDIR}/enumivo/chain )
+install( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/enumivo/chain/
+      DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR}/enumivo/chain
+      FILES_MATCHING PATTERN "*.hpp" PATTERN "*.h" PATTERN "webassembly" EXCLUDE
+)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/include/enumivo/chain/core_symbol.hpp DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR}/enumivo/chain)
 #if(MSVC)
 #  set_source_files_properties( db_init.cpp db_block.cpp database.cpp block_log.cpp PROPERTIES COMPILE_FLAGS "/bigobj" )
 #endif(MSVC)

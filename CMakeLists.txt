@@ -4,6 +4,13 @@ project( Enumivo )
 
 enable_testing()
 
+if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+   message(WARNING "CMAKE_INSTALL_PREFIX is set to default path of ${CMAKE_INSTALL_PREFIX}, resetting to ${CMAKE_INSTALL_PREFIX}/enumivo")
+   set(CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}/enumivo")
+elseif ("${CMAKE_INSTALL_PREFIX}" STREQUAL "/usr/local")
+   message(WARNING "CMAKE_INSTALL_PREFIX is explicitly set to /usr/local. This is not recommended.")
+endif()
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/libraries/fc/CMakeModules")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules")
 
@@ -20,7 +27,7 @@ set( CXX_STANDARD_REQUIRED ON)
 
 set(VERSION_MAJOR 1)
 set(VERSION_MINOR 1)
-set(VERSION_PATCH 1)
+set(VERSION_PATCH 2)
 
 set( CLI_CLIENT_EXECUTABLE_NAME enucli )
 set( GUI_CLIENT_EXECUTABLE_NAME enumivo )
@@ -64,6 +71,8 @@ if ("${OPENSSL_ROOT_DIR}" STREQUAL "")
       message(FATAL_ERROR "openssl not found and don't know where to look, please specify OPENSSL_ROOT_DIR")
    endif()
 endif()
+
+find_package(Secp256k1 REQUIRED)
 
 if(UNIX)
   if(APPLE)
@@ -215,6 +224,13 @@ install(FILES testnet.template DESTINATION ${CMAKE_INSTALL_FULL_SYSCONFDIR}/enum
 install_directory_permissions(DIRECTORY ${CMAKE_INSTALL_FULL_SYSCONFDIR}/enumivo)
 install_directory_permissions(DIRECTORY ${CMAKE_INSTALL_FULL_SYSCONFDIR}/enumivo/launcher)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/testnet.template ${CMAKE_CURRENT_BINARY_DIR}/etc/enumivo/launcher/testnet.template COPYONLY)
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/enumivo.version.in ${CMAKE_CURRENT_BINARY_DIR}/enumivo.version.hpp)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/enumivo.version.hpp DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR})
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/EnumivoTester.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/EnumivoTester.cmake @ONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/EnumivoTesterBuild.cmake.in ${CMAKE_BINARY_DIR}/lib/cmake/EnumivoTester.cmake @ONLY)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/EnumivoTester.cmake DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/cmake/)
 
 include(installer)
 

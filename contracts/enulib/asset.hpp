@@ -174,9 +174,9 @@ namespace enumivo {
        */
       asset& operator*=( int64_t a ) {
          enumivo_assert( a == 0 || (amount * a) / a == amount, "multiplication overflow or underflow" );
+         amount *= a;
          enumivo_assert( -max_amount <= amount, "multiplication underflow" );
          enumivo_assert( amount <= max_amount,  "multiplication overflow" );
-         amount *= a;
          return *this;
       }
 
