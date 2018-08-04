@@ -1,6 +1,6 @@
 /**
  *    @file test_compiler_builtins.cpp
- *    @copyright defined in enumivo/LICENSE.txt
+ *    @copyright defined in enumivo/LICENSE
  */
 
 #include <enulib/enu.hpp>

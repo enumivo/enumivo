@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in enumivo/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE
  */
 #include <enumivo/wallet_plugin/se_wallet.hpp>
 #include <enumivo/wallet_plugin/macos_user_auth.h>

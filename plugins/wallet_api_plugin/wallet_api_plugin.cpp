@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in enumivo/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE
  */
 #include <enumivo/wallet_api_plugin/wallet_api_plugin.hpp>
 #include <enumivo/wallet_plugin/wallet_manager.hpp>

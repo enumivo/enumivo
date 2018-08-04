@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in enumivo/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE
  */
 #pragma once
 #include <fc/io/raw.hpp>

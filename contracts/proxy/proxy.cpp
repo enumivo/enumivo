@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in enumivo/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE
  */
 #include <proxy/proxy.hpp>
 #include <enulib/transaction.hpp>

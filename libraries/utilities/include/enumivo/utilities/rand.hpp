@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in enumivo/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE
  */
 #ifndef RAND_HPP
 #define RAND_HPP 1

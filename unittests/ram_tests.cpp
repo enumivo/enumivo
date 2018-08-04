@@ -1,6 +1,6 @@
 /**
  *  @file api_tests.cpp
- *  @copyright defined in enumivo/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE
  */
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wsign-compare"

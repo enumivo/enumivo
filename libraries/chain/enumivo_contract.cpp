@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in enumivo/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE
  */
 #include <enumivo/chain/enumivo_contract.hpp>
 #include <enumivo/chain/contract_table_objects.hpp>

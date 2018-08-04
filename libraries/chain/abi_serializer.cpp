@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in enumivo/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE
  */
 #include <enumivo/chain/abi_serializer.hpp>
 #include <enumivo/chain/contract_types.hpp>

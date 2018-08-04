@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in enumivo/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE
  */
 #include <enumivo/http_plugin/http_plugin.hpp>
 #include <enumivo/chain/exceptions.hpp>

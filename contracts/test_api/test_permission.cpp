@@ -1,6 +1,6 @@
 /**
  * @file action_test.cpp
- * @copyright defined in enumivo/LICENSE.txt
+ * @copyright defined in enumivo/LICENSE
  */
 #include <enulib/permission.h>
 #include <enulib/db.h>

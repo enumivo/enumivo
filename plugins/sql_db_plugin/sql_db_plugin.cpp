@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in enumivo/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE
  *  @author Alessandro Siniscalchi <asiniscalchi@gmail.com>
  */
 #include <enumivo/sql_db_plugin/sql_db_plugin.hpp>

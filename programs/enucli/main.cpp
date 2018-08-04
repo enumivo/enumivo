@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in enumivo/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE
  *  @defgroup enuclienttool Enumivo Command Line Interface Client Reference
  *  @brief Tool for sending transactions and querying state from @ref enunode
  *  @ingroup enuclienttool

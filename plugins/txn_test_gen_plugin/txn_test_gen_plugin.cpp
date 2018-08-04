@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in enumivo/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE
  */
 #include <enumivo/txn_test_gen_plugin/txn_test_gen_plugin.hpp>
 #include <enumivo/chain_plugin/chain_plugin.hpp>

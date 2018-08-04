@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in enumivo/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE
  */
 #include <enumivo/producer_api_plugin/producer_api_plugin.hpp>
 #include <enumivo/chain/exceptions.hpp>

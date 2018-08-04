@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in enumivo/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE
  */
 #include <enumivo/chain_plugin/chain_plugin.hpp>
 #include <enumivo/chain/fork_database.hpp>
