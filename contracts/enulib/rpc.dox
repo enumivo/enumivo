@@ -1,6 +1,6 @@
 /**
 @defgroup enumivorpc RPC Interface
-@brief Describes how to interface with enudaemon over HTTP RPC
+@brief Describes how to interface with enunode over HTTP RPC
 
 @section tableofcontent Table Of Contents
 - [Configuration](#configuration)
@@ -29,17 +29,17 @@
 
 @section configuration Configuration
 
-`enudaemon` uses a REST RPC interface where plugins can register their own endpoints with the API server. This page
+`enunode` uses a REST RPC interface where plugins can register their own endpoints with the API server. This page
 will explain how to use some of the APIs to get information about the blockchain and send transactions.
 
-Before you can query `enudaemon` you must first enable the necessary API plugin(s). Depending on which API you want to enable, add the following line to your `enudaemon`'s `config.ini`:
+Before you can query `enunode` you must first enable the necessary API plugin(s). Depending on which API you want to enable, add the following line to your `enunode`'s `config.ini`:
 ```
 plugin = enumivo::chain_api_plugin // Enable Chain API
 plugin = enumivo::wallet_api_plugin // Enable Wallet API
 ```
-Alternatively, for Wallet API, you can also have the wallet functionality separate from `enudaemon`, by running `enuwalletd` separately.
+Alternatively, for Wallet API, you can also have the wallet functionality separate from `enunode`, by running `enuwallet` separately.
 
-For the following guide, we will assume that we have `enudaemon` running on `127.0.0.1:8888` (Chain API Plugin enabled, Wallet API Plugin disabled) and `enuwalletd` running on `127.0.0.1:8889`.
+For the following guide, we will assume that we have `enunode` running on `127.0.0.1:8888` (Chain API Plugin enabled, Wallet API Plugin disabled) and `enuwallet` running on `127.0.0.1:8889`.
 
 ===
 

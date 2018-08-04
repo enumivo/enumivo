@@ -10,8 +10,8 @@ use File::Path;
 use Cwd;
 
 my $enu_home = defined $ENV{ENU_HOME} ? $ENV{ENU_HOME} : getcwd;
-my $enudaemon = $enu_home . "/programs/enudaemon/enudaemon";
-my $enuclient = $enu_home . "/programs/enuclient/enuclient";
+my $enunode = $enu_home . "/programs/enunode/enunode";
+my $enucli = $enu_home . "/programs/enucli/enucli";
 
 my $nodes = defined $ENV{ENU_TEST_RING} ? $ENV{ENU_TEST_RING} : "1";
 my $pnodes = defined $ENV{ENU_TEST_PRODUCERS} ? $ENV{ENU_TEST_PRODUCERS} : "1";
@@ -40,7 +40,7 @@ if (!GetOptions("nodes=i" => \$nodes,
                 "pnodes=i" => \$pnodes)) {
     print "usage: $ARGV[0] [--nodes=<n>] [--pnodes=<n>] [--topo=<ring|star>] [--first-pause=<n>] [--launch-pause=<n>] [--duration=<n>] [--time-stamp=<time> \n";
     print "where:\n";
-    print "--nodes=n (default = 1) sets the number of enudaemon instances to launch\n";
+    print "--nodes=n (default = 1) sets the number of enunode instances to launch\n";
     print "--pnodes=n (default = 1) sets the number nodes that will also be producers\n";
     print "--topo=s (default = ring) sets the network topology to either a ring shape or a star shape\n";
     print "--first-pause=n (default = 0) sets the seconds delay after starting the first instance\n";
@@ -199,7 +199,7 @@ sub launch_nodes {
     }
 
     for (my $i = 0; $i < $nodes;  $i++) {
-        my @cmdline = ($enudaemon,
+        my @cmdline = ($enunode,
                        $gtsarg,
                        "--data-dir=$data_dir[$i]",
                        "--verbose-http-errors",
@@ -247,7 +247,7 @@ sub perform_work {
         my $stoptime = time () + $run_duration;
         my $counter = 0;
         while (time () < $stoptime) {
-            `$enuclient transfer enu inita 10 >> enuclient.out 2>> enuclient.err`;
+            `$enucli transfer enu inita 10 >> enucli.out 2>> enucli.err`;
             $counter++;
             if ($counter % 1000 == 0) {
                 print "$counter client iterations\n";

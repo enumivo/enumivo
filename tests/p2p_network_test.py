@@ -37,7 +37,7 @@ parser.add_argument("--wallet_port", type=int, help="wallet port", default=8899)
 parser.add_argument("--impaired_network", help="test impaired network", action='store_true')
 parser.add_argument("--lossy_network", help="test lossy network", action='store_true')
 parser.add_argument("--stress_network", help="test load/stress network", action='store_true')
-parser.add_argument("--not_kill_wallet", help="not killing enuwalletd", action='store_true')
+parser.add_argument("--not_kill_wallet", help="not killing walletd", action='store_true')
 
 args = parser.parse_args()
 enableMongo=False
@@ -55,7 +55,7 @@ elif args.stress_network:
 else:
     errorExit("one of impaired_network, lossy_network or stress_network must be set. Please also check peer configs in p2p_test_peers.py.")
 
-cluster=testUtils.Cluster(enuwalletd=True, enableMongo=enableMongo, defproduceraPrvtKey=defproduceraPrvtKey, defproducerbPrvtKey=defproducerbPrvtKey, walletHost=args.wallet_host, walletPort=args.wallet_port)
+cluster=testUtils.Cluster(walletd=True, enableMongo=enableMongo, defproduceraPrvtKey=defproduceraPrvtKey, defproducerbPrvtKey=defproducerbPrvtKey, walletHost=args.wallet_host, walletPort=args.wallet_port)
 
 print("BEGIN")
 
@@ -103,10 +103,10 @@ testeraAccount.activePublicKey=currencyAccount.activePublicKey=PUB_KEY3
 exchangeAccount.ownerPrivateKey=PRV_KEY2
 exchangeAccount.ownerPublicKey=PUB_KEY2
 
-print("Stand up enuwalletd")
+print("Stand up walletd")
 if walletMgr.launch() is False:
     cmdError("%s" % (WalletdName))
-    errorExit("Failed to stand up enuwalletd.")
+    errorExit("Failed to stand up enu walletd.")
 
 testWalletName="test"
 Print("Creating wallet \"%s\"." % (testWalletName))
@@ -142,7 +142,7 @@ if node0 is None:
 
 # enumivo should have the same key as defproducera
 enumivo = copy.copy(defproduceraAccount)
-enu.names = "enumivo"
+enumivo.name = "enumivo"
 
 Print("Info of each node:")
 for i in range(len(hosts)):
@@ -155,7 +155,7 @@ for i in range(len(hosts)):
 wastFile="contracts/enu.system/enu.system.wast"
 abiFile="contracts/enu.system/enu.system.abi"
 Print("\nPush system contract %s %s" % (wastFile, abiFile))
-trans=node0.publishContract(enu.names, wastFile, abiFile, waitForTransBlock=True)
+trans=node0.publishContract(enumivo.name, wastFile, abiFile, waitForTransBlock=True)
 if trans is None:
     Utils.errorExit("Failed to publish enu.system.")
 else:

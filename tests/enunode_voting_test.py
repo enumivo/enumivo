@@ -193,7 +193,7 @@ from core_symbol import CORE_SYMBOL
 args = TestHelper.parse_args({"--prod-count","--dump-error-details","--keep-logs","-v","--leave-running","--clean-run"})
 Utils.Debug=args.v
 totalNodes=4
-cluster=Cluster(enuwalletd=True)
+cluster=Cluster(walletd=True)
 dumpErrorDetails=args.dump_error_details
 keepLogs=args.keep_logs
 dontKill=args.leave_running
@@ -237,7 +237,7 @@ try:
     walletMgr.cleanup()
     if walletMgr.launch() is False:
         Utils.cmdError("%s" % (WalletdName))
-        errorExit("Failed to stand up enuwalletd.")
+        errorExit("Failed to stand up enu walletd.")
 
     testWallet=walletMgr.create(testWalletName, [cluster.enumivoAccount,accounts[0],accounts[1],accounts[2],accounts[3],accounts[4]])
     if testWallet is None:

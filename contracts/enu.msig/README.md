@@ -42,7 +42,7 @@ Execute a proposal
    - **executer** account executing the transaction
 
 
-enucli usage example.
+Enucli usage example.
 
 Prerequisites:
    - enu.token contract installed to enu.token account, enu.msig contract installed on enu.msig account which is a privileged account.

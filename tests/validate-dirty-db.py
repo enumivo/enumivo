@@ -63,7 +63,7 @@ def runEnunodeAndGetOutput(myTimeout=3):
     return (True, output)
 
 random.seed(seed) # Use a fixed seed for repeatability.
-cluster=Cluster(enuwalletd=True)
+cluster=Cluster(walletd=True)
 
 try:
     TestHelper.printSystemInfo("BEGIN")

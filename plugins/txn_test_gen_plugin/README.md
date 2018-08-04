@@ -1,15 +1,15 @@
 # txn\_test\_gen\_plugin
 
-This plugin provides a way to generate a given amount of transactions per second against the currency contract. It runs internally to enudaemon to reduce overhead.
+This plugin provides a way to generate a given amount of transactions per second against the currency contract. It runs internally to enunode to reduce overhead.
 
 ## Performance testing
 
 The following instructions describe how to use the `txn_test_gen_plugin` plugin to generate 1,000 transaction per second load on a simple Enumivo node.
 
 ### Create config and data directories
-Make an empty directory for our configs and data, `mkdir ~/enumivo.data`, and define a logging.json that doesn't print debug information (which occurs for each txn) to the console:
+Make an empty directory for our configs and data, `mkdir ~/enu.data`, and define a logging.json that doesn't print debug information (which occurs for each txn) to the console:
 ```bash
-cat << EOF > ~/enumivo.data/logging.json
+cat << EOF > ~/enu.data/logging.json
 {
   "includes": [],
   "appenders": [{
@@ -49,12 +49,12 @@ EOF
 
 ### Launch producer
 ```bash
-$ ./enunode -d ~/enumivo.data/producer_node --config-dir ~/enumivo.data/producer_node -l ~/enumivo.data/logging.json --http-server-address "" -p enumivo -e
+$ ./enunode -d ~/enu.data/producer_node --config-dir ~/enu.data/producer_node -l ~/enu.data/logging.json --http-server-address "" -p enumivo -e
 ```
 
 ### Launch non-producer that will generate transactions
 ```bash
-$ ./enunode -d ~/enumivo.data/generator_node --config-dir ~/enumivo.data/generator_node -l ~/enumivo.data/logging.json --plugin enumivo::txn_test_gen_plugin --plugin enumivo::wallet_api_plugin --plugin enumivo::chain_api_plugin --p2p-peer-address localhost:9876 --p2p-listen-endpoint localhost:5555
+$ ./enunode -d ~/enu.data/generator_node --config-dir ~/enu.data/generator_node -l ~/enu.data/logging.json --plugin enumivo::txn_test_gen_plugin --plugin enumivo::wallet_api_plugin --plugin enumivo::chain_api_plugin --p2p-peer-address localhost:9876 --p2p-listen-endpoint localhost:5555
 ```
 
 ### Create a wallet on the non-producer and set bios contract

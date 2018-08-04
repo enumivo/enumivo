@@ -498,7 +498,7 @@ void add_data( bsoncxx::builder::basic::document& act_doc, mongocxx::collection&
       ilog( "Unable to convert action.data to ABI: ${s}::${n}, std what: ${e}",
             ("s", act.account)( "n", act.name )( "e", e.what()));
    } catch (fc::exception& e) {
-      if (act.name != "onblock") { // enumivo::onblock not in original enumivo.system abi
+      if (act.name != "onblock") { // enumivo::onblock not in original enu.system abi
          ilog( "Unable to convert action.data to ABI: ${s}::${n}, fc exception: ${e}",
                ("s", act.account)( "n", act.name )( "e", e.to_detail_string()));
       }

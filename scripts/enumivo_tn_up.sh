@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# enumivo-tn_up is a helper script used to start a node that was previously stopped.
+# enumivo_tn_up is a helper script used to start a node that was previously stopped.
 # It is not intended to be run stand-alone; it is a companion to the
-# enumivo-tn_bounce.sh and enumivo-tn_roll.sh scripts.
+# enumivo_tn_bounce.sh and enumivo_tn_roll.sh scripts.
 
 connected="0"
 

@@ -19,7 +19,7 @@ extern "C" {
     * @brief Defines API for querying action and sending action
     *
     *
-    * A Enumivo action has the following abstract structure:
+    * An Enumivo action has the following abstract structure:
     *
     * ```
     *   struct action {

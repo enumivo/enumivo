@@ -81,7 +81,7 @@ ecmd set contract enumivo contracts/enu.bios contracts/enu.bios/enu.bios.wast co
 ecmd create key
 pubsyskey=`grep "^Public key:" $logfile | tail -1 | sed "s/^Public key://"`
 prisyskey=`grep "^Private key:" $logfile | tail -1 | sed "s/^Private key://"`
-echo enu.* keys: $prisyskey $pubsyskey >> $logfile
+echo enumivo.* keys: $prisyskey $pubsyskey >> $logfile
 wcmd import -n ignition --private-key $prisyskey
 ecmd create account enumivo enu.blockpay $pubsyskey $pubsyskey
 ecmd create account enumivo enu.msig $pubsyskey $pubsyskey

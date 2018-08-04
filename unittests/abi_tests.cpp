@@ -1579,10 +1579,10 @@ BOOST_FIXTURE_TEST_CASE(abigen_vector_alias, abi_gen_helper)
 
 } FC_LOG_AND_RETHROW() }
 
-BOOST_FIXTURE_TEST_CASE(abgigen_enumivoabi_macro, abi_gen_helper)
+BOOST_FIXTURE_TEST_CASE(abigen_enumivoabi_macro, abi_gen_helper)
 { try {
 
-   const char* abgigen_enumivoabi_macro = R"=====(
+   const char* abigen_enumivoabi_macro = R"=====(
 
       #pragma GCC diagnostic push
       #pragma GCC diagnostic ignored "-Wpointer-bool-conversion"
@@ -1612,7 +1612,7 @@ BOOST_FIXTURE_TEST_CASE(abgigen_enumivoabi_macro, abi_gen_helper)
 
    )=====";
 
-   const char* abgigen_enumivoabi_macro_abi = R"=====(
+   const char* abigen_enumivoabi_macro_abi = R"=====(
    {
      "types": [],
      "structs": [{
@@ -1635,7 +1635,7 @@ BOOST_FIXTURE_TEST_CASE(abgigen_enumivoabi_macro, abi_gen_helper)
    }
    )=====";
 
-   BOOST_TEST( generate_abi(abgigen_enumivoabi_macro, abgigen_enumivoabi_macro_abi) == true );
+   BOOST_TEST( generate_abi(abigen_enumivoabi_macro, abigen_enumivoabi_macro_abi) == true );
 
 } FC_LOG_AND_RETHROW() }
 

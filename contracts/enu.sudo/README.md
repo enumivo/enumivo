@@ -16,9 +16,9 @@ Execute a transaction while bypassing regular authorization checks (requires aut
 
 The enu.sudo contract needs to be installed on a privileged account to function. It is recommended to use the account `enu.sudo`.
 
-First, the account `enu.sudo` needs to be created. Since it has the restricted `enumivo.` prefix, only a privileged account can create this account. So this guide will use the `enumivo` account to create the `enu.sudo` account. On typical live blockchain configurations, the `enumivo` account can only be controlled by a supermajority of the current active block producers. So, this guide will use the `enumivo.msig` contract to help coordinate the approvals of the proposed transaction that creates the `enu.sudo` account.
+First, the account `enu.sudo` needs to be created. Since it has the restricted `enu.` prefix, only a privileged account can create this account. So this guide will use the `enumivo` account to create the `enu.sudo` account. On typical live blockchain configurations, the `enumivo` account can only be controlled by a supermajority of the current active block producers. So, this guide will use the `enu.msig` contract to help coordinate the approvals of the proposed transaction that creates the `enu.sudo` account.
 
-The `enu.sudo` account also needs to have sufficient RAM to host the contract and sufficient CPU and network bandwidth to deploy the contract. This means that the creator of the account (`enumivo`) needs to gift sufficient RAM to the new account and delegate (preferably with transfer) sufficient bandwidth to the new account. To pull this off the `enumivo` account needs to have enough of the core system token (the `SYS` token will be used within this guide) in its liquid balance. So prior to continuing with the next steps of this guide, the active block producers of the chain who are coordinating this process need to ensure that a sufficient amount of core system tokens that they are authorized to spend is placed in the liquid balance of the `enumivo` account.
+The `enu.sudo` account also needs to have sufficient RAM to host the contract and sufficient CPU and network bandwidth to deploy the contract. This means that the creator of the account (`enumivo`) needs to gift sufficient RAM to the new account and delegate (preferably with transfer) sufficient bandwidth to the new account. To pull this off the `enumivo` account needs to have enough of the core system token (the `ENU` token will be used within this guide) in its liquid balance. So prior to continuing with the next steps of this guide, the active block producers of the chain who are coordinating this process need to ensure that a sufficient amount of core system tokens that they are authorized to spend is placed in the liquid balance of the `enumivo` account.
 
 This guide will be using enucli to carry out the process.
 
@@ -26,17 +26,17 @@ This guide will be using enucli to carry out the process.
 
 #### 2.1.1 Generate the transaction to create the enu.sudo account
 
-The transaction to create the `enu.sudo` account will need to be proposed to get the necessary approvals from active block producers before executing it. This transaction needs to first be generated and stored as JSON into a file so that it can be used in the enucli command to propose the transaction to the enumivo.msig contract.
+The transaction to create the `enu.sudo` account will need to be proposed to get the necessary approvals from active block producers before executing it. This transaction needs to first be generated and stored as JSON into a file so that it can be used in the enucli command to propose the transaction to the enu.msig contract.
 
 A simple way to generate a transaction to create a new account is to use the `enucli system newaccount`. However, that sub-command currently only accepts a single public key as the owner and active authority of the new account. However, the owner and active authorities of the new account should only be satisfied by the `active` permission of `enumivo`. One option is to create the new account with the some newly generated key, and then later update the authorities of the new account using `enucli set account permission`. This guide will take an alternative approach which atomically creates the new account in its proper configuration.
 
-Three unsigned transactions will be generated using enucli and then the actions within those transactions will be appropriately stitched together into a single transaction which will later be proposed using the enumivo.msig contract.
+Three unsigned transactions will be generated using enucli and then the actions within those transactions will be appropriately stitched together into a single transaction which will later be proposed using the enu.msig contract.
 
 First, generate a transaction to capture the necessary actions involved in creating a new account:
 ```
-$ enucli system newaccount -s -j -d --transfer --stake-net "1.000 SYS" --stake-cpu "1.000 SYS" --buy-ram-kbytes 50 enumivo enu.sudo ENU8MMUW11TAdTDxqdSwSqJodefSoZbFhcprndomgLi9MeR2o8MT4 > generated_account_creation_trx.json
+$ enucli system newaccount -s -j -d --transfer --stake-net "1.000 ENU" --stake-cpu "1.000 ENU" --buy-ram-kbytes 50 enumivo enu.sudo ENU8MMUW11TAdTDxqdSwSqJodefSoZbFhcprndomgLi9MeR2o8MT4 > generated_account_creation_trx.json
 726964ms thread-0   main.cpp:429                  create_action        ] result: {"binargs":"0000000000ea305500004d1a03ea305500c80000"} arg: {"code":"enumivo","action":"buyrambytes","args":{"payer":"enumivo","receiver":"enu.sudo","bytes":51200}}
-726967ms thread-0   main.cpp:429                  create_action        ] result: {"binargs":"0000000000ea305500004d1a03ea3055102700000000000004535953000000001027000000000000045359530000000001"} arg: {"code":"enumivo","action":"delegatebw","args":{"from":"enumivo","receiver":"enu.sudo","stake_net_quantity":"1.0000 SYS","stake_cpu_quantity":"1.0000 SYS","transfer":true}}
+726967ms thread-0   main.cpp:429                  create_action        ] result: {"binargs":"0000000000ea305500004d1a03ea3055102700000000000004535953000000001027000000000000045359530000000001"} arg: {"code":"enumivo","action":"delegatebw","args":{"from":"enumivo","receiver":"enu.sudo","stake_net_quantity":"1.0000 ENU","stake_cpu_quantity":"1.0000 ENU","transfer":true}}
 $ cat generated_account_creation_trx.json
 {
   "expiration": "2018-06-29T17:11:36",
@@ -168,7 +168,7 @@ $ cat generated_setpriv_trx.json
 }
 ```
 
-Next, the action JSONs of the previously generated transactions will be used to construct a unified transaction which will eventually be proposed with the enumivo.msig contract. A good way to get started is to make a copy of the generated_newaccount_trx.json file (call the copied file create_sudo_account_trx.json) and edit the first three fields so it looks something like the following:
+Next, the action JSONs of the previously generated transactions will be used to construct a unified transaction which will eventually be proposed with the enu.msig contract. A good way to get started is to make a copy of the generated_newaccount_trx.json file (call the copied file create_sudo_account_trx.json) and edit the first three fields so it looks something like the following:
 ```
 $ cat create_sudo_account_trx.json
 {
@@ -196,7 +196,7 @@ $ cat create_sudo_account_trx.json
 }
 ```
 
-The `ref_block_num` and `ref_block_prefix` values were set to 0. The proposed transaction does not need to have a valid TaPoS reference block because it will be reset anyway when scheduled as a deferred transaction during the `enumivo.msig::exec` action. The `expiration` field, which was the only other field that was changed, will also be reset when the proposed transaction is scheduled as a deferred transaction during `enumivo.msig::exec`. However, this field actually does matter during the propose-approve-exec lifecycle of the proposed transaction. If the present time passes the time in the `expiration` field of the proposed transaction, it will not be possible to execute the proposed transaction even if all necessary approvals are gathered. Therefore, it is important to set the expiration time to some point well enough in the future to give all necessary approvers enough time to review and approve the proposed transaction, but it is otherwise arbitrary. Generally, for reviewing/validation purposes it is important that all potential approvers of the transaction (i.e. the block producers) choose the exact same `expiration` time so that there is not any discrepancy in bytes of the serialized transaction if it was to later be included in payload data of some other action.
+The `ref_block_num` and `ref_block_prefix` values were set to 0. The proposed transaction does not need to have a valid TaPoS reference block because it will be reset anyway when scheduled as a deferred transaction during the `enu.msig::exec` action. The `expiration` field, which was the only other field that was changed, will also be reset when the proposed transaction is scheduled as a deferred transaction during `enu.msig::exec`. However, this field actually does matter during the propose-approve-exec lifecycle of the proposed transaction. If the present time passes the time in the `expiration` field of the proposed transaction, it will not be possible to execute the proposed transaction even if all necessary approvals are gathered. Therefore, it is important to set the expiration time to some point well enough in the future to give all necessary approvers enough time to review and approve the proposed transaction, but it is otherwise arbitrary. Generally, for reviewing/validation purposes it is important that all potential approvers of the transaction (i.e. the block producers) choose the exact same `expiration` time so that there is not any discrepancy in bytes of the serialized transaction if it was to later be included in payload data of some other action.
 
 Then, all but the first action JSON object of generated_account_creation_trx.json should be appended to the `actions` array of create_sudo_account_trx.json, and then the single action JSON object of generated_setpriv_trx.json should be appended to the `actions` array of create_sudo_account_trx.json. The final result is a create_sudo_account_trx.json file that looks like the following:
 ```
@@ -255,7 +255,7 @@ $ cat create_sudo_account_trx.json
 
 The transaction in create_sudo_account_trx.json is now ready to be proposed.
 
-It will be useful to have a JSON of the active permissions of each of the active block producers for later when proposing transactions using the enumivo.msig contract.
+It will be useful to have a JSON of the active permissions of each of the active block producers for later when proposing transactions using the enu.msig contract.
 
 This guide will assume that there are 21 active block producers on the chain with account names: `blkproducera`, `blkproducerb`, ..., `blkproduceru`.
 
@@ -299,7 +299,7 @@ The lead block producer (`blkproducera`) should propose the transaction stored i
 ```
 $ enucli multisig propose_trx createsudo producer_permissions.json create_sudo_account_trx.json blkproducera
 executed transaction: bf6aaa06b40e2a35491525cb11431efd2b5ac94e4a7a9c693c5bf0cfed942393  744 bytes  772 us
-#    enumivo.msig <= enumivo.msig::propose          {"proposer":"blkproducera","proposal_name":"createsudo","requested":[{"actor":"blkproducera","permis...
+#    enu.msig <= enu.msig::propose          {"proposer":"blkproducera","proposal_name":"createsudo","requested":[{"actor":"blkproducera","permis...
 warning: transaction executed locally, but may not be confirmed by the network yet
 ```
 
@@ -358,18 +358,18 @@ When an approver (e.g. `blkproducerb`) is satisfied with the proposed transactio
 ```
 $ enucli multisig approve blkproducera createsudo '{"actor": "blkproducerb", "permission": "active"}' -p blkproducerb
 executed transaction: 03a907e2a3192aac0cd040c73db8273c9da7696dc7960de22b1a479ae5ee9f23  128 bytes  472 us
-#    enumivo.msig <= enumivo.msig::approve          {"proposer":"blkproducera","proposal_name":"createsudo","level":{"actor":"blkproducerb","permission"...
+#    enu.msig <= enu.msig::approve          {"proposer":"blkproducera","proposal_name":"createsudo","level":{"actor":"blkproducerb","permission"...
 warning: transaction executed locally, but may not be confirmed by the network yet
 ```
 
 #### 2.1.4 Execute the transaction to create the enu.sudo account
 
-When the necessary approvals are collected (in this example, with 21 block producers, at least 15 of their approvals were required), anyone can push the `enumivo.msig::exec` action which executes the approved transaction. It makes a lot of sense for the lead block producer who proposed the transaction to also execute it (this will incur another temporary RAM cost for the deferred transaction that is generated by the enumivo.msig contract).
+When the necessary approvals are collected (in this example, with 21 block producers, at least 15 of their approvals were required), anyone can push the `enu.msig::exec` action which executes the approved transaction. It makes a lot of sense for the lead block producer who proposed the transaction to also execute it (this will incur another temporary RAM cost for the deferred transaction that is generated by the enu.msig contract).
 
 ```
 $ enucli multisig exec blkproducera createsudo blkproducera
 executed transaction: 7ecc183b99915cc411f96dde7c35c3fe0df6e732507f272af3a039b706482e5a  160 bytes  850 us
-#    enumivo.msig <= enumivo.msig::exec             {"proposer":"blkproducera","proposal_name":"createsudo","executer":"blkproducera"}
+#    enu.msig <= enu.msig::exec             {"proposer":"blkproducera","proposal_name":"createsudo","executer":"blkproducera"}
 warning: transaction executed locally, but may not be confirmed by the network yet
 ```
 
@@ -384,15 +384,15 @@ memory:
      quota:     49.74 KiB    used:     3.33 KiB  
 
 net bandwidth:
-     staked:          1.0000 SYS           (total stake delegated from account to self)
-     delegated:       0.0000 SYS           (total staked delegated to account from others)
+     staked:          1.0000 ENU           (total stake delegated from account to self)
+     delegated:       0.0000 ENU           (total staked delegated to account from others)
      used:                 0 bytes
      available:        2.304 MiB  
      limit:            2.304 MiB  
 
 cpu bandwidth:
-     staked:          1.0000 SYS           (total stake delegated from account to self)
-     delegated:       0.0000 SYS           (total staked delegated to account from others)
+     staked:          1.0000 ENU           (total stake delegated from account to self)
+     delegated:       0.0000 ENU           (total staked delegated to account from others)
      used:                 0 us   
      available:        460.8 ms   
      limit:            460.8 ms   
@@ -405,7 +405,7 @@ producers:     <not voted>
 
 #### 2.2.1  Generate the transaction to deploy the enu.sudo contract
 
-The transaction to deploy the contract to the `enu.sudo` account will need to be proposed to get the necessary approvals from active block producers before executing it. This transaction needs to first be generated and stored as JSON into a file so that it can be used in the enucli command to propose the transaction to the enumivo.msig contract.
+The transaction to deploy the contract to the `enu.sudo` account will need to be proposed to get the necessary approvals from active block producers before executing it. This transaction needs to first be generated and stored as JSON into a file so that it can be used in the enucli command to propose the transaction to the enu.msig contract.
 
 The easy way to generate this transaction is using enucli:
 ```
@@ -476,7 +476,7 @@ The lead block producer (`blkproducera`) should propose the transaction stored i
 ```
 $ enucli multisig propose_trx deploysudo producer_permissions.json deploy_sudo_contract_trx.json blkproducera
 executed transaction: 9e50dd40eba25583a657ee8114986a921d413b917002c8fb2d02e2d670f720a8  4312 bytes  871 us
-#    enumivo.msig <= enumivo.msig::propose          {"proposer":"blkproducera","proposal_name":"deploysudo","requested":[{"actor":"blkproducera","permis...
+#    enu.msig <= enu.msig::propose          {"proposer":"blkproducera","proposal_name":"deploysudo","requested":[{"actor":"blkproducera","permis...
 warning: transaction executed locally, but may not be confirmed by the network yet
 ```
 
@@ -551,18 +551,18 @@ When an approver (e.g. `blkproducerb`) is satisfied with the proposed transactio
 ```
 $ enucli multisig approve blkproducera deploysudo '{"actor": "blkproducerb", "permission": "active"}' -p blkproducerb
 executed transaction: d1e424e05ee4d96eb079fcd5190dd0bf35eca8c27dd7231b59df8e464881abfd  128 bytes  483 us
-#    enumivo.msig <= enumivo.msig::approve          {"proposer":"blkproducera","proposal_name":"deploysudo","level":{"actor":"blkproducerb","permission"...
+#    enu.msig <= enu.msig::approve          {"proposer":"blkproducera","proposal_name":"deploysudo","level":{"actor":"blkproducerb","permission"...
 warning: transaction executed locally, but may not be confirmed by the network yet
 ```
 
 #### 2.2.4 Execute the transaction to create the enu.sudo account
 
-When the necessary approvals are collected (in this example, with 21 block producers, at least 15 of their approvals were required), anyone can push the `enumivo.msig::exec` action which executes the approved transaction. It makes a lot of sense for the lead block producer who proposed the transaction to also execute it (this will incur another temporary RAM cost for the deferred transaction that is generated by the enumivo.msig contract).
+When the necessary approvals are collected (in this example, with 21 block producers, at least 15 of their approvals were required), anyone can push the `enu.msig::exec` action which executes the approved transaction. It makes a lot of sense for the lead block producer who proposed the transaction to also execute it (this will incur another temporary RAM cost for the deferred transaction that is generated by the enu.msig contract).
 
 ```
 $ enucli multisig exec blkproducera deploysudo blkproducera
 executed transaction: e8da14c6f1fdc3255b5413adccfd0d89b18f832a4cc18c4324ea2beec6abd483  160 bytes  1877 us
-#    enumivo.msig <= enumivo.msig::exec             {"proposer":"blkproducera","proposal_name":"deploysudo","executer":"blkproducera"}
+#    enu.msig <= enu.msig::exec             {"proposer":"blkproducera","proposal_name":"deploysudo","executer":"blkproducera"}
 ```
 
 Anyone can now verify that the `enu.sudo` contract was deployed correctly.
@@ -581,7 +581,7 @@ If the two hashes match then the local WebAssembly code is the one deployed on t
 
 ### 3.1 Example: Updating owner authority of an arbitrary account
 
-This example will demonstrate how to use the deployed enu.sudo contract together with the enumivo.msig contract to allow a greater than two-thirds supermajority of block producers of an Enumivo blockchain to change the owner authority of an arbitrary account. The example will use enucli: in particular, the `enucli multisig` command, the `enucli set account permission` sub-command, and the `enucli sudo exec` sub-command. However, the guide also demonstrates what to do if the `enucli sudo exec` sub-command is not available.
+This example will demonstrate how to use the deployed enu.sudo contract together with the enu.msig contract to allow a greater than two-thirds supermajority of block producers of an Enumivo blockchain to change the owner authority of an arbitrary account. The example will use enucli: in particular, the `enucli multisig` command, the `enucli set account permission` sub-command, and the `enucli sudo exec` sub-command. However, the guide also demonstrates what to do if the `enucli sudo exec` sub-command is not available.
 
 This guide assumes that there are 21 active block producers on the chain with account names: `blkproducera`, `blkproducerb`, ..., `blkproduceru`. Block producer `blkproducera` will act as the lead block producer handling the proposal of the transaction.
 
@@ -626,15 +626,15 @@ memory:
      quota:     49.74 KiB    used:     3.365 KiB  
 
 net bandwidth:
-     staked:          1.0000 SYS           (total stake delegated from account to self)
-     delegated:       0.0000 SYS           (total staked delegated to account from others)
+     staked:          1.0000 ENU           (total stake delegated from account to self)
+     delegated:       0.0000 ENU           (total staked delegated to account from others)
      used:                 0 bytes
      available:        2.304 MiB  
      limit:            2.304 MiB  
 
 cpu bandwidth:
-     staked:          1.0000 SYS           (total stake delegated from account to self)
-     delegated:       0.0000 SYS           (total staked delegated to account from others)
+     staked:          1.0000 ENU           (total stake delegated from account to self)
+     delegated:       0.0000 ENU           (total staked delegated to account from others)
      used:                 0 us   
      available:        460.8 ms   
      limit:            460.8 ms   
@@ -760,7 +760,7 @@ The lead block producer (`blkproducera`) should propose the transaction stored i
 ```
 $ enucli multisig propose_trx updatealice producer_permissions.json sudo_update_alice_owner_trx.json blkproducera
 executed transaction: 10474f52c9e3fc8e729469a577cd2fc9e4330e25b3fd402fc738ddde26605c13  624 bytes  782 us
-#    enumivo.msig <= enumivo.msig::propose          {"proposer":"blkproducera","proposal_name":"updatealice","requested":[{"actor":"blkproducera","permi...
+#    enu.msig <= enu.msig::propose          {"proposer":"blkproducera","proposal_name":"updatealice","requested":[{"actor":"blkproducera","permi...
 warning: transaction executed locally, but may not be confirmed by the network yet
 ```
 
@@ -843,18 +843,18 @@ When an approver (e.g. `blkproducerb`) is satisfied with the proposed transactio
 ```
 $ enucli multisig approve blkproducera updatealice '{"actor": "blkproducerb", "permission": "active"}' -p blkproducerb
 executed transaction: 2bddc7747e0660ba26babf95035225895b134bfb2ede32ba0a2bb6091c7dab56  128 bytes  543 us
-#    enumivo.msig <= enumivo.msig::approve          {"proposer":"blkproducera","proposal_name":"updatealice","level":{"actor":"blkproducerb","permission...
+#    enu.msig <= enu.msig::approve          {"proposer":"blkproducera","proposal_name":"updatealice","level":{"actor":"blkproducerb","permission...
 warning: transaction executed locally, but may not be confirmed by the network yet
 ```
 
 #### 3.1.4 Execute the transaction to change the owner permission of an account
 
-When the necessary approvals are collected (in this example, with 21 block producers, at least 15 of their approvals were required), anyone can push the `enumivo.msig::exec` action which executes the approved transaction. It makes a lot of sense for the lead block producer who proposed the transaction to also execute it (this will incur another temporary RAM cost for the deferred transaction that is generated by the enumivo.msig contract).
+When the necessary approvals are collected (in this example, with 21 block producers, at least 15 of their approvals were required), anyone can push the `enu.msig::exec` action which executes the approved transaction. It makes a lot of sense for the lead block producer who proposed the transaction to also execute it (this will incur another temporary RAM cost for the deferred transaction that is generated by the enu.msig contract).
 
 ```
 $ enucli multisig exec blkproducera updatealice blkproducera
 executed transaction: 7127a66ae307fbef6415bf60c3e91a88b79bcb46030da983c683deb2a1a8e0d0  160 bytes  820 us
-#    enumivo.msig <= enumivo.msig::exec             {"proposer":"blkproducera","proposal_name":"updatealice","executer":"blkproducera"}
+#    enu.msig <= enu.msig::exec             {"proposer":"blkproducera","proposal_name":"updatealice","executer":"blkproducera"}
 warning: transaction executed locally, but may not be confirmed by the network yet
 ```
 
@@ -868,15 +868,15 @@ memory:
      quota:     49.74 KiB    used:     3.348 KiB  
 
 net bandwidth:
-     staked:          1.0000 SYS           (total stake delegated from account to self)
-     delegated:       0.0000 SYS           (total staked delegated to account from others)
+     staked:          1.0000 ENU           (total stake delegated from account to self)
+     delegated:       0.0000 ENU           (total staked delegated to account from others)
      used:                 0 bytes
      available:        2.304 MiB  
      limit:            2.304 MiB  
 
 cpu bandwidth:
-     staked:          1.0000 SYS           (total stake delegated from account to self)
-     delegated:       0.0000 SYS           (total staked delegated to account from others)
+     staked:          1.0000 ENU           (total stake delegated from account to self)
+     delegated:       0.0000 ENU           (total staked delegated to account from others)
      used:               413 us   
      available:        460.4 ms   
      limit:            460.8 ms   

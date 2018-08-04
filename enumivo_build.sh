@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################################################
-# This is the https://t.me/enumivochat automated install script for Linux and Mac OS.
+# This is the Enumivo automated install script for Linux and Mac OS.
 # This file was downloaded from https://github.com/enumivo/enumivo
 #
 # Copyright (c) 2017, Respective Authors all rights reserved.

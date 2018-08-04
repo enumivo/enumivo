@@ -17,9 +17,7 @@ Some of the groundbreaking features of Enumivo include:
 1. Designed for Parallel Execution of Context Free Validation Logic
 1. Designed for Inter Blockchain Communication 
 
-Enumivo is released under the open source MIT license and is offered “AS IS” without warranty of any kind, express or implied. Any security provided by the Enumivo software depends in part on how it is used, configured, and deployed. Enumivo is built upon many third-party libraries such as Binaryen (Apache License)and WAVM  (BSD 3-clause) which are also provided “AS IS” without warranty of any kind. Without limiting the generality of the foregoing, Block.one makes no representation or guarantee that Enumivo or any third-party libraries will perform as intended or will be free of errors, bugs or faulty code. Both may fail in large or small ways that could completely or partially limit functionality or compromise computer systems. If you use or implement Enumivo, you do so at your own risk. In no event will Block.one be liable to any party for any damages whatsoever, even if it had been advised of the possibility of damage.  
-
-ERL.one is neither launching nor operating any initial public blockchains based upon the Enumivo software. This release refers only to version 1.0 of our open source software. We caution those who wish to use blockchains built on Enumivo to carefully vet the companies and organizations launching blockchains based on Enumivo before disclosing any private keys to their derivative software. 
+Enumivo is released under the open source MIT license and is offered “AS IS” without warranty of any kind, express or implied. Any security provided by the Enumivo software depends in part on how it is used, configured, and deployed. Enumivo is built upon many third-party libraries such as Binaryen (Apache License) and WAVM  (BSD 3-clause) which are also provided “AS IS” without warranty of any kind. Without limiting the generality of the foregoing, enumivo.org makes no representation or guarantee that Enumivo or any third-party libraries will perform as intended or will be free of errors, bugs or faulty code. Both may fail in large or small ways that could completely or partially limit functionality or compromise computer systems. If you use or implement Enumivo, you do so at your own risk. 
 
 There is no public testnet running currently.
 
@@ -35,5 +33,5 @@ Enumivo currently supports the following operating systems:
 
 # Resources
 1. [Enumivo Website](https://enumivo.org)
-2. [Enumivo Forum](https://enumivo.com)
-3. [Community Telegram Group](https://t.me/enumivochat)
+2. [Enumivo Telegram](https://t.me/enumivochat)
+3. [Enumivo Forum](https://enumivo.com)

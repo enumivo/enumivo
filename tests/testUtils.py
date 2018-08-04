@@ -6,7 +6,6 @@ import inspect
 import json
 import shlex
 from sys import stdout
-from core_symbol import CORE_SYMBOL
 
 ###########################################################################################
 class Utils:

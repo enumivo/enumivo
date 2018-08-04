@@ -32,16 +32,16 @@ class Cluster(object):
     __BiosPort=8788
 
     # pylint: disable=too-many-arguments
-    # enuwalletd [True|False] Is enuwallet running. If not load the wallet plugin
-    def __init__(self, enuwalletd=False, localCluster=True, host="localhost", port=8888, walletHost="localhost", walletPort=9899, enableMongo=False
+    # walletd [True|False] Is enuwallet running. If not load the wallet plugin
+    def __init__(self, walletd=False, localCluster=True, host="localhost", port=8888, walletHost="localhost", walletPort=9899, enableMongo=False
                  , mongoHost="localhost", mongoPort=27017, mongoDb="ENUtest", defproduceraPrvtKey=None, defproducerbPrvtKey=None, staging=False):
         """Cluster container.
-        enuwalletd [True|False] Is wallet enuwallet running. If not load the wallet plugin
+        walletd [True|False] Is wallet enuwallet running. If not load the wallet plugin
         localCluster [True|False] Is cluster local to host.
         host: enu server host
         port: enu server port
         walletHost: enu wallet host
-        walletPort: wos wallet port
+        walletPort: enu wallet port
         enableMongo: Include mongoDb support, configures enu mongo plugin
         mongoHost: MongoDB host
         mongoPort: MongoDB port
@@ -52,7 +52,7 @@ class Cluster(object):
         self.nodes={}
         self.localCluster=localCluster
         self.wallet=None
-        self.enuwalletd=enuwalletd
+        self.walletd=walletd
         self.enableMongo=enableMongo
         self.mongoHost=mongoHost
         self.mongoPort=mongoPort
@@ -63,7 +63,7 @@ class Cluster(object):
         self.walletHost=walletHost
         self.walletPort=walletPort
         self.walletEndpointArgs=""
-        if self.enuwalletd:
+        if self.walletd:
             self.walletEndpointArgs += " --wallet-url http://%s:%d" % (self.walletHost, self.walletPort)
         self.mongoEndpointArgs=""
         self.mongoUri=""
@@ -130,7 +130,7 @@ class Cluster(object):
             cmdArr.append("--nogen")
 
         enunodeArgs="--max-transaction-time 5000 --abi-serializer-max-time-ms 5000 --filter-on * --p2p-max-nodes-per-host %d" % (totalNodes)
-        if not self.enuwalletd:
+        if not self.walletd:
             enunodeArgs += " --plugin enumivo::wallet_api_plugin"
         if self.enableMongo:
             enunodeArgs += " --plugin enumivo::mongo_db_plugin --mongodb-wipe --delete-all-blocks --mongodb-uri %s" % self.mongoUri

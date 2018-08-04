@@ -47,7 +47,7 @@ sanityTest=args.sanity_test
 
 Utils.Debug=debug
 localTest=True if server == TestHelper.LOCAL_HOST else False
-cluster=Cluster(enuwalletd=True, enableMongo=enableMongo, defproduceraPrvtKey=defproduceraPrvtKey, defproducerbPrvtKey=defproducerbPrvtKey)
+cluster=Cluster(walletd=True, enableMongo=enableMongo, defproduceraPrvtKey=defproduceraPrvtKey, defproducerbPrvtKey=defproducerbPrvtKey)
 walletMgr=WalletMgr(True)
 testSuccessful=False
 killEnuInstances=not dontKill
@@ -116,7 +116,7 @@ try:
     walletMgr.cleanup()
     if walletMgr.launch() is False:
         cmdError("%s" % (WalletdName))
-        errorExit("Failed to stand up enuwalletd.")
+        errorExit("Failed to stand up enu walletd.")
 
     testWalletName="test"
     Print("Creating wallet \"%s\"." % (testWalletName))

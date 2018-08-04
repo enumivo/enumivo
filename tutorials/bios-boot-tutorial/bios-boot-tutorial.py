@@ -329,7 +329,7 @@ commands = [
     ('k', 'kill',           stepKillAll,                True,    "Kill all enunode and enuwallet processes"),
     ('w', 'wallet',         stepStartWallet,            True,    "Start enuwallet, create wallet, fill with keys"),
     ('b', 'boot',           stepStartBoot,              True,    "Start boot node"),
-    ('s', 'sys',            createSystemAccounts,       True,    "Create system accounts (enumivo.*)"),
+    ('s', 'sys',            createSystemAccounts,       True,    "Create system accounts (enu.*)"),
     ('c', 'contracts',      stepInstallSystemContracts, True,    "Install system contracts (token, msig)"),
     ('t', 'tokens',         stepCreateTokens,           True,    "Create tokens"),
     ('S', 'sys-contract',   stepSetSystemContract,      True,    "Set system contract"),

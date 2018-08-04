@@ -94,6 +94,6 @@
 	printf "\\tTo verify your installation run the following commands:\\n"
 
 	printf "\\tFor more information:\\n"
-	printf "\\tEnumivo Website  : https://enumivo.org\\n"
-	printf "\\tEnumivo Telegram : https://t.me/enumivochat\\n"
-	printf "\\tEnumivo Forum    : https://enumivo.com\\n"
+   printf "\\tEnumivo Website  : https://enumivo.org\\n"
+   printf "\\tEnumivo Telegram : https://t.me/enumivochat\\n"
+   printf "\\tEnumivo Forum    : https://enumivo.com\\n"

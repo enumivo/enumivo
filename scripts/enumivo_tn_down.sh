@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# enumivo-tn_down.sh is used by the enumivo-tn_bounce.sh and enumivo-tn_roll.sh scripts.
+# enumivo_tn_down.sh is used by the enumivo_tn_bounce.sh and enumivo_tn_roll.sh scripts.
 # It is intended to terminate specific Enumivo daemon processes.
 #
 

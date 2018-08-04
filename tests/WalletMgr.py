@@ -16,9 +16,9 @@ class WalletMgr(object):
     __walletDataDir="test_wallet_0"
 
     # pylint: disable=too-many-arguments
-    # enuwalletd [True|False] True=Launch wallet(enuwallet) process; False=Manage launch process externally.
-    def __init__(self, enuwalletd, enunodePort=8888, enunodeHost="localhost", port=9899, host="localhost"):
-        self.enuwalletd=enuwalletd
+    # walletd [True|False] True=Launch wallet(enuwallet) process; False=Manage launch process externally.
+    def __init__(self, walletd, enunodePort=8888, enunodeHost="localhost", port=9899, host="localhost"):
+        self.walletd=walletd
         self.enunodePort=enunodePort
         self.enunodeHost=enunodeHost
         self.port=port
@@ -27,12 +27,12 @@ class WalletMgr(object):
         self.__walletPid=None
         self.endpointArgs="--url http://%s:%d" % (self.enunodeHost, self.enunodePort)
         self.walletEndpointArgs=""
-        if self.enuwalletd:
+        if self.walletd:
             self.walletEndpointArgs += " --wallet-url http://%s:%d" % (self.host, self.port)
             self.endpointArgs += self.walletEndpointArgs
 
     def launch(self):
-        if not self.enuwalletd:
+        if not self.walletd:
             Utils.Print("ERROR: Wallet Manager wasn't configured to launch enuwallet")
             return False
 
