@@ -233,13 +233,8 @@ void chain_plugin::set_program_options(options_description& cli, options_descrip
           "Action (in the form code::action) added to action blacklist (may specify multiple times)")
          ("key-blacklist", boost::program_options::value<vector<string>>()->composing()->multitoken(),
           "Public key added to blacklist of keys that should not be included in authorities (may specify multiple times)")
-<<<<<<< HEAD
-         ("read-mode", boost::program_options::value<enumivo::chain::db_read_mode>()->default_value(enumivo::chain::db_read_mode::SPECULATIVE),
-          "Database read mode (\"speculative\" or \"head\").\n"// or \"irreversible\").\n"
-=======
          ("read-mode", boost::program_options::value<enumivo::chain::db_read_mode>()->default_value(enumivo::chain::db_read_mode::SPECULATIVE),
           "Database read mode (\"speculative\", \"head\", or \"read-only\").\n"// or \"irreversible\").\n"
->>>>>>> upstream/master
           "In \"speculative\" mode database contains changes done up to the head block plus changes made by transactions not yet included to the blockchain.\n"
           "In \"head\" mode database contains changes done up to the current head block.\n"
           "In \"read-only\" mode database contains incoming block changes but no speculative transaction processing.\n"
@@ -1094,9 +1089,6 @@ read_only::get_table_rows_result read_only::get_table_rows( const read_only::get
             return f128;
          });
       }
-<<<<<<< HEAD
-      ENU_ASSERT(false, chain::contract_table_query_exception,  "Unsupported secondary index type: ${t}", ("t", p.key_type));
-=======
       else if (p.key_type == chain_apis::sha256) {
          using  conv = keytype_converter<chain_apis::sha256,chain_apis::hex>;
          return get_table_rows_by_seckey<conv::index_type, conv::input_type>(p, abi, conv::function());
@@ -1106,7 +1098,6 @@ read_only::get_table_rows_result read_only::get_table_rows( const read_only::get
          return get_table_rows_by_seckey<conv::index_type, conv::input_type>(p, abi, conv::function());
       }
       ENU_ASSERT(false, chain::contract_table_query_exception,  "Unsupported secondary index type: ${t}", ("t", p.key_type));
->>>>>>> upstream/master
    }
 }
 
@@ -1171,13 +1162,8 @@ static fc::variant get_global_row( const database& db, const abi_def& abi, const
    const auto table_type = get_table_type(abi, N(global));
    ENU_ASSERT(table_type == read_only::KEYi64, chain::contract_table_query_exception, "Invalid table type ${type} for table global", ("type",table_type));
 
-<<<<<<< HEAD
-   const auto* const table_id = db.find<chain::table_id_object, chain::by_code_scope_table>(boost::make_tuple(N(enumivo), N(enumivo), N(global)));
-   ENU_ASSERT(table_id, chain::contract_table_query_exception, "Missing table global");
-=======
    const auto* const table_id = db.find<chain::table_id_object, chain::by_code_scope_table>(boost::make_tuple(config::system_account_name, config::system_account_name, N(global)));
    ENU_ASSERT(table_id, chain::contract_table_query_exception, "Missing table global");
->>>>>>> upstream/master
 
    const auto& kv_index = db.get_index<key_value_index, by_scope_primary>();
    const auto it = kv_index.find(boost::make_tuple(table_id->id, N(global)));
@@ -1189,11 +1175,7 @@ static fc::variant get_global_row( const database& db, const abi_def& abi, const
 }
 
 read_only::get_producers_result read_only::get_producers( const read_only::get_producers_params& p ) const {
-<<<<<<< HEAD
-   const abi_def abi = enumivo::chain_apis::get_abi(db, N(enumivo));
-=======
    const abi_def abi = enumivo::chain_apis::get_abi(db, config::system_account_name);
->>>>>>> upstream/master
    const auto table_type = get_table_type(abi, N(producers));
    const abi_serializer abis{ abi, abi_serializer_max_time };
    ENU_ASSERT(table_type == KEYi64, chain::contract_table_query_exception, "Invalid table type ${type} for table producers", ("type",table_type));
@@ -1202,17 +1184,11 @@ read_only::get_producers_result read_only::get_producers( const read_only::get_p
    const auto lower = name{p.lower_bound};
 
    static const uint8_t secondary_index_num = 0;
-<<<<<<< HEAD
-   const auto* const table_id = d.find<chain::table_id_object, chain::by_code_scope_table>(boost::make_tuple(N(enumivo), N(enumivo), N(producers)));
-   const auto* const secondary_table_id = d.find<chain::table_id_object, chain::by_code_scope_table>(boost::make_tuple(N(enumivo), N(enumivo), N(producers) | secondary_index_num));
-   ENU_ASSERT(table_id && secondary_table_id, chain::contract_table_query_exception, "Missing producers table");
-=======
    const auto* const table_id = d.find<chain::table_id_object, chain::by_code_scope_table>(
            boost::make_tuple(config::system_account_name, config::system_account_name, N(producers)));
    const auto* const secondary_table_id = d.find<chain::table_id_object, chain::by_code_scope_table>(
            boost::make_tuple(config::system_account_name, config::system_account_name, N(producers) | secondary_index_num));
    ENU_ASSERT(table_id && secondary_table_id, chain::contract_table_query_exception, "Missing producers table");
->>>>>>> upstream/master
 
    const auto& kv_index = d.get_index<key_value_index, by_scope_primary>();
    const auto& secondary_index = d.get_index<index_double_index>().indices();
@@ -1568,11 +1544,7 @@ read_only::get_account_results read_only::get_account( const get_account_params&
       ++perm;
    }
 
-<<<<<<< HEAD
-   const auto& code_account = db.db().get<account_object,by_name>( N(enumivo) );
-=======
    const auto& code_account = db.db().get<account_object,by_name>( config::system_account_name );
->>>>>>> upstream/master
 
    abi_def abi;
    if( abi_serializer::to_abi(code_account.abi, abi) ) {
