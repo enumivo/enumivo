@@ -322,11 +322,7 @@ namespace enumivo {
                boost::split( v, s, boost::is_any_of( ":" ));
                ENU_ASSERT( v.size() == 3, fc::invalid_arg_exception, "Invalid value ${s} for --filter-on", ("s", s));
                filter_entry fe{v[0], v[1], v[2]};
-<<<<<<< HEAD
-               ENU_ASSERT( fe.receiver.value && fe.action.value, fc::invalid_arg_exception,
-=======
                ENU_ASSERT( fe.receiver.value, fc::invalid_arg_exception,
->>>>>>> upstream/master
                            "Invalid value ${s} for --filter-on", ("s", s));
                my->filter_on.insert( fe );
             }

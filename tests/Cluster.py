@@ -129,22 +129,14 @@ class Cluster(object):
         if self.staging:
             cmdArr.append("--nogen")
 
-<<<<<<< HEAD
-        enunodeArgs="--max-transaction-time 5000 --abi-serializer-max-time-ms 5000 --filter-on * --p2p-max-nodes-per-host %d" % (totalNodes)
-=======
         enunodeArgs="--max-transaction-time 50000 --abi-serializer-max-time-ms 990000 --filter-on * --p2p-max-nodes-per-host %d" % (totalNodes)
->>>>>>> upstream/master
         if not self.walletd:
             enunodeArgs += " --plugin enumivo::wallet_api_plugin"
         if self.enableMongo:
-<<<<<<< HEAD
-            enunodeArgs += " --plugin enumivo::mongo_db_plugin --mongodb-wipe --delete-all-blocks --mongodb-uri %s" % self.mongoUri
-=======
             enunodeArgs += " --plugin enumivo::mongo_db_plugin --mongodb-wipe --delete-all-blocks --mongodb-uri %s" % self.mongoUri
         if extraEnunodeArgs is not None:
             assert(isinstance(extraEnunodeArgs, str))
             enunodeArgs += extraEnunodeArgs
->>>>>>> upstream/master
         if Utils.Debug:
             enunodeArgs += " --contracts-console"
 
@@ -728,26 +720,16 @@ class Cluster(object):
             enumivoAccount.activePrivateKey=enumivoKeys["private"]
             enumivoAccount.activePublicKey=enumivoKeys["public"]
 
-<<<<<<< HEAD
-            if not walletMgr.importKey(enumivoAccount, ignWallet):
-                Utils.Print("ERROR: Failed to import %s account keys into ignition wallet." % (enumivoName))
-                return False
-=======
             if not walletMgr.importKey(enumivoAccount, ignWallet):
                 Utils.Print("ERROR: Failed to import %s account keys into ignition wallet." % (enumivoName))
                 return None
->>>>>>> upstream/master
 
             contract="enu.bios"
             contractDir="contracts/%s" % (contract)
             wasmFile="%s.wasm" % (contract)
             abiFile="%s.abi" % (contract)
             Utils.Print("Publish %s contract" % (contract))
-<<<<<<< HEAD
-            trans=biosNode.publishContract(enumivoAccount.name, contractDir, wastFile, abiFile, waitForTransBlock=True)
-=======
             trans=biosNode.publishContract(enumivoAccount.name, contractDir, wasmFile, abiFile, waitForTransBlock=True)
->>>>>>> upstream/master
             if trans is None:
                 Utils.Print("ERROR: Failed to publish contract %s." % (contract))
                 return None
@@ -825,13 +807,8 @@ class Cluster(object):
                     Utils.Print("ERROR: Failed to validate transaction %s got rolled into a block on server port %d." % (transId, biosNode.port))
                     return None
 
-<<<<<<< HEAD
-                # wait for block production handover (essentially a block produced by anyone but enumivo).
-                lam = lambda: biosNode.getInfo()["head_block_producer"] != "enumivo"
-=======
                 # wait for block production handover (essentially a block produced by anyone but enumivo).
                 lam = lambda: biosNode.getInfo(exitOnError=True)["head_block_producer"] != "enumivo"
->>>>>>> upstream/master
                 ret=Utils.waitForBool(lam)
                 if not ret:
                     Utils.Print("ERROR: Block production handover failed.")
@@ -841,49 +818,29 @@ class Cluster(object):
             enumivoTokenAccount.name="enu.token"
             trans=biosNode.createAccount(enumivoTokenAccount, enumivoAccount, 0)
             if trans is None:
-<<<<<<< HEAD
-                Utils.Print("ERROR: Failed to create account %s" % (enumivoTokenAccount.name))
-                return False
-=======
                 Utils.Print("ERROR: Failed to create account %s" % (enumivoTokenAccount.name))
                 return None
->>>>>>> upstream/master
 
             enumivoRamAccount=copy.deepcopy(enumivoAccount)
             enumivoRamAccount.name="enu.ram"
             trans=biosNode.createAccount(enumivoRamAccount, enumivoAccount, 0)
             if trans is None:
-<<<<<<< HEAD
-                Utils.Print("ERROR: Failed to create account %s" % (enumivoRamAccount.name))
-                return False
-=======
                 Utils.Print("ERROR: Failed to create account %s" % (enumivoRamAccount.name))
                 return None
->>>>>>> upstream/master
 
             enumivoRamfeeAccount=copy.deepcopy(enumivoAccount)
             enumivoRamfeeAccount.name="enu.ramfee"
             trans=biosNode.createAccount(enumivoRamfeeAccount, enumivoAccount, 0)
             if trans is None:
-<<<<<<< HEAD
-                Utils.Print("ERROR: Failed to create account %s" % (enumivoRamfeeAccount.name))
-                return False
-=======
                 Utils.Print("ERROR: Failed to create account %s" % (enumivoRamfeeAccount.name))
                 return None
->>>>>>> upstream/master
 
             enumivoStakeAccount=copy.deepcopy(enumivoAccount)
             enumivoStakeAccount.name="enu.stake"
             trans=biosNode.createAccount(enumivoStakeAccount, enumivoAccount, 0)
             if trans is None:
-<<<<<<< HEAD
-                Utils.Print("ERROR: Failed to create account %s" % (enumivoStakeAccount.name))
-                return False
-=======
                 Utils.Print("ERROR: Failed to create account %s" % (enumivoStakeAccount.name))
                 return None
->>>>>>> upstream/master
 
             Node.validateTransaction(trans)
             transId=Node.getTransId(trans)
@@ -896,11 +853,7 @@ class Cluster(object):
             wasmFile="%s.wasm" % (contract)
             abiFile="%s.abi" % (contract)
             Utils.Print("Publish %s contract" % (contract))
-<<<<<<< HEAD
-            trans=biosNode.publishContract(enumivoTokenAccount.name, contractDir, wastFile, abiFile, waitForTransBlock=True)
-=======
             trans=biosNode.publishContract(enumivoTokenAccount.name, contractDir, wasmFile, abiFile, waitForTransBlock=True)
->>>>>>> upstream/master
             if trans is None:
                 Utils.Print("ERROR: Failed to publish contract %s." % (contract))
                 return None
@@ -913,13 +866,8 @@ class Cluster(object):
             opts="--permission %s@active" % (contract)
             trans=biosNode.pushMessage(contract, action, data, opts)
             if trans is None or not trans[0]:
-<<<<<<< HEAD
-                Utils.Print("ERROR: Failed to push create action to enumivo contract.")
-                return False
-=======
                 Utils.Print("ERROR: Failed to push create action to enumivo contract.")
                 return None
->>>>>>> upstream/master
 
             Node.validateTransaction(trans[1])
             transId=Node.getTransId(trans[1])
@@ -934,13 +882,8 @@ class Cluster(object):
             opts="--permission %s@active" % (contract)
             trans=biosNode.pushMessage(contract, action, data, opts)
             if trans is None or not trans[0]:
-<<<<<<< HEAD
-                Utils.Print("ERROR: Failed to push issue action to enumivo contract.")
-                return False
-=======
                 Utils.Print("ERROR: Failed to push issue action to enumivo contract.")
                 return None
->>>>>>> upstream/master
 
             Node.validateTransaction(trans[1])
             Utils.Print("Wait for issue action transaction to become finalized.")
@@ -965,11 +908,7 @@ class Cluster(object):
             wasmFile="%s.wasm" % (contract)
             abiFile="%s.abi" % (contract)
             Utils.Print("Publish %s contract" % (contract))
-<<<<<<< HEAD
-            trans=biosNode.publishContract(enumivoAccount.name, contractDir, wastFile, abiFile, waitForTransBlock=True)
-=======
             trans=biosNode.publishContract(enumivoAccount.name, contractDir, wasmFile, abiFile, waitForTransBlock=True)
->>>>>>> upstream/master
             if trans is None:
                 Utils.Print("ERROR: Failed to publish contract %s." % (contract))
                 return None
@@ -986,13 +925,8 @@ class Cluster(object):
                 opts="--permission %s@active" % (enumivoAccount.name)
                 trans=biosNode.pushMessage(contract, action, data, opts)
                 if trans is None or not trans[0]:
-<<<<<<< HEAD
-                    Utils.Print("ERROR: Failed to transfer funds from %s to %s." % (enumivoTokenAccount.name, name))
-                    return False
-=======
                     Utils.Print("ERROR: Failed to transfer funds from %s to %s." % (enumivoTokenAccount.name, name))
                     return None
->>>>>>> upstream/master
 
                 Node.validateTransaction(trans[1])
 

@@ -164,23 +164,10 @@ class Node(object):
         """Given a blockId will return block details."""
         assert(isinstance(blockNum, int))
         if not self.enableMongo:
-<<<<<<< HEAD
-            cmd="%s %s get block %d" % (Utils.EnuClientPath, self.endpointArgs, blockNum)
-            if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
-            try:
-                block=Utils.runCmdReturnJson(cmd)
-                return block
-            except subprocess.CalledProcessError as ex:
-                if not silentErrors:
-                    msg=ex.output.decode("utf-8")
-                    Utils.Print("ERROR: Exception during get block. %s" % (msg))
-                return None
-=======
             cmdDesc="get block"
             cmd="%s %d" % (cmdDesc, blockNum)
             msg="(block number=%s)" % (blockNum);
             return self.processCmd(cmd, cmdDesc, silentErrors=silentErrors, exitOnError=exitOnError, exitMsg=msg)
->>>>>>> upstream/master
         else:
             cmd="%s %s" % (Utils.MongoPath, self.mongoEndpointArgs)
             subcommand='db.blocks.findOne( { "block_num": %d } )' % (blockNum)
@@ -261,21 +248,6 @@ class Node(object):
         exitOnErrorForDelayed=not delayedRetry and exitOnError
         timeout=3
         if not self.enableMongo:
-<<<<<<< HEAD
-            cmd="%s %s get transaction %s" % (Utils.EnuClientPath, self.endpointArgs, transId)
-            if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
-            try:
-                trans=Utils.runCmdReturnJson(cmd)
-                return trans
-            except subprocess.CalledProcessError as ex:
-                msg=ex.output.decode("utf-8")
-                if "Failed to connect" in msg:
-                    Utils.Print("ERROR: Node is unreachable. %s" % (msg))
-                    raise
-                if not silentErrors:
-                    Utils.Print("ERROR: Exception during transaction retrieval. %s" % (msg))
-                return None
-=======
             cmdDesc="get transaction"
             cmd="%s %s" % (cmdDesc, transId)
             msg="(transaction id=%s)" % (transId);
@@ -288,7 +260,6 @@ class Node(object):
 
             # either it is there or the transaction has timed out
             return self.processCmd(cmd, cmdDesc, silentErrors=silentErrors, exitOnError=exitOnError, exitMsg=msg)
->>>>>>> upstream/master
         else:
             for i in range(0,(int(60/timeout) - 1)):
                 trans=self.getTransactionMdb(transId, silentErrors=silentErrors, exitOnError=exitOnErrorForDelayed)
@@ -438,15 +409,6 @@ class Node(object):
         assert(isinstance(blockId, int))
         return self.isBlockFinalized(blockId)
 
-<<<<<<< HEAD
-    # Create & initialize account and return creation transactions. Return transaction json object
-    def createInitializeAccount(self, account, creatorAccount, stakedDeposit=1000, waitForTransBlock=False, stakeNet=100, stakeCPU=100, buyRAM=100):
-        cmd='%s %s system newaccount -j %s %s %s %s --stake-net "%s %s" --stake-cpu "%s %s" --buy-ram "%s %s"' % (
-            Utils.EnuClientPath, self.endpointArgs, creatorAccount.name, account.name,
-            account.ownerPublicKey, account.activePublicKey,
-            stakeNet, CORE_SYMBOL, stakeCPU, CORE_SYMBOL, buyRAM, CORE_SYMBOL)
-=======
->>>>>>> upstream/master
 
     # Create & initialize account and return creation transactions. Return transaction json object
     def createInitializeAccount(self, account, creatorAccount, stakedDeposit=1000, waitForTransBlock=False, stakeNet=100, stakeCPU=100, buyRAM=100, exitOnError=False):
@@ -468,28 +430,12 @@ class Node(object):
     def createAccount(self, account, creatorAccount, stakedDeposit=1000, waitForTransBlock=False, exitOnError=False):
         """Create account and return creation transactions. Return transaction json object.
         waitForTransBlock: wait on creation transaction id to appear in a block."""
-<<<<<<< HEAD
-        cmd="%s %s create account -j %s %s %s %s" % (
-            Utils.EnuClientPath, self.endpointArgs, creatorAccount.name, account.name,
-            account.ownerPublicKey, account.activePublicKey)
-
-        if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
-        trans=None
-        try:
-            trans=Utils.runCmdReturnJson(cmd)
-            transId=Node.getTransId(trans)
-        except subprocess.CalledProcessError as ex:
-            msg=ex.output.decode("utf-8")
-            Utils.Print("ERROR: Exception during account creation. %s" % (msg))
-            return None
-=======
         cmdDesc="create account"
         cmd="%s -j %s %s %s %s" % (
             cmdDesc, creatorAccount.name, account.name, account.ownerPublicKey, account.activePublicKey)
         msg="(creator account=%s, account=%s)" % (creatorAccount.name, account.name);
         trans=self.processCmd(cmd, cmdDesc, silentErrors=False, exitOnError=exitOnError, exitMsg=msg)
         transId=Node.getTransId(trans)
->>>>>>> upstream/master
 
         if stakedDeposit > 0:
             self.waitForTransInBlock(transId) # seems like account creation needs to be finlized before transfer can happen
@@ -549,22 +495,10 @@ class Node(object):
         assert(isinstance(account, str))
         assert(symbol)
         assert(isinstance(symbol, str))
-<<<<<<< HEAD
-        cmd="%s %s get currency balance %s %s %s" % (Utils.EnuClientPath, self.endpointArgs, contract, account, symbol)
-        if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
-        try:
-            trans=Utils.runCmdReturnStr(cmd)
-            return trans
-        except subprocess.CalledProcessError as ex:
-            msg=ex.output.decode("utf-8")
-            Utils.Print("ERROR: Exception during get currency stats. %s" % (msg))
-            return None
-=======
         cmdDesc = "get currency balance"
         cmd="%s %s %s %s" % (cmdDesc, contract, account, symbol)
         msg="contract=%s, account=%s, symbol=%s" % (contract, account, symbol);
         return self.processCmd(cmd, cmdDesc, exitOnError=exitOnError, exitMsg=msg, returnType=ReturnType.raw)
->>>>>>> upstream/master
 
     def getCurrencyStats(self, contract, symbol=CORE_SYMBOL, exitOnError=False):
         """returns Json output from get currency stats."""
@@ -572,22 +506,10 @@ class Node(object):
         assert(isinstance(contract, str))
         assert(symbol)
         assert(isinstance(symbol, str))
-<<<<<<< HEAD
-        cmd="%s %s get currency stats %s %s" % (Utils.EnuClientPath, self.endpointArgs, contract, symbol)
-        if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
-        try:
-            trans=Utils.runCmdReturnJson(cmd)
-            return trans
-        except subprocess.CalledProcessError as ex:
-            msg=ex.output.decode("utf-8")
-            Utils.Print("ERROR: Exception during get currency stats. %s" % (msg))
-            return None
-=======
         cmdDesc = "get currency stats"
         cmd="%s %s %s" % (cmdDesc, contract, symbol)
         msg="contract=%s, symbol=%s" % (contract, symbol);
         return self.processCmd(cmd, cmdDesc, exitOnError=exitOnError, exitMsg=msg)
->>>>>>> upstream/master
 
     # Verifies account. Returns "get account" json return object
     def verifyAccount(self, account):
@@ -743,21 +665,6 @@ class Node(object):
         return balances
 
     # Gets accounts mapped to key. Returns json object
-<<<<<<< HEAD
-    def getAccountsByKey(self, key):
-        cmd="%s %s get accounts %s" % (Utils.EnuClientPath, self.endpointArgs, key)
-        if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
-        try:
-            trans=Utils.runCmdReturnJson(cmd)
-            return trans
-        except subprocess.CalledProcessError as ex:
-            msg=ex.output.decode("utf-8")
-            Utils.Print("ERROR: Exception during accounts by key retrieval. %s" % (msg))
-            return None
-
-    # Get actions mapped to an account (enucli get actions)
-    def getActions(self, account, pos=-1, offset=-1):
-=======
     def getAccountsByKey(self, key, exitOnError=False):
         cmdDesc = "get accounts"
         cmd="%s %s" % (cmdDesc, key)
@@ -766,28 +673,15 @@ class Node(object):
 
     # Get actions mapped to an account (enucli get actions)
     def getActions(self, account, pos=-1, offset=-1, exitOnError=False):
->>>>>>> upstream/master
         assert(isinstance(account, Account))
         assert(isinstance(pos, int))
         assert(isinstance(offset, int))
 
         if not self.enableMongo:
-<<<<<<< HEAD
-            cmd="%s %s get actions -j %s %d %d" % (Utils.EnuClientPath, self.endpointArgs, account.name, pos, offset)
-            if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
-            try:
-                actions=Utils.runCmdReturnJson(cmd)
-                return actions
-            except subprocess.CalledProcessError as ex:
-                msg=ex.output.decode("utf-8")
-                Utils.Print("ERROR: Exception during actions by account retrieval. %s" % (msg))
-                return None
-=======
             cmdDesc = "get actions"
             cmd="%s -j %s %d %d" % (cmdDesc, account.name, pos, offset)
             msg="account=%s, pos=%d, offset=%d" % (account.name, pos, offset);
             return self.processCmd(cmd, cmdDesc, exitOnError=exitOnError, exitMsg=msg)
->>>>>>> upstream/master
         else:
             return self.getActionsMdb(account, pos, offset, exitOnError=exitOnError)
 
@@ -821,24 +715,11 @@ class Node(object):
         accounts=trans["account_names"]
         return accounts
 
-<<<<<<< HEAD
-    def getServants(self, name):
-        cmd="%s %s get servants %s" % (Utils.EnuClientPath, self.endpointArgs, name)
-        if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
-        try:
-            trans=Utils.runCmdReturnJson(cmd)
-            return trans
-        except subprocess.CalledProcessError as ex:
-            msg=ex.output.decode("utf-8")
-            Utils.Print("ERROR: Exception during servants retrieval. %s" % (msg))
-            return None
-=======
     def getServants(self, name, exitOnError=False):
         cmdDesc = "get servants"
         cmd="%s %s" % (cmdDesc, name)
         msg="name=%s" % (name);
         return self.processCmd(cmd, cmdDesc, exitOnError=exitOnError, exitMsg=msg)
->>>>>>> upstream/master
 
     def getServantsArr(self, name):
         trans=self.getServants(name, exitOnError=True)
@@ -951,24 +832,10 @@ class Node(object):
                 Utils.Print("ERROR: Exception during push message. %s" % (msg))
             return (False, msg)
 
-<<<<<<< HEAD
-    def setPermission(self, account, code, pType, requirement, waitForTransBlock=False):
-        cmd="%s %s set action permission -j %s %s %s %s" % (
-            Utils.EnuClientPath, self.endpointArgs, account, code, pType, requirement)
-        if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
-        trans=None
-        try:
-            trans=Utils.runCmdReturnJson(cmd)
-        except subprocess.CalledProcessError as ex:
-            msg=ex.output.decode("utf-8")
-            Utils.Print("ERROR: Exception during set permission. %s" % (msg))
-            return None
-=======
     def setPermission(self, account, code, pType, requirement, waitForTransBlock=False, exitOnError=False):
         cmdDesc="set action permission"
         cmd="%s -j %s %s %s %s" % (cmdDesc, account, code, pType, requirement)
         trans=self.processCmd(cmd, cmdDesc, silentErrors=False, exitOnError=exitOnError)
->>>>>>> upstream/master
 
         return self.waitForTransBlockIfNeeded(trans, waitForTransBlock, exitOnError=exitOnError)
 
@@ -1034,16 +901,8 @@ class Node(object):
 
         return trans
 
-<<<<<<< HEAD
-    def getInfo(self, silentErrors=False):
-        cmd="%s %s get info" % (Utils.EnuClientPath, self.endpointArgs)
-        if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
-        try:
-            trans=Utils.runCmdReturnJson(cmd, silentErrors=silentErrors)
-=======
     def waitForTransBlockIfNeeded(self, trans, waitForTransBlock, exitOnError=False):
         if not waitForTransBlock:
->>>>>>> upstream/master
             return trans
 
         transId=Node.getTransId(trans)

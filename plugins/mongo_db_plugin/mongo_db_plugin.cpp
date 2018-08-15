@@ -516,23 +516,6 @@ optional<abi_serializer> mongo_db_plugin_impl::get_abi_serializer( account_name 
                   ilog( "Unable to convert account abi to abi_def for ${n}", ( "n", n ));
                   return optional<abi_serializer>();
                }
-<<<<<<< HEAD
-               from_account = find_account( accounts, setabi.account );
-            }
-            if( from_account ) {
-               const abi_def& abi_def = fc::raw::unpack<chain::abi_def>( setabi.abi );
-               const string json_str = fc::json::to_string( abi_def );
-
-               try{
-                  auto update_from = make_document(
-                        kvp( "$set", make_document( kvp( "abi", bsoncxx::from_json( json_str )),
-                                                    kvp( "updatedAt", b_date{now} ))));
-
-                  try {
-                     if( !accounts.update_one( make_document( kvp( "_id", from_account->view()["_id"].get_oid())),
-                                               update_from.view())) {
-                        ENU_ASSERT( false, chain::mongo_db_update_fail, "Failed to udpdate account ${n}", ("n", setabi.account));
-=======
 
                purge_abi_cache(); // make room if necessary
                abi_cache entry;
@@ -564,7 +547,6 @@ optional<abi_serializer> mongo_db_plugin_impl::get_abi_serializer( account_name 
                                        }
                                  ) );
                         }
->>>>>>> upstream/master
                      }
                   }
                }
@@ -574,75 +556,7 @@ optional<abi_serializer> mongo_db_plugin_impl::get_abi_serializer( account_name 
                return entry.serializer;
             }
          }
-<<<<<<< HEAD
-      } catch( fc::exception& e ) {
-         // if unable to unpack native type, skip account creation
-      }
-   }
-
-void add_data( bsoncxx::builder::basic::document& act_doc, mongocxx::collection& accounts, const chain::action& act, const fc::microseconds& abi_serializer_max_time ) {
-   using bsoncxx::builder::basic::kvp;
-   using bsoncxx::builder::basic::make_document;
-   try {
-      if( act.account == chain::config::system_account_name ) {
-         if( act.name == mongo_db_plugin_impl::setabi ) {
-            auto setabi = act.data_as<chain::setabi>();
-            try {
-               const abi_def& abi_def = fc::raw::unpack<chain::abi_def>( setabi.abi );
-               const string json_str = fc::json::to_string( abi_def );
-
-               act_doc.append(
-                     kvp( "data", make_document( kvp( "account", setabi.account.to_string()),
-                                                 kvp( "abi_def", bsoncxx::from_json( json_str )))));
-               return;
-            } catch( bsoncxx::exception& ) {
-               // better error handling below
-            } catch( fc::exception& e ) {
-               ilog( "Unable to convert action abi_def to json for ${n}", ("n", setabi.account.to_string()));
-            }
-         }
-      }
-      auto account = find_account( accounts, act.account );
-      if( account ) {
-         auto from_account = *account;
-         abi_def abi;
-         if( from_account.view().find( "abi" ) != from_account.view().end()) {
-            try {
-               abi = fc::json::from_string( bsoncxx::to_json( from_account.view()["abi"].get_document())).as<abi_def>();
-            } catch( ... ) {
-               ilog( "Unable to convert account abi to abi_def for ${s}::${n}", ("s", act.account)( "n", act.name ));
-            }
-         }
-         string json;
-         try {
-            abi_serializer abis;
-            abis.set_abi( abi, abi_serializer_max_time );
-            auto v = abis.binary_to_variant( abis.get_action_type( act.name ), act.data, abi_serializer_max_time );
-            json = fc::json::to_string( v );
-
-            const auto& value = bsoncxx::from_json( json );
-            act_doc.append( kvp( "data", value ));
-            return;
-         } catch( bsoncxx::exception& e ) {
-            ilog( "Unable to convert ENU JSON to MongoDB JSON: ${e}", ("e", e.what()));
-            ilog( "  ENU JSON: ${j}", ("j", json));
-            ilog( "  Storing data has hex." );
-         }
-      }
-   } catch( std::exception& e ) {
-      ilog( "Unable to convert action.data to ABI: ${s}::${n}, std what: ${e}",
-            ("s", act.account)( "n", act.name )( "e", e.what()));
-   } catch (fc::exception& e) {
-      if (act.name != "onblock") { // enumivo::onblock not in original enu.system abi
-         ilog( "Unable to convert action.data to ABI: ${s}::${n}, fc exception: ${e}",
-               ("s", act.account)( "n", act.name )( "e", e.to_detail_string()));
-      }
-   } catch( ... ) {
-      ilog( "Unable to convert action.data to ABI: ${s}::${n}, unknown exception",
-            ("s", act.account)( "n", act.name ));
-=======
       } FC_CAPTURE_AND_LOG((n))
->>>>>>> upstream/master
    }
    return optional<abi_serializer>();
 }
@@ -807,22 +721,6 @@ mongo_db_plugin_impl::add_action_trace( mongocxx::bulk_write& bulk_action_traces
       auto v = to_variant_with_abi( base );
       string json = fc::json::to_string( v );
       try {
-<<<<<<< HEAD
-         if( !trans.insert_one( trans_doc.view())) {
-            ENU_ASSERT( false, chain::mongo_db_insert_fail, "Failed to insert trans ${id}", ("id", trx_id));
-         }
-      } catch(...) {
-         handle_mongo_exception("trans insert", __LINE__);
-      }
-
-      if (actions_to_write) {
-         try {
-            if( !bulk_actions.execute() ) {
-               ENU_ASSERT( false, chain::mongo_db_insert_fail, "Bulk actions insert failed for transaction: ${id}", ("id", trx_id_str));
-            }
-         } catch(...) {
-            handle_mongo_exception("actions insert", __LINE__);
-=======
          const auto& value = bsoncxx::from_json( json );
          action_traces_doc.append( bsoncxx::builder::concatenate_doc{value.view()} );
       } catch( bsoncxx::exception& ) {
@@ -834,7 +732,6 @@ mongo_db_plugin_impl::add_action_trace( mongocxx::bulk_write& bulk_action_traces
          } catch( bsoncxx::exception& e ) {
             elog( "Unable to convert action trace JSON to MongoDB JSON: ${e}", ("e", e.what()) );
             elog( "  JSON: ${j}", ("j", json) );
->>>>>>> upstream/master
          }
       }
       action_traces_doc.append( kvp( "createdAt", b_date{now} ) );
@@ -964,12 +861,6 @@ void mongo_db_plugin_impl::_process_accepted_block( const chain::block_state_ptr
       }
       block_state_doc.append( kvp( "createdAt", b_date{now} ) );
 
-<<<<<<< HEAD
-   try {
-      if( !block_states.update_one( make_document( kvp( "block_id", block_id_str )),
-                                    make_document( kvp( "$set", block_state_doc.view())), update_opts )) {
-         ENU_ASSERT( false, chain::mongo_db_insert_fail, "Failed to insert block_state ${bid}", ("bid", block_id));
-=======
       try {
          if( !block_states.update_one( make_document( kvp( "block_id", block_id_str ) ),
                                        make_document( kvp( "$set", block_state_doc.view() ) ), update_opts ) ) {
@@ -977,7 +868,6 @@ void mongo_db_plugin_impl::_process_accepted_block( const chain::block_state_ptr
          }
       } catch( ... ) {
          handle_mongo_exception( "block_states insert: " + json, __LINE__ );
->>>>>>> upstream/master
       }
    }
 
@@ -1005,12 +895,6 @@ void mongo_db_plugin_impl::_process_accepted_block( const chain::block_state_ptr
       }
       block_doc.append( kvp( "createdAt", b_date{now} ) );
 
-<<<<<<< HEAD
-   try {
-      if( !blocks.update_one( make_document( kvp( "block_id", block_id_str )),
-                              make_document( kvp( "$set", block_doc.view())), update_opts )) {
-         ENU_ASSERT( false, chain::mongo_db_insert_fail, "Failed to insert block ${bid}", ("bid", block_id));
-=======
       try {
          if( !blocks.update_one( make_document( kvp( "block_id", block_id_str ) ),
                                  make_document( kvp( "$set", block_doc.view() ) ), update_opts ) ) {
@@ -1018,7 +902,6 @@ void mongo_db_plugin_impl::_process_accepted_block( const chain::block_state_ptr
          }
       } catch( ... ) {
          handle_mongo_exception( "blocks insert: " + json, __LINE__ );
->>>>>>> upstream/master
       }
    }
 }
@@ -1098,12 +981,6 @@ void mongo_db_plugin_impl::_process_irreversible_block(const chain::block_state_
    }
 }
 
-<<<<<<< HEAD
-   if( transactions_in_block ) {
-      try {
-         if( !bulk.execute()) {
-            ENU_ASSERT( false, chain::mongo_db_insert_fail, "Bulk transaction insert failed for block: ${bid}", ("bid", block_id));
-=======
 void mongo_db_plugin_impl::add_pub_keys( const vector<chain::key_weight>& keys, const account_name& name,
                                          const permission_name& permission, const std::chrono::milliseconds& now )
 {
@@ -1318,7 +1195,6 @@ void mongo_db_plugin_impl::update_account(const chain::action& act)
                elog( "Unable to convert abi JSON to MongoDB JSON: ${e}", ("e", e.what()));
                elog( "  JSON: ${j}", ("j", json_str));
             }
->>>>>>> upstream/master
          }
       }
    } catch( fc::exception& e ) {

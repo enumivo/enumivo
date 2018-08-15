@@ -82,13 +82,7 @@ try:
     accountsCount=total_nodes
     walletName="MyWallet"
     Print("Creating wallet %s if one doesn't already exist." % walletName)
-<<<<<<< HEAD
     wallet=walletMgr.create(walletName, [cluster.enumivoAccount,cluster.defproduceraAccount,cluster.defproducerbAccount])
-    if wallet is None:
-        errorExit("Failed to create wallet %s" % (walletName))
-=======
-    wallet=walletMgr.create(walletName, [cluster.enumivoAccount,cluster.defproduceraAccount,cluster.defproducerbAccount])
->>>>>>> upstream/master
 
     Print ("Populate wallet with %d accounts." % (accountsCount))
     if not cluster.populateWallet(accountsCount, wallet):

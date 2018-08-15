@@ -826,11 +826,7 @@ namespace enumivo { namespace testing {
    transaction_trace_ptr base_tester::set_producers(const vector<account_name>& producer_names) {
       auto schedule = get_producer_keys( producer_names );
 
-<<<<<<< HEAD
-      return push_action( N(enumivo), N(setprods), N(enumivo),
-=======
       return push_action( config::system_account_name, N(setprods), config::system_account_name,
->>>>>>> upstream/master
                           fc::mutable_variant_object()("schedule", schedule));
    }
 

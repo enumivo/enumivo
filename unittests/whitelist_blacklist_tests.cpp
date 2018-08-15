@@ -329,17 +329,10 @@ BOOST_AUTO_TEST_CASE( blacklist_enumivo ) { try {
    whitelist_blacklist_tester<tester> tester1;
    tester1.init();
    tester1.chain->produce_blocks();
-<<<<<<< HEAD
-   tester1.chain->set_code(N(enumivo), enu_token_wast);
-   tester1.chain->produce_blocks();
-   tester1.shutdown();
-   tester1.contract_blacklist = {N(enumivo)};
-=======
    tester1.chain->set_code(config::system_account_name, enu_token_wast);
    tester1.chain->produce_blocks();
    tester1.shutdown();
    tester1.contract_blacklist = {config::system_account_name};
->>>>>>> upstream/master
    tester1.init(false);
 
    whitelist_blacklist_tester<tester> tester2;
@@ -429,11 +422,7 @@ BOOST_AUTO_TEST_CASE( blacklist_onerror ) { try {
    tester1.chain->produce_blocks();
    tester1.shutdown();
 
-<<<<<<< HEAD
-   tester1.action_blacklist = {{N(enumivo), N(onerror)}};
-=======
    tester1.action_blacklist = {{config::system_account_name, N(onerror)}};
->>>>>>> upstream/master
    tester1.init(false);
 
    tester1.chain->push_action( N(bob), N(defercall), N(alice), mvo()
