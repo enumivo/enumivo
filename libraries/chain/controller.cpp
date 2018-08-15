@@ -1,14 +1,9 @@
 #include <enumivo/chain/controller.hpp>
 #include <enumivo/chain/transaction_context.hpp>
 
-<<<<<<< HEAD
-#include <enumivo/chain/block_log.hpp>
-#include <enumivo/chain/fork_database.hpp>
-=======
 #include <enumivo/chain/block_log.hpp>
 #include <enumivo/chain/fork_database.hpp>
 #include <enumivo/chain/exceptions.hpp>
->>>>>>> upstream/master
 
 #include <enumivo/chain/account_object.hpp>
 #include <enumivo/chain/block_summary_object.hpp>
@@ -375,11 +370,7 @@ struct controller_impl {
     */
    void initialize_fork_db() {
       wlog( " Initializing new blockchain with genesis state                  " );
-<<<<<<< HEAD
-      producer_schedule_type initial_schedule{ 0, {{N(enumivo), conf.genesis.initial_key}} };
-=======
       producer_schedule_type initial_schedule{ 0, {{config::system_account_name, conf.genesis.initial_key}} };
->>>>>>> upstream/master
 
       block_header_state genheader;
       genheader.active_schedule       = initial_schedule;
@@ -877,14 +868,7 @@ struct controller_impl {
 
 
    void start_block( block_timestamp_type when, uint16_t confirm_block_count, controller::block_status s ) {
-<<<<<<< HEAD
-      ENU_ASSERT( !pending, block_validate_exception, "pending block is not available" );
-
-      ENU_ASSERT( db.revision() == head->block_num, database_exception, "db revision is not on par with head block",
-                ("db.revision()", db.revision())("controller_head_block", head->block_num)("fork_db_head_block", fork_db.head()->block_num) );
-=======
       ENU_ASSERT( !pending, block_validate_exception, "pending block already exists" );
->>>>>>> upstream/master
 
       auto guard_pending = fc::make_scoped_exit([this](){
          pending.reset();
