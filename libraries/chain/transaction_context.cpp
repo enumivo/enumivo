@@ -265,21 +265,6 @@ namespace enumivo { namespace chain {
    }
 
    void transaction_context::check_net_usage()const {
-<<<<<<< HEAD
-      if( BOOST_UNLIKELY(net_usage > eager_net_limit) ) {
-         if ( net_limit_due_to_block ) {
-            ENU_THROW( block_net_usage_exceeded,
-                       "not enough space left in block: ${net_usage} > ${net_limit}",
-                       ("net_usage", net_usage)("net_limit", eager_net_limit) );
-         }  else if (net_limit_due_to_greylist) {
-            ENU_THROW( greylist_net_usage_exceeded,
-                       "net usage of transaction is too high: ${net_usage} > ${net_limit}",
-                       ("net_usage", net_usage)("net_limit", eager_net_limit) );
-         } else {
-            ENU_THROW( tx_net_usage_exceeded,
-                       "net usage of transaction is too high: ${net_usage} > ${net_limit}",
-                       ("net_usage", net_usage)("net_limit", eager_net_limit) );
-=======
       if (!control.skip_trx_checks()) {
          if( BOOST_UNLIKELY(net_usage > eager_net_limit) ) {
             if ( net_limit_due_to_block ) {
@@ -295,34 +280,11 @@ namespace enumivo { namespace chain {
                           "net usage of transaction is too high: ${net_usage} > ${net_limit}",
                           ("net_usage", net_usage)("net_limit", eager_net_limit) );
             }
->>>>>>> upstream/master
          }
       }
    }
 
    void transaction_context::checktime()const {
-<<<<<<< HEAD
-      auto now = fc::time_point::now();
-      if( BOOST_UNLIKELY( now > _deadline ) ) {
-         // edump((now-start)(now-pseudo_start));
-         if( explicit_billed_cpu_time || deadline_exception_code == deadline_exception::code_value ) {
-            ENU_THROW( deadline_exception, "deadline exceeded", ("now", now)("deadline", _deadline)("start", start) );
-         } else if( deadline_exception_code == block_cpu_usage_exceeded::code_value ) {
-            ENU_THROW( block_cpu_usage_exceeded,
-                       "not enough time left in block to complete executing transaction",
-                       ("now", now)("deadline", _deadline)("start", start)("billing_timer", now - pseudo_start) );
-         } else if( deadline_exception_code == tx_cpu_usage_exceeded::code_value ) {
-            ENU_THROW( tx_cpu_usage_exceeded,
-                       "transaction was executing for too long",
-                       ("now", now)("deadline", _deadline)("start", start)("billing_timer", now - pseudo_start) );
-         } else if( deadline_exception_code == leeway_deadline_exception::code_value ) {
-            ENU_THROW( leeway_deadline_exception,
-                       "the transaction was unable to complete by deadline, "
-                       "but it is possible it could have succeeded if it were allowed to run to completion",
-                       ("now", now)("deadline", _deadline)("start", start)("billing_timer", now - pseudo_start) );
-         }
-         ENU_ASSERT( false,  transaction_exception, "unexpected deadline exception code" );
-=======
       if (!control.skip_trx_checks()) {
          auto now = fc::time_point::now();
          if( BOOST_UNLIKELY( now > _deadline ) ) {
@@ -345,7 +307,6 @@ namespace enumivo { namespace chain {
             }
             ENU_ASSERT( false,  transaction_exception, "unexpected deadline exception code" );
          }
->>>>>>> upstream/master
       }
    }
 
@@ -373,28 +334,6 @@ namespace enumivo { namespace chain {
    }
 
    void transaction_context::validate_cpu_usage_to_bill( int64_t billed_us, bool check_minimum )const {
-<<<<<<< HEAD
-      if( check_minimum ) {
-         const auto& cfg = control.get_global_properties().configuration;
-         ENU_ASSERT( billed_us >= cfg.min_transaction_cpu_usage, transaction_exception,
-                     "cannot bill CPU time less than the minimum of ${min_billable} us",
-                     ("min_billable", cfg.min_transaction_cpu_usage)("billed_cpu_time_us", billed_us)
-                   );
-      }
-
-      if( billing_timer_exception_code == block_cpu_usage_exceeded::code_value ) {
-         ENU_ASSERT( billed_us <= objective_duration_limit.count(),
-                     block_cpu_usage_exceeded,
-                     "billed CPU time (${billed} us) is greater than the billable CPU time left in the block (${billable} us)",
-                     ("billed", billed_us)("billable", objective_duration_limit.count())
-                   );
-      } else {
-         ENU_ASSERT( billed_us <= objective_duration_limit.count(),
-                     tx_cpu_usage_exceeded,
-                     "billed CPU time (${billed} us) is greater than the maximum billable CPU time for the transaction (${billable} us)",
-                     ("billed", billed_us)("billable", objective_duration_limit.count())
-                   );
-=======
       if (!control.skip_trx_checks()) {
          if( check_minimum ) {
             const auto& cfg = control.get_global_properties().configuration;
@@ -417,7 +356,6 @@ namespace enumivo { namespace chain {
                         ("billed", billed_us)("billable", objective_duration_limit.count())
                       );
          }
->>>>>>> upstream/master
       }
    }
 
