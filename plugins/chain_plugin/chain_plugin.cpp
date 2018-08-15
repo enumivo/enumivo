@@ -9,7 +9,6 @@
 #include <enumivo/chain/authorization_manager.hpp>
 #include <enumivo/chain/producer_object.hpp>
 #include <enumivo/chain/config.hpp>
-#include <enumivo/chain/types.hpp>
 #include <enumivo/chain/wasm_interface.hpp>
 #include <enumivo/chain/resource_limits.hpp>
 #include <enumivo/chain/reversible_block_object.hpp>
@@ -40,6 +39,8 @@ std::ostream& operator<<(std::ostream& osm, enumivo::chain::db_read_mode m) {
       osm << "speculative";
    } else if ( m == enumivo::chain::db_read_mode::HEAD ) {
       osm << "head";
+   } else if ( m == enumivo::chain::db_read_mode::READ_ONLY ) {
+      osm << "read-only";
    } else if ( m == enumivo::chain::db_read_mode::IRREVERSIBLE ) {
       osm << "irreversible";
    }
@@ -48,7 +49,7 @@ std::ostream& operator<<(std::ostream& osm, enumivo::chain::db_read_mode m) {
 }
 
 void validate(boost::any& v,
-              std::vector<std::string> const& values,
+              const std::vector<std::string>& values,
               enumivo::chain::db_read_mode* /* target_type */,
               int)
 {
@@ -65,8 +66,43 @@ void validate(boost::any& v,
      v = boost::any(enumivo::chain::db_read_mode::SPECULATIVE);
   } else if ( s == "head" ) {
      v = boost::any(enumivo::chain::db_read_mode::HEAD);
+  } else if ( s == "read-only" ) {
+     v = boost::any(enumivo::chain::db_read_mode::READ_ONLY);
   } else if ( s == "irreversible" ) {
      v = boost::any(enumivo::chain::db_read_mode::IRREVERSIBLE);
+  } else {
+     throw validation_error(validation_error::invalid_option_value);
+  }
+}
+
+std::ostream& operator<<(std::ostream& osm, enumivo::chain::validation_mode m) {
+   if ( m == enumivo::chain::validation_mode::FULL ) {
+      osm << "full";
+   } else if ( m == enumivo::chain::validation_mode::LIGHT ) {
+      osm << "light";
+   }
+
+   return osm;
+}
+
+void validate(boost::any& v,
+              const std::vector<std::string>& values,
+              enumivo::chain::validation_mode* /* target_type */,
+              int)
+{
+  using namespace boost::program_options;
+
+  // Make sure no previous assignment to 'v' was made.
+  validators::check_first_occurrence(v);
+
+  // Extract the first string from 'values'. If there is more than
+  // one string, it's an error, and exception will be thrown.
+  std::string const& s = validators::get_single_string(values);
+
+  if ( s == "full" ) {
+     v = boost::any(enumivo::chain::validation_mode::FULL);
+  } else if ( s == "light" ) {
+     v = boost::any(enumivo::chain::validation_mode::LIGHT);
   } else {
      throw validation_error(validation_error::invalid_option_value);
   }
@@ -197,11 +233,22 @@ void chain_plugin::set_program_options(options_description& cli, options_descrip
           "Action (in the form code::action) added to action blacklist (may specify multiple times)")
          ("key-blacklist", boost::program_options::value<vector<string>>()->composing()->multitoken(),
           "Public key added to blacklist of keys that should not be included in authorities (may specify multiple times)")
+<<<<<<< HEAD
          ("read-mode", boost::program_options::value<enumivo::chain::db_read_mode>()->default_value(enumivo::chain::db_read_mode::SPECULATIVE),
           "Database read mode (\"speculative\" or \"head\").\n"// or \"irreversible\").\n"
+=======
+         ("read-mode", boost::program_options::value<enumivo::chain::db_read_mode>()->default_value(enumivo::chain::db_read_mode::SPECULATIVE),
+          "Database read mode (\"speculative\", \"head\", or \"read-only\").\n"// or \"irreversible\").\n"
+>>>>>>> upstream/master
           "In \"speculative\" mode database contains changes done up to the head block plus changes made by transactions not yet included to the blockchain.\n"
-          "In \"head\" mode database contains changes done up to the current head block.\n")
+          "In \"head\" mode database contains changes done up to the current head block.\n"
+          "In \"read-only\" mode database contains incoming block changes but no speculative transaction processing.\n"
+          )
           //"In \"irreversible\" mode database contains changes done up the current irreversible block.\n")
+         ("validation-mode", boost::program_options::value<enumivo::chain::validation_mode>()->default_value(enumivo::chain::validation_mode::FULL),
+          "Chain validation mode (\"full\" or \"light\").\n"
+          "In \"full\" mode all incoming blocks will be fully validated.\n"
+          "In \"light\" mode all incoming blocks headers will be fully validated; transactions in those validated blocks will be trusted \n")
          ;
 
 // TODO: rate limiting
@@ -225,6 +272,8 @@ void chain_plugin::set_program_options(options_description& cli, options_descrip
           "recovers reversible block database if that database is in a bad state")
          ("force-all-checks", bpo::bool_switch()->default_value(false),
           "do not skip any checks that can be skipped while replaying irreversible blocks")
+         ("disable-replay-opts", bpo::bool_switch()->default_value(false),
+          "disable optimizations that specifically target replay")
          ("replay-blockchain", bpo::bool_switch()->default_value(false),
           "clear chain state database and replay all blocks")
          ("hard-replay-blockchain", bpo::bool_switch()->default_value(false),
@@ -359,6 +408,7 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
          my->chain_config->wasm_runtime = *my->wasm_runtime;
 
       my->chain_config->force_all_checks = options.at( "force-all-checks" ).as<bool>();
+      my->chain_config->disable_replay_opts = options.at( "disable-replay-opts" ).as<bool>();
       my->chain_config->contracts_console = options.at( "contracts-console" ).as<bool>();
 
       if( options.count( "extract-genesis-json" ) || options.at( "print-genesis-json" ).as<bool>()) {
@@ -513,6 +563,10 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
          ENU_ASSERT( my->chain_config->read_mode != db_read_mode::IRREVERSIBLE, plugin_config_exception, "irreversible mode not currently supported." );
       }
 
+      if ( options.count("validation-mode") ) {
+         my->chain_config->block_validation_mode = options.at("validation-mode").as<validation_mode>();
+      }
+
       my->chain.emplace( *my->chain_config );
       my->chain_id.emplace( my->chain->get_chain_id());
 
@@ -611,6 +665,16 @@ void chain_plugin::plugin_shutdown() {
    my->applied_transaction_connection.reset();
    my->accepted_confirmation_connection.reset();
    my->chain.reset();
+}
+
+chain_apis::read_write::read_write(controller& db, const fc::microseconds& abi_serializer_max_time)
+: db(db)
+, abi_serializer_max_time(abi_serializer_max_time)
+{
+}
+
+void chain_apis::read_write::validate() const {
+   ENU_ASSERT( db.get_read_mode() != chain::db_read_mode::READ_ONLY, missing_chain_api_plugin_exception, "Not allowed, node in read-only mode" );
 }
 
 chain_apis::read_write chain_plugin::get_read_write_api() {
@@ -884,9 +948,10 @@ read_only::get_info_results read_only::get_info(const read_only::get_info_params
       rm.get_virtual_block_cpu_limit(),
       rm.get_virtual_block_net_limit(),
       rm.get_block_cpu_limit(),
-      rm.get_block_net_limit()
+      rm.get_block_net_limit(),
       //std::bitset<64>(db.get_dynamic_global_properties().recent_slots_filled).to_string(),
-      //__builtin_popcountll(db.get_dynamic_global_properties().recent_slots_filled) / 64.0
+      //__builtin_popcountll(db.get_dynamic_global_properties().recent_slots_filled) / 64.0,
+      app().version_string(),
    };
 }
 
@@ -997,31 +1062,31 @@ read_only::get_table_rows_result read_only::get_table_rows( const read_only::get
    } else {
       ENU_ASSERT( !p.key_type.empty(), chain::contract_table_query_exception, "key type required for non-primary index" );
 
-      if (p.key_type == "i64" || p.key_type == "name") {
+      if (p.key_type == chain_apis::i64 || p.key_type == "name") {
          return get_table_rows_by_seckey<index64_index, uint64_t>(p, abi, [](uint64_t v)->uint64_t {
             return v;
          });
       }
-      else if (p.key_type == "i128") {
+      else if (p.key_type == chain_apis::i128) {
          return get_table_rows_by_seckey<index128_index, uint128_t>(p, abi, [](uint128_t v)->uint128_t {
             return v;
          });
       }
-      else if (p.key_type == "i256") {
-         return get_table_rows_by_seckey<index256_index, uint256_t>(p, abi, [](uint256_t v)->key256_t {
-            key256_t k;
-            k[0] = ((uint128_t *)&v)[0];
-            k[1] = ((uint128_t *)&v)[1];
-            return k;
-         });
+      else if (p.key_type == chain_apis::i256) {
+         if ( p.encode_type == chain_apis::hex) {
+            using  conv = keytype_converter<chain_apis::sha256,chain_apis::hex>;
+            return get_table_rows_by_seckey<conv::index_type, conv::input_type>(p, abi, conv::function());
+         }
+         using  conv = keytype_converter<chain_apis::i256>;
+         return get_table_rows_by_seckey<conv::index_type, conv::input_type>(p, abi, conv::function());
       }
-      else if (p.key_type == "float64") {
+      else if (p.key_type == chain_apis::float64) {
          return get_table_rows_by_seckey<index_double_index, double>(p, abi, [](double v)->float64_t {
             float64_t f = *(float64_t *)&v;
             return f;
          });
       }
-      else if (p.key_type == "float128") {
+      else if (p.key_type == chain_apis::float128) {
          return get_table_rows_by_seckey<index_long_double_index, double>(p, abi, [](double v)->float128_t{
             float64_t f = *(float64_t *)&v;
             float128_t f128;
@@ -1029,7 +1094,19 @@ read_only::get_table_rows_result read_only::get_table_rows( const read_only::get
             return f128;
          });
       }
+<<<<<<< HEAD
       ENU_ASSERT(false, chain::contract_table_query_exception,  "Unsupported secondary index type: ${t}", ("t", p.key_type));
+=======
+      else if (p.key_type == chain_apis::sha256) {
+         using  conv = keytype_converter<chain_apis::sha256,chain_apis::hex>;
+         return get_table_rows_by_seckey<conv::index_type, conv::input_type>(p, abi, conv::function());
+      }
+      else if(p.key_type == chain_apis::ripemd160) {
+         using  conv = keytype_converter<chain_apis::ripemd160,chain_apis::hex>;
+         return get_table_rows_by_seckey<conv::index_type, conv::input_type>(p, abi, conv::function());
+      }
+      ENU_ASSERT(false, chain::contract_table_query_exception,  "Unsupported secondary index type: ${t}", ("t", p.key_type));
+>>>>>>> upstream/master
    }
 }
 
@@ -1094,8 +1171,13 @@ static fc::variant get_global_row( const database& db, const abi_def& abi, const
    const auto table_type = get_table_type(abi, N(global));
    ENU_ASSERT(table_type == read_only::KEYi64, chain::contract_table_query_exception, "Invalid table type ${type} for table global", ("type",table_type));
 
+<<<<<<< HEAD
    const auto* const table_id = db.find<chain::table_id_object, chain::by_code_scope_table>(boost::make_tuple(N(enumivo), N(enumivo), N(global)));
    ENU_ASSERT(table_id, chain::contract_table_query_exception, "Missing table global");
+=======
+   const auto* const table_id = db.find<chain::table_id_object, chain::by_code_scope_table>(boost::make_tuple(config::system_account_name, config::system_account_name, N(global)));
+   ENU_ASSERT(table_id, chain::contract_table_query_exception, "Missing table global");
+>>>>>>> upstream/master
 
    const auto& kv_index = db.get_index<key_value_index, by_scope_primary>();
    const auto it = kv_index.find(boost::make_tuple(table_id->id, N(global)));
@@ -1107,7 +1189,11 @@ static fc::variant get_global_row( const database& db, const abi_def& abi, const
 }
 
 read_only::get_producers_result read_only::get_producers( const read_only::get_producers_params& p ) const {
+<<<<<<< HEAD
    const abi_def abi = enumivo::chain_apis::get_abi(db, N(enumivo));
+=======
+   const abi_def abi = enumivo::chain_apis::get_abi(db, config::system_account_name);
+>>>>>>> upstream/master
    const auto table_type = get_table_type(abi, N(producers));
    const abi_serializer abis{ abi, abi_serializer_max_time };
    ENU_ASSERT(table_type == KEYi64, chain::contract_table_query_exception, "Invalid table type ${type} for table producers", ("type",table_type));
@@ -1116,9 +1202,17 @@ read_only::get_producers_result read_only::get_producers( const read_only::get_p
    const auto lower = name{p.lower_bound};
 
    static const uint8_t secondary_index_num = 0;
+<<<<<<< HEAD
    const auto* const table_id = d.find<chain::table_id_object, chain::by_code_scope_table>(boost::make_tuple(N(enumivo), N(enumivo), N(producers)));
    const auto* const secondary_table_id = d.find<chain::table_id_object, chain::by_code_scope_table>(boost::make_tuple(N(enumivo), N(enumivo), N(producers) | secondary_index_num));
    ENU_ASSERT(table_id && secondary_table_id, chain::contract_table_query_exception, "Missing producers table");
+=======
+   const auto* const table_id = d.find<chain::table_id_object, chain::by_code_scope_table>(
+           boost::make_tuple(config::system_account_name, config::system_account_name, N(producers)));
+   const auto* const secondary_table_id = d.find<chain::table_id_object, chain::by_code_scope_table>(
+           boost::make_tuple(config::system_account_name, config::system_account_name, N(producers) | secondary_index_num));
+   ENU_ASSERT(table_id && secondary_table_id, chain::contract_table_query_exception, "Missing producers table");
+>>>>>>> upstream/master
 
    const auto& kv_index = d.get_index<key_value_index, by_scope_primary>();
    const auto& secondary_index = d.get_index<index_double_index>().indices();
@@ -1474,7 +1568,11 @@ read_only::get_account_results read_only::get_account( const get_account_params&
       ++perm;
    }
 
+<<<<<<< HEAD
    const auto& code_account = db.db().get<account_object,by_name>( N(enumivo) );
+=======
+   const auto& code_account = db.db().get<account_object,by_name>( config::system_account_name );
+>>>>>>> upstream/master
 
    abi_def abi;
    if( abi_serializer::to_abi(code_account.abi, abi) ) {
@@ -1598,6 +1696,10 @@ read_only::get_required_keys_result read_only::get_required_keys( const get_requ
    get_required_keys_result result;
    result.required_keys = required_keys_set;
    return result;
+}
+
+read_only::get_transaction_id_result read_only::get_transaction_id( const read_only::get_transaction_id_params& params)const {
+   return params.id();
 }
 
 

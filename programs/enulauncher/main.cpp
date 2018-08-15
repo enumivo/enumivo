@@ -1650,10 +1650,17 @@ launcher_def::bounce (const string& node_numbers) {
       const host_def& host = node_pair.first;
       const enunode_def& node = node_pair.second;
       string node_num = node.name.substr( node.name.length() - 2 );
+<<<<<<< HEAD:programs/enulauncher/main.cpp
       string cmd = "cd " + host.enumivo_home + "; "
                  + "export ENUMIVO_HOME=" + host.enumivo_home + string("; ")
                  + "export ENUMIVO_TN_NODE=" + node_num + "; "
                  + "./scripts/enumivo_tn_bounce.sh";
+=======
+      string cmd = "cd " + host.enumivo_home + "; "
+                 + "export ENUMIVO_HOME=" + host.enumivo_home + string("; ")
+                 + "export ENUMIVO_NODE=" + node_num + "; "
+                 + "./scripts/enumivo_tn_bounce.sh " + enunode_extra_args;
+>>>>>>> upstream/master:programs/enulauncher/main.cpp
       cout << "Bouncing " << node.name << endl;
       if (!do_ssh(cmd, host.host_name)) {
          cerr << "Unable to bounce " << node.name << endl;
@@ -1669,11 +1676,19 @@ launcher_def::down (const string& node_numbers) {
       const host_def& host = node_pair.first;
       const enunode_def& node = node_pair.second;
       string node_num = node.name.substr( node.name.length() - 2 );
+<<<<<<< HEAD:programs/enulauncher/main.cpp
       string cmd = "cd " + host.enumivo_home + "; "
                  + "export ENUMIVO_HOME=" + host.enumivo_home + "; "
                  + "export ENUMIVO_TN_NODE=" + node_num + "; "
          + "export ENUMIVO_TN_RESTART_CONFIG_DIR=" + node.config_dir_name + "; "
                  + "./scripts/enumivo_tn_down.sh";
+=======
+      string cmd = "cd " + host.enumivo_home + "; "
+                 + "export ENUMIVO_HOME=" + host.enumivo_home + "; "
+                 + "export ENUMIVO_NODE=" + node_num + "; "
+         + "export ENUMIVO_TN_RESTART_CONFIG_DIR=" + node.config_dir_name + "; "
+                 + "./scripts/enumivo_tn_down.sh";
+>>>>>>> upstream/master:programs/enulauncher/main.cpp
       cout << "Taking down " << node.name << endl;
       if (!do_ssh(cmd, host.host_name)) {
          cerr << "Unable to down " << node.name << endl;

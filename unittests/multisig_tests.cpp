@@ -73,14 +73,22 @@ public:
                                    .active   = authority( get_public_key( a, "active" ) )
                                 });
 
+<<<<<<< HEAD
       trx.actions.emplace_back( get_action( N(enumivo), N(buyram), vector<permission_level>{{creator,config::active_name}},
+=======
+      trx.actions.emplace_back( get_action( config::system_account_name, N(buyram), vector<permission_level>{{creator,config::active_name}},
+>>>>>>> upstream/master
                                             mvo()
                                             ("payer", creator)
                                             ("receiver", a)
                                             ("quant", ramfunds) )
                               );
 
+<<<<<<< HEAD
       trx.actions.emplace_back( get_action( N(enumivo), N(delegatebw), vector<permission_level>{{creator,config::active_name}},
+=======
+      trx.actions.emplace_back( get_action( config::system_account_name, N(delegatebw), vector<permission_level>{{creator,config::active_name}},
+>>>>>>> upstream/master
                                             mvo()
                                             ("from", creator)
                                             ("receiver", a)
@@ -394,10 +402,10 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_all_approve, enu_msig_tester ) t
    //             /         |        \             <--- implicitly updated in onblock action
    // alice active     bob active   carol active
 
-   set_authority(N(enumivo), "active", authority(1,
+   set_authority(config::system_account_name, "active", authority(1,
       vector<key_weight>{{get_private_key("enumivo", "active").get_public_key(), 1}},
       vector<permission_level_weight>{{{N(enumivo.prods), config::active_name}, 1}}), "owner",
-      { { N(enumivo), "active" } }, { get_private_key( N(enumivo), "active" ) });
+      { { config::system_account_name, "active" } }, { get_private_key( config::system_account_name, "active" ) });
 
    set_producers( {N(alice),N(bob),N(carol)} );
    produce_blocks(50);
@@ -416,9 +424,15 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_all_approve, enu_msig_tester ) t
 
    produce_blocks();
 
+<<<<<<< HEAD
    create_account_with_resources( N(alice1111111), N(enumivo), core_from_string("1.0000"), false );
    create_account_with_resources( N(bob111111111), N(enumivo), core_from_string("0.4500"), false );
    create_account_with_resources( N(carol1111111), N(enumivo), core_from_string("1.0000"), false );
+=======
+   create_account_with_resources( N(alice1111111), config::system_account_name, core_from_string("1.0000"), false );
+   create_account_with_resources( N(bob111111111), config::system_account_name, core_from_string("0.4500"), false );
+   create_account_with_resources( N(carol1111111), config::system_account_name, core_from_string("1.0000"), false );
+>>>>>>> upstream/master
 
    BOOST_REQUIRE_EQUAL( core_from_string("1000000000.0000"),
                         get_balance("enumivo") + get_balance("enu.ramfee") + get_balance("enu.stake") + get_balance("enu.ram") );
@@ -426,7 +440,11 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_all_approve, enu_msig_tester ) t
    vector<permission_level> perm = { { N(alice), config::active_name }, { N(bob), config::active_name },
       {N(carol), config::active_name} };
 
+<<<<<<< HEAD
    vector<permission_level> action_perm = {{N(enumivo), config::active_name}};
+=======
+   vector<permission_level> action_perm = {{config::system_account_name, config::active_name}};
+>>>>>>> upstream/master
 
    auto wasm = wast_to_wasm( test_api_wast );
 
@@ -496,8 +514,13 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_all_approve, enu_msig_tester ) t
 
    // can't create account because system contract was replace by the test_api contract
 
+<<<<<<< HEAD
    BOOST_REQUIRE_EXCEPTION( create_account_with_resources( N(alice1111112), N(enumivo), core_from_string("1.0000"), false ),
                             enumivo_assert_message_exception, enumivo_assert_message_is("Unknown Test")
+=======
+   BOOST_REQUIRE_EXCEPTION( create_account_with_resources( N(alice1111112), config::system_account_name, core_from_string("1.0000"), false ),
+                            enumivo_assert_message_exception, enumivo_assert_message_is("Unknown Test")
+>>>>>>> upstream/master
 
    );
 } FC_LOG_AND_RETHROW()
@@ -505,10 +528,10 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_all_approve, enu_msig_tester ) t
 BOOST_FIXTURE_TEST_CASE( update_system_contract_major_approve, enu_msig_tester ) try {
 
    // set up the link between (enumivo active) and (enumivo.prods active)
-   set_authority(N(enumivo), "active", authority(1,
+   set_authority(config::system_account_name, "active", authority(1,
       vector<key_weight>{{get_private_key("enumivo", "active").get_public_key(), 1}},
       vector<permission_level_weight>{{{N(enumivo.prods), config::active_name}, 1}}), "owner",
-      { { N(enumivo), "active" } }, { get_private_key( N(enumivo), "active" ) });
+      { { config::system_account_name, "active" } }, { get_private_key( config::system_account_name, "active" ) });
 
    create_accounts( { N(apple) } );
    set_producers( {N(alice),N(bob),N(carol), N(apple)} );
@@ -527,9 +550,15 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_major_approve, enu_msig_tester )
 
    produce_blocks();
 
+<<<<<<< HEAD
    create_account_with_resources( N(alice1111111), N(enumivo), core_from_string("1.0000"), false );
    create_account_with_resources( N(bob111111111), N(enumivo), core_from_string("0.4500"), false );
    create_account_with_resources( N(carol1111111), N(enumivo), core_from_string("1.0000"), false );
+=======
+   create_account_with_resources( N(alice1111111), config::system_account_name, core_from_string("1.0000"), false );
+   create_account_with_resources( N(bob111111111), config::system_account_name, core_from_string("0.4500"), false );
+   create_account_with_resources( N(carol1111111), config::system_account_name, core_from_string("1.0000"), false );
+>>>>>>> upstream/master
 
    BOOST_REQUIRE_EQUAL( core_from_string("1000000000.0000"),
                         get_balance("enumivo") + get_balance("enu.ramfee") + get_balance("enu.stake") + get_balance("enu.ram") );
@@ -537,7 +566,11 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_major_approve, enu_msig_tester )
    vector<permission_level> perm = { { N(alice), config::active_name }, { N(bob), config::active_name },
       {N(carol), config::active_name}, {N(apple), config::active_name}};
 
+<<<<<<< HEAD
    vector<permission_level> action_perm = {{N(enumivo), config::active_name}};
+=======
+   vector<permission_level> action_perm = {{config::system_account_name, config::active_name}};
+>>>>>>> upstream/master
 
    auto wasm = wast_to_wasm( test_api_wast );
 
@@ -619,8 +652,13 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_major_approve, enu_msig_tester )
 
    // can't create account because system contract was replace by the test_api contract
 
+<<<<<<< HEAD
    BOOST_REQUIRE_EXCEPTION( create_account_with_resources( N(alice1111112), N(enumivo), core_from_string("1.0000"), false ),
                             enumivo_assert_message_exception, enumivo_assert_message_is("Unknown Test")
+=======
+   BOOST_REQUIRE_EXCEPTION( create_account_with_resources( N(alice1111112), config::system_account_name, core_from_string("1.0000"), false ),
+                            enumivo_assert_message_exception, enumivo_assert_message_is("Unknown Test")
+>>>>>>> upstream/master
 
    );
 } FC_LOG_AND_RETHROW()

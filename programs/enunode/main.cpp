@@ -102,7 +102,7 @@ int main(int argc, char** argv)
       if(!app().initialize<chain_plugin, http_plugin, net_plugin, producer_plugin>(argc, argv))
          return INITIALIZE_FAIL;
       initialize_logging();
-      ilog("enunode version ${ver}", ("ver", enumivo::utilities::common::itoh(static_cast<uint32_t>(app().version()))));
+      ilog("enunode version ${ver}", ("ver", app().version_string()));
       ilog("enumivo root is ${root}", ("root", root.string()));
       app().startup();
       app().exec();

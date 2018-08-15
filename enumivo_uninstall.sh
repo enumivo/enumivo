@@ -1,13 +1,14 @@
 #! /bin/bash
 
 binaries=(enucli
-          enunode
-          enuwallet
           enugenabi
-          enuapplesdemo
           enulauncher
           enumivo-s2wasm
-          enumivo-wast2wasm)
+          enumivo-wast2wasm
+          enunodecpp
+          enuwallet
+          enunode
+          enuapplesdemo)
 
 if [ -d "/usr/local/enumivo" ]; then
    printf "\tDo you wish to remove this install? (requires sudo)\n"
