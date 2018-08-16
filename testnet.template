@@ -64,7 +64,7 @@ cacmd () {
 sleep 2
 ecmd get info
 
-wcmd create -n ignition
+wcmd create --to-console -n ignition
 
 # Manual deployers, add a line below this block that looks like:
 #    wcmd import -n ignition --private-key $PRODKEY[0]
@@ -75,10 +75,10 @@ wcmd create -n ignition
 # ------ DO NOT ALTER THE NEXT LINE -------
 ###INSERT prodkeys
 
-ecmd set contract enumivo contracts/enu.bios contracts/enu.bios/enu.bios.wast contracts/enu.bios/enu.bios.abi
+ecmd set contract enumivo contracts/enu.bios enu.bios.wasm enu.bios.abi
 
 # Create required system accounts
-ecmd create key
+ecmd create key --to-console
 pubsyskey=`grep "^Public key:" $logfile | tail -1 | sed "s/^Public key://"`
 prisyskey=`grep "^Private key:" $logfile | tail -1 | sed "s/^Private key://"`
 echo enumivo.* keys: $prisyskey $pubsyskey >> $logfile
@@ -94,9 +94,9 @@ ecmd create account enumivo enu.token $pubsyskey $pubsyskey
 ecmd create account enumivo enu.votepay $pubsyskey $pubsyskey
 ecmd create account enumivo enu.sudo $pubsyskey $pubsyskey
 
-ecmd set contract enu.token contracts/enu.token contracts/enu.token/enu.token.wast contracts/enu.token/enu.token.abi
-ecmd set contract enu.msig contracts/enu.msig contracts/enu.msig/enu.msig.wast contracts/enu.msig/enu.msig.abi
-ecmd set contract enu.sudo contracts/enu.sudo contracts/enu.sudo/enu.sudo.wast contracts/enu.sudo/enu.sudo.abi
+ecmd set contract enu.token contracts/enu.token enu.token.wasm enu.token.abi
+ecmd set contract enu.msig contracts/enu.msig enu.msig.wasm enu.msig.abi
+ecmd set contract enu.sudo contracts/enu.sudo enu.sudo.wasm enu.sudo.abi
 
 echo ===== Start: $step ============ >> $logfile
 echo executing: enucli --wallet-url $wdurl --url http://$bioshost:$biosport push action enu.token create '[ "enumivo", "10000000000.0000 ENU" ]' -p enu.token | tee -a $logfile
@@ -107,7 +107,7 @@ programs/enucli/enucli --wallet-url $wdurl --url http://$bioshost:$biosport push
 echo ==== End: $step ============== >> $logfile
 step=$(($step + 1))
 
-ecmd set contract enumivo contracts/enu.system contracts/enu.system/enu.system.wast contracts/enu.system/enu.system.abi
+ecmd set contract enumivo contracts/enu.system enu.system.wasm enu.system.abi
 
 # Manual deployers, add a series of lines below this block that looks like:
 #    cacmd $PRODNAME[0] $OWNERKEY[0] $ACTIVEKEY[0]

@@ -1652,8 +1652,8 @@ launcher_def::bounce (const string& node_numbers) {
       string node_num = node.name.substr( node.name.length() - 2 );
       string cmd = "cd " + host.enumivo_home + "; "
                  + "export ENUMIVO_HOME=" + host.enumivo_home + string("; ")
-                 + "export ENUMIVO_TN_NODE=" + node_num + "; "
-                 + "./scripts/enumivo_tn_bounce.sh";
+                 + "export ENUMIVO_NODE=" + node_num + "; "
+                 + "./scripts/enumivo_tn_bounce.sh " + enunode_extra_args;
       cout << "Bouncing " << node.name << endl;
       if (!do_ssh(cmd, host.host_name)) {
          cerr << "Unable to bounce " << node.name << endl;
@@ -1671,7 +1671,7 @@ launcher_def::down (const string& node_numbers) {
       string node_num = node.name.substr( node.name.length() - 2 );
       string cmd = "cd " + host.enumivo_home + "; "
                  + "export ENUMIVO_HOME=" + host.enumivo_home + "; "
-                 + "export ENUMIVO_TN_NODE=" + node_num + "; "
+                 + "export ENUMIVO_NODE=" + node_num + "; "
          + "export ENUMIVO_TN_RESTART_CONFIG_DIR=" + node.config_dir_name + "; "
                  + "./scripts/enumivo_tn_down.sh";
       cout << "Taking down " << node.name << endl;
