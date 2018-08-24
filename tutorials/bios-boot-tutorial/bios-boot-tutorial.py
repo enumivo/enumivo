@@ -74,7 +74,7 @@ def startWallet():
     run('mkdir -p ' + os.path.abspath(args.wallet_dir))
     background(args.enuwallet + ' --unlock-timeout %d --http-server-address 127.0.0.1:6666 --wallet-dir %s' % (unlockTimeout, os.path.abspath(args.wallet_dir)))
     sleep(.4)
-    run(args.enucli + 'wallet create')
+    run(args.enucli + 'wallet create --to-console')
 
 def importKeys():
     run(args.enucli + 'wallet import --private-key ' + args.private_key)
@@ -347,7 +347,7 @@ commands = [
 
 parser.add_argument('--public-key', metavar='', help="Enumivo Public Key", default='ENU8Znrtgwt8TfpmbVpTKvA2oB8Nqey625CLN8bCN3TEbgx86Dsvr', dest="public_key")
 parser.add_argument('--private-Key', metavar='', help="Enumivo Private Key", default='5K463ynhZoCDDa4RDcr63cUwWLTnKqmdcoTKTHBjqoKfv4u5V7p', dest="private_key")
-parser.add_argument('--enucli', metavar='', help="Enucli command", default='../../build/programs/enucli/enucli --wallet-url http://localhost:6666 ')
+parser.add_argument('--enucli', metavar='', help="Path to enucli binary", default='../../build/programs/enucli/enucli --wallet-url http://127.0.0.1:6666 ')
 parser.add_argument('--enunode', metavar='', help="Path to enunode binary", default='../../build/programs/enunode/enunode')
 parser.add_argument('--enuwallet', metavar='', help="Path to enuwallet binary", default='../../build/programs/enuwallet/enuwallet')
 parser.add_argument('--contracts-dir', metavar='', help="Path to contracts directory", default='../../build/contracts/')
@@ -381,7 +381,7 @@ for (flag, command, function, inAll, help) in commands:
         
 args = parser.parse_args()
 
-args.enucli += '--url http://localhost:%d ' % args.http_port
+args.enucli += '--url http://127.0.0.1:%d ' % args.http_port
 
 logFile = open(args.log_path, 'a')
 
