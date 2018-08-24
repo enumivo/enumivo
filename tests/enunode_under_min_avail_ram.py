@@ -149,7 +149,7 @@ try:
     contract=contractAccount.name
     Print("push create action to %s contract" % (contract))
     action="store"
-    numAmount=5000
+    numAmount=2000
     keepProcessing=True
     count=0
     while keepProcessing:
