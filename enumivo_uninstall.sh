@@ -26,9 +26,14 @@ if [ -d "/usr/local/enumivo" ]; then
             for binary in ${binaries[@]}; do
                rm ${binary}
             done
+            # Handle cleanup of directories created from installation
+            if [ "$1" == "--full" ]; then
+               if [ -d ~/Library/Application\ Support/enumivo ]; then rm -rf ~/Library/Application\ Support/enumivo; fi # Mac OS
+               if [ -d ~/.local/share/enumivo ]; then rm -rf ~/.local/share/enumivo; fi # Linux
+            fi
             popd &> /dev/null
             break;;
-         [Nn]* ) 
+         [Nn]* )
             printf "\tAborting uninstall\n\n"
             exit -1;;
       esac
