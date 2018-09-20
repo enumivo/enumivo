@@ -41,4 +41,4 @@ else
 fi
 
 bash $ENUMIVO_HOME/scripts/enumivo_tn_down.sh
-bash $ENUMIVO_HOME/scripts/enumivo_tn_up.sh $*
+bash $ENUMIVO_HOME/scripts/enumivo_tn_up.sh "$*"

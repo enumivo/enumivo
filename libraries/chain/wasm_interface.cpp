@@ -1913,6 +1913,8 @@ std::istream& operator>>(std::istream& in, wasm_interface::vm_type& runtime) {
       runtime = enumivo::chain::wasm_interface::vm_type::wavm;
    else if (s == "binaryen")
       runtime = enumivo::chain::wasm_interface::vm_type::binaryen;
+   else if (s == "wabt")
+      runtime = enumivo::chain::wasm_interface::vm_type::wabt;
    else
       in.setstate(std::ios_base::failbit);
    return in;

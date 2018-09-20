@@ -94,11 +94,20 @@ struct error_message {
    string   error_msg;
 };
 
+struct variant_def {
+   type_name            name;
+   vector<type_name>    types;
+};
+
+template<typename T>
+struct may_not_exist {
+   T value{};
+};
+
 struct abi_def {
    abi_def() = default;
    abi_def(const vector<type_def>& types, const vector<struct_def>& structs, const vector<action_def>& actions, const vector<table_def>& tables, const vector<clause_pair>& clauses, const vector<error_message>& error_msgs)
-   :version("enumivo::abi/1.0")
-   ,types(types)
+   :types(types)
    ,structs(structs)
    ,actions(actions)
    ,tables(tables)
@@ -106,20 +115,48 @@ struct abi_def {
    ,error_messages(error_msgs)
    {}
 
-   string                version = "enumivo::abi/1.0";
-   vector<type_def>      types;
-   vector<struct_def>    structs;
-   vector<action_def>    actions;
-   vector<table_def>     tables;
-   vector<clause_pair>   ricardian_clauses;
-   vector<error_message> error_messages;
-   extensions_type       abi_extensions;
+   string                              version = "";
+   vector<type_def>                    types;
+   vector<struct_def>                  structs;
+   vector<action_def>                  actions;
+   vector<table_def>                   tables;
+   vector<clause_pair>                 ricardian_clauses;
+   vector<error_message>               error_messages;
+   extensions_type                     abi_extensions;
+   may_not_exist<vector<variant_def>>  variants;
 };
 
 abi_def enumivo_contract_abi(const abi_def& enu_system_abi);
 vector<type_def> common_type_defs();
 
 } } /// namespace enumivo::chain
+
+namespace fc {
+
+template<typename ST, typename T>
+datastream<ST>& operator << (datastream<ST>& s, const enumivo::chain::may_not_exist<T>& v) {
+   raw::pack(s, v.value);
+   return s;
+}
+
+template<typename ST, typename T>
+datastream<ST>& operator >> (datastream<ST>& s, enumivo::chain::may_not_exist<T>& v) {
+   if (s.remaining())
+      raw::unpack(s, v.value);
+   return s;
+}
+
+template<typename T>
+void to_variant(const enumivo::chain::may_not_exist<T>& e, fc::variant& v) {
+   to_variant( e.value, v);
+}
+
+template<typename T>
+void from_variant(const fc::variant& v, enumivo::chain::may_not_exist<T>& e) {
+   from_variant( v, e.value );
+}
+
+} // namespace fc
 
 FC_REFLECT( enumivo::chain::type_def                         , (new_type_name)(type) )
 FC_REFLECT( enumivo::chain::field_def                        , (name)(type) )
@@ -128,5 +165,6 @@ FC_REFLECT( enumivo::chain::action_def                       , (name)(type)(rica
 FC_REFLECT( enumivo::chain::table_def                        , (name)(index_type)(key_names)(key_types)(type) )
 FC_REFLECT( enumivo::chain::clause_pair                      , (id)(body) )
 FC_REFLECT( enumivo::chain::error_message                    , (error_code)(error_msg) )
+FC_REFLECT( enumivo::chain::variant_def                      , (name)(types) )
 FC_REFLECT( enumivo::chain::abi_def                          , (version)(types)(structs)(actions)(tables)
-                                                             (ricardian_clauses)(error_messages)(abi_extensions) )
+                                                             (ricardian_clauses)(error_messages)(abi_extensions)(variants) )

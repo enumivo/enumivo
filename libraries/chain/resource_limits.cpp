@@ -3,6 +3,7 @@
 #include <enumivo/chain/resource_limits_private.hpp>
 #include <enumivo/chain/transaction_metadata.hpp>
 #include <enumivo/chain/transaction.hpp>
+#include <boost/tuple/tuple_io.hpp>
 #include <algorithm>
 
 namespace enumivo { namespace chain { namespace resource_limits {
