@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in enu/LICENSE.txt
+ *  @copyright defined in enu/LICENSE
  */
 #include <enumivo/test_control_plugin/test_control_plugin.hpp>
 #include <fc/optional.hpp>

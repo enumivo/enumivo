@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in enumivo/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE
  */
 #include <enumivo/test_control_api_plugin/test_control_api_plugin.hpp>
 #include <enumivo/chain/exceptions.hpp>
