@@ -39,7 +39,7 @@ killEnuInstances=not dontKill
 killWallet=not dontKill
 
 WalletdName="enuwallet"
-ClientName="clenu"
+ClientName="enucli"
 timeout = .5 * 12 * 2 + 60 # time for finalization with 1 producer + 60 seconds padding
 Utils.setIrreversibleTimeout(timeout)
 

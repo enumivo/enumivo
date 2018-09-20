@@ -123,7 +123,7 @@ killEnuInstances=not dontKill
 killWallet=not dontKill
 
 WalletdName="enuwallet"
-ClientName="clenu"
+ClientName="enucli"
 
 try:
     TestHelper.printSystemInfo("BEGIN")
