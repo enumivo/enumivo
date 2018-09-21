@@ -82,10 +82,10 @@ cp $SDIR/$RD/$prog $RD/$prog
 
 if [ $DD = "all" ]; then
     for ENUMIVO_RESTART_DATA_DIR in `ls -d var/lib/node_??`; do
-        bash $ENUMIVO_HOME/scripts/enumivo_tn_up.sh $*
+        bash $ENUMIVO_HOME/scripts/enumivo_tn_up.sh "$*"
     done
 else
-    bash $ENUMIVO_HOME/scripts/enumivo_tn_up.sh $*
+    bash $ENUMIVO_HOME/scripts/enumivo_tn_up.sh "$*"
 fi
 unset ENUMIVO_RESTART_DATA_DIR
 

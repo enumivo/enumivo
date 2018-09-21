@@ -174,6 +174,17 @@ void test_action::require_notice(uint64_t receiver, uint64_t code, uint64_t acti
    enumivo_assert(false, "Should've failed");
 }
 
+void test_action::require_notice_tests(uint64_t receiver, uint64_t code, uint64_t action) {
+   enumivo::print( "require_notice_tests" );
+   if( receiver == N( testapi ) ) {
+      enumivo::print( "require_recipient( N(acc5) )" );
+      enumivo::require_recipient( N( acc5 ) );
+   } else if( receiver == N( acc5 ) ) {
+      enumivo::print( "require_recipient( N(testapi) )" );
+      enumivo::require_recipient( N( testapi ) );
+   }
+}
+
 void test_action::require_auth() {
    prints("require_auth");
    enumivo::require_auth( N(acc3) );

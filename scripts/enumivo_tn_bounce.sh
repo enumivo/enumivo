@@ -3,7 +3,7 @@
 # enumivo_tn_bounce is used to restart a node that is acting badly or is down.
 # usage: enumivo_tn_bounce.sh [arglist]
 # arglist will be passed to the node's command line. First with no modifiers
-# then with --replay and then a third time with --resync
+# then with --hard-replay-blockchain and then a third time with --delete-all-blocks
 #
 # the data directory and log file are set by this script. Do not pass them on
 # the command line.
@@ -41,4 +41,4 @@ else
 fi
 
 bash $ENUMIVO_HOME/scripts/enumivo_tn_down.sh
-bash $ENUMIVO_HOME/scripts/enumivo_tn_up.sh $*
+bash $ENUMIVO_HOME/scripts/enumivo_tn_up.sh "$*"
