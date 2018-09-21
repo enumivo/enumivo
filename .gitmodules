@@ -29,4 +29,4 @@
 	url = https://github.com/enumivo/fc
 [submodule "libraries/wabt"]
 	path = libraries/wabt
-	url = http://github.com/enumivo/wabt
+	url = https://github.com/enumivo/wabt
