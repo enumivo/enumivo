@@ -87,6 +87,7 @@ namespace enumivo { namespace chain {
          controller( const config& cfg );
          ~controller();
 
+         void add_indices();
          void startup();
 
          /**
