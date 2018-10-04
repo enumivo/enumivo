@@ -155,6 +155,7 @@ try:
     count=0
     while keepProcessing:
         numAmount+=1
+        timeOutCount=0        
         for fromIndex in range(namedAccounts.numAccounts):
             count+=1
             toIndex=fromIndex+1
@@ -167,8 +168,15 @@ try:
             try:
                 trans=nodes[0].pushMessage(contract, action, data, opts)
                 if trans is None or not trans[0]:
+                    timeOutCount+=1
+                    if timeOutCount>=3:
+                       Print("Failed to push create action to enumivo contract for %d consecutive times, looks like enunode already exited." % (timeOutCount))
+                       keepProcessing=False
+                       break                    
                     Print("Failed to push create action to enumivo contract. sleep for 60 seconds")
                     time.sleep(60)
+                else:
+                    timeOutCount=0                    
                 time.sleep(1)
             except TypeError as ex:
                 keepProcessing=False
