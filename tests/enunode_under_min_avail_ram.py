@@ -150,7 +150,7 @@ try:
     contract=contractAccount.name
     Print("push create action to %s contract" % (contract))
     action="store"
-    numAmount=1500
+    numAmount=5000
     keepProcessing=True
     count=0
     while keepProcessing:
@@ -185,8 +185,8 @@ try:
     #spread the actions to all accounts, to use each accounts tps bandwidth
     fromIndexStart=fromIndex+1 if fromIndex+1<namedAccounts.numAccounts else 0
 
-    if count < 5 or count > 50:
-        strMsg="little" if count < 50 else "much"
+    if count < 5 or count > 15:
+        strMsg="little" if count < 15 else "much"
         Utils.cmdError("Was able to send %d store actions which was too %s" % (count, strMsg))
         errorExit("Incorrect number of store actions sent")
 
