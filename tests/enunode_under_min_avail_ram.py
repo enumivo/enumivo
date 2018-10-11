@@ -48,6 +48,7 @@ class NamedAccounts:
         Print("NamedAccounts Name for %d is %s" % (temp, retStr))
         return retStr
 
+
 ###############################################################
 # enunode_voting_test
 # --dump-error-details <Upon error print etc/enumivo/node_*/config.ini and var/lib/node_*/stderr.log to stdout>
@@ -155,7 +156,7 @@ try:
     count=0
     while keepProcessing:
         numAmount+=1
-        timeOutCount=0        
+        timeOutCount=0
         for fromIndex in range(namedAccounts.numAccounts):
             count+=1
             toIndex=fromIndex+1
@@ -172,11 +173,11 @@ try:
                     if timeOutCount>=3:
                        Print("Failed to push create action to enumivo contract for %d consecutive times, looks like enunode already exited." % (timeOutCount))
                        keepProcessing=False
-                       break                    
+                       break
                     Print("Failed to push create action to enumivo contract. sleep for 60 seconds")
                     time.sleep(60)
                 else:
-                    timeOutCount=0                    
+                    timeOutCount=0
                 time.sleep(1)
             except TypeError as ex:
                 keepProcessing=False
