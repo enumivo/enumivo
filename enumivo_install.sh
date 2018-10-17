@@ -58,9 +58,9 @@ fi
    }
 
    create_cmake_symlink() {
-      mkdir -p /usr/local/lib/cmake/eosio
-      pushd /usr/local/lib/cmake/eosio &> /dev/null
-      ln -sf ../../../eosio/lib/cmake/eosio/$1 $1
+      mkdir -p /usr/local/lib/cmake/enumivo
+      pushd /usr/local/lib/cmake/enumivo &> /dev/null
+      ln -sf ../../../enumivo/lib/cmake/enumivo/$1 $1
       popd &> /dev/null
    }
 
@@ -101,7 +101,7 @@ fi
    popd &> /dev/null 
 
    install_symlinks   
-   create_cmake_symlink "eosio-config.cmake"
+   create_cmake_symlink "enumivo-config.cmake"
 
 
    printf "\\tFor more information:\\n"

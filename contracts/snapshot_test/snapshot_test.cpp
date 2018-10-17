@@ -1,7 +1,7 @@
-#include <eosiolib/eosio.hpp>
-#include <eosiolib/multi_index.hpp>
+#include <enulib/enu.hpp>
+#include <enulib/multi_index.hpp>
 
-using namespace eosio;
+using namespace enumivo;
 
 namespace snapshot_test {
 
@@ -21,7 +21,7 @@ namespace snapshot_test {
       auto get_index_i128 () const { return index_i128; }
       const key256& get_index_i256 () const { return index_i256; }
 
-      EOSLIB_SERIALIZE( main_record, (id)(index_f64)(index_f128)(index_i64)(index_i128)(index_i256) )
+      ENULIB_SERIALIZE( main_record, (id)(index_f64)(index_f128)(index_i64)(index_i128)(index_i256) )
    };
 
    struct increment {
@@ -30,7 +30,7 @@ namespace snapshot_test {
 
       uint32_t value;
 
-      EOSLIB_SERIALIZE(increment, (value))
+      ENULIB_SERIALIZE(increment, (value))
    };
 
    using multi_index_type = enumivo::multi_index<N(data), main_record,
@@ -72,7 +72,7 @@ namespace multi_index_test {
       /// The apply method implements the dispatch of events to this contract
       void apply( uint64_t self, uint64_t code, uint64_t action ) {
          require_auth(code);
-         eosio_assert(action == N(increment), "unsupported action");
+         enumivo_assert(action == N(increment), "unsupported action");
          snapshot_test::exec(self, unpack_action_data<snapshot_test::increment>().value);
       }
    }

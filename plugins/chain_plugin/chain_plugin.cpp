@@ -984,7 +984,7 @@ void chain_plugin::handle_guard_exception(const chain::guard_exception& e) const
 
 void chain_plugin::handle_db_exhaustion() {
    elog("database memory exhausted: increase chain-state-db-size-mb and/or reversible-blocks-db-size-mb");
-   //return 1 -- it's what programs/nodeos/main.cpp considers "BAD_ALLOC"
+   //return 1 -- it's what programs/enunode/main.cpp considers "BAD_ALLOC"
    std::_Exit(1);
 }
 

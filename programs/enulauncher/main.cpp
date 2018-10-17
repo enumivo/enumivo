@@ -406,8 +406,8 @@ struct launcher_def {
    bfs::path config_dir_base;
    bfs::path data_dir_base;
    bool skip_transaction_signatures = false;
-   string eosd_extra_args;
-   std::map<uint,string> specific_nodeos_args;
+   string enud_extra_args;
+   std::map<uint,string> specific_enunode_args;
    testnet_def network;
    string gelf_endpoint;
    vector <string> aliases;
@@ -462,12 +462,12 @@ struct launcher_def {
    void format_ssh (const string &cmd, const string &host_name, string &ssh_cmd_line);
    void do_command(const host_def& host, const string& name, vector<pair<string, string>> env_pairs, const string& cmd);
    bool do_ssh (const string &cmd, const string &host_name);
-   void prep_remote_config_dir (eosd_def &node, host_def *host);
-   void launch (eosd_def &node, string &gts);
+   void prep_remote_config_dir (enud_def &node, host_def *host);
+   void launch (enud_def &node, string &gts);
    void kill (launch_modes mode, string sig_opt);
    static string get_node_num(uint16_t node_num);
-   pair<host_def, eosd_def> find_node(uint16_t node_num);
-   vector<pair<host_def, eosd_def>> get_nodes(const string& node_number_list);
+   pair<host_def, enud_def> find_node(uint16_t node_num);
+   vector<pair<host_def, enud_def>> get_nodes(const string& node_number_list);
    void bounce (const string& node_numbers);
    void down (const string& node_numbers);
    void roll (const string& host_names);
@@ -486,16 +486,16 @@ launcher_def::set_options (bpo::options_description &cfg) {
     ("shape,s",bpo::value<string>(&shape)->default_value("star"),"network topology, use \"star\" \"mesh\" or give a filename for custom")
     ("p2p-plugin", bpo::value<string>()->default_value("net"),"select a p2p plugin to use (either net or bnet). Defaults to net.")
     ("genesis,g",bpo::value<string>()->default_value("./genesis.json"),"set the path to genesis.json")
-    ("skip-signature", bpo::bool_switch(&skip_transaction_signatures)->default_value(false), "nodeos does not require transaction signatures.")
-    ("nodeos", bpo::value<string>(&eosd_extra_args), "forward nodeos command line argument(s) to each instance of nodeos, enclose arg(s) in quotes")
-    ("specific-num", bpo::value<vector<uint>>()->composing(), "forward nodeos command line argument(s) (using \"--specific-nodeos\" flag) to this specific instance of nodeos. This parameter can be entered multiple times and requires a paired \"--specific-nodeos\" flag")
-    ("specific-nodeos", bpo::value<vector<string>>()->composing(), "forward nodeos command line argument(s) to its paired specific instance of nodeos(using \"--specific-num\"), enclose arg(s) in quotes")
+    ("skip-signature", bpo::bool_switch(&skip_transaction_signatures)->default_value(false), "enunode does not require transaction signatures.")
+    ("enunode", bpo::value<string>(&enud_extra_args), "forward enunode command line argument(s) to each instance of enunode, enclose arg(s) in quotes")
+    ("specific-num", bpo::value<vector<uint>>()->composing(), "forward enunode command line argument(s) (using \"--specific-enunode\" flag) to this specific instance of enunode. This parameter can be entered multiple times and requires a paired \"--specific-enunode\" flag")
+    ("specific-enunode", bpo::value<vector<string>>()->composing(), "forward enunode command line argument(s) to its paired specific instance of enunode(using \"--specific-num\"), enclose arg(s) in quotes")
     ("delay,d",bpo::value<int>(&start_delay)->default_value(0),"seconds delay before starting each node after the first")
     ("boot",bpo::bool_switch(&boot)->default_value(false),"After deploying the nodes and generating a boot script, invoke it.")
     ("nogen",bpo::bool_switch(&nogen)->default_value(false),"launch nodes without writing new config files")
     ("host-map",bpo::value<string>(),"a file containing mapping specific nodes to hosts. Used to enhance the custom shape argument")
     ("servers",bpo::value<string>(),"a file containing ip addresses and names of individual servers to deploy as producers or non-producers ")
-    ("per-host",bpo::value<int>(&per_host)->default_value(0),"specifies how many nodeos instances will run on a single host. Use 0 to indicate all on one.")
+    ("per-host",bpo::value<int>(&per_host)->default_value(0),"specifies how many enunode instances will run on a single host. Use 0 to indicate all on one.")
     ("network-name",bpo::value<string>(&network.name)->default_value("testnet_"),"network name prefix used in GELF logging source")
     ("enable-gelf-logging",bpo::value<bool>(&gelf_enabled)->default_value(true),"enable gelf logging appender in logging configuration file")
     ("gelf-endpoint",bpo::value<string>(&gelf_endpoint)->default_value("10.160.11.21:12201"),"hostname:port or ip:port of GELF endpoint")
@@ -1717,15 +1717,15 @@ launcher_def::bounce (const string& node_numbers) {
       const enunode_def& node = node_pair.second;
       const string node_num = node.get_node_num();
       cout << "Bouncing " << node.name << endl;
-      string cmd = "./scripts/eosio-tn_bounce.sh " + eosd_extra_args;
-      if (node_num != "bios" && !specific_nodeos_args.empty()) {
+      string cmd = "./scripts/enumivo-tn_bounce.sh " + enud_extra_args;
+      if (node_num != "bios" && !specific_enunode_args.empty()) {
          const auto node_num_i = boost::lexical_cast<uint16_t,string>(node_num);
-         if (specific_nodeos_args.count(node_num_i)) {
-            cmd += " " + specific_nodeos_args[node_num_i];
+         if (specific_enunode_args.count(node_num_i)) {
+            cmd += " " + specific_enunode_args[node_num_i];
          }
       }
 
-      do_command(host, node.name, { { "EOSIO_HOME", host.eosio_home }, { "EOSIO_NODE", node_num } }, cmd);
+      do_command(host, node.name, { { "ENUMIVO_HOME", host.enumivo_home }, { "ENUMIVO_NODE", node_num } }, cmd);
    }
 }
 

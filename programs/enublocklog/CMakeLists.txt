@@ -14,7 +14,7 @@ target_include_directories(enublocklog PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
 target_link_libraries( enublocklog
         PRIVATE appbase
-        PRIVATE eosio_chain fc ${CMAKE_DL_LIBS} ${PLATFORM_SPECIFIC_LIBS} )
+        PRIVATE enumivo_chain fc ${CMAKE_DL_LIBS} ${PLATFORM_SPECIFIC_LIBS} )
 
 install( TARGETS
    enublocklog

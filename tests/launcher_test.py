@@ -38,7 +38,7 @@ testSuccessful=False
 killEnuInstances=not dontKill
 killWallet=not dontKill
 
-WalletdName=Utils.EosWalletName
+WalletdName=Utils.EnuWalletName
 ClientName="enucli"
 timeout = .5 * 12 * 2 + 60 # time for finalization with 1 producer + 60 seconds padding
 Utils.setIrreversibleTimeout(timeout)
@@ -64,7 +64,7 @@ try:
         print("Stand up walletd")
         if walletMgr.launch() is False:
             cmdError("%s" % (WalletdName))
-            errorExit("Failed to stand up eos walletd.")
+            errorExit("Failed to stand up enu walletd.")
 
     Print("Validating system accounts after bootstrap")
     cluster.validateAccounts(None)

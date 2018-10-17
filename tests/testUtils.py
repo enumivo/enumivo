@@ -32,7 +32,7 @@ class Utils:
     ShuttingDown=False
     CheckOutputDeque=deque(maxlen=10)
 
-    EosBlockLogPath="programs/enublocklog/enublocklog"
+    EnuBlockLogPath="programs/enublocklog/enublocklog"
 
     @staticmethod
     def Print(*args, **kwargs):
@@ -227,7 +227,7 @@ class Utils:
     @staticmethod
     def getBlockLog(blockLogLocation, silentErrors=False, exitOnError=False):
         assert(isinstance(blockLogLocation, str))
-        cmd="%s --blocks-dir %s --as-json-array" % (Utils.EosBlockLogPath, blockLogLocation)
+        cmd="%s --blocks-dir %s --as-json-array" % (Utils.EnuBlockLogPath, blockLogLocation)
         if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
         rtn=None
         try:

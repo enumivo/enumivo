@@ -2,7 +2,7 @@
 #include <enumivo/chain/exceptions.hpp>
 #include <fc/scoped_exit.hpp>
 
-namespace eosio { namespace chain {
+namespace enumivo { namespace chain {
 
 variant_snapshot_writer::variant_snapshot_writer(fc::mutable_variant_object& snapshot)
 : snapshot(snapshot)
@@ -95,7 +95,7 @@ void variant_snapshot_reader::set_section( const string& section_name ) {
       }
    }
 
-   EOS_THROW(snapshot_exception, "Variant snapshot has no section named ${n}", ("n", section_name));
+   ENU_THROW(snapshot_exception, "Variant snapshot has no section named ${n}", ("n", section_name));
 }
 
 bool variant_snapshot_reader::read_row( detail::abstract_snapshot_row_reader& row_reader ) {
@@ -319,7 +319,7 @@ void istream_snapshot_reader::set_section( const string& section_name ) {
       }
    }
 
-   EOS_THROW(snapshot_exception, "Binary snapshot has no section named ${n}", ("n", section_name));
+   ENU_THROW(snapshot_exception, "Binary snapshot has no section named ${n}", ("n", section_name));
 }
 
 bool istream_snapshot_reader::read_row( detail::abstract_snapshot_row_reader& row_reader ) {

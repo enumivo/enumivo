@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE
  */
 
 #include <boost/test/unit_test.hpp>
@@ -14,7 +14,7 @@
 
 #include <sstream>
 
-using namespace eosio;
+using namespace enumivo;
 using namespace testing;
 using namespace chain;
 

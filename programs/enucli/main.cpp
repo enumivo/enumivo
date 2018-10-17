@@ -166,7 +166,7 @@ bfs::path determine_home_directory()
 }
 
 string url = "http://127.0.0.1:8888/";
-string default_wallet_url = "unix://" + (determine_home_directory() / "eosio-wallet" / (string(key_store_executable_name) + ".sock")).string();
+string default_wallet_url = "unix://" + (determine_home_directory() / "enuwallet" / (string(key_store_executable_name) + ".sock")).string();
 string wallet_url; //to be set to default_wallet_url in main
 bool no_verify = false;
 vector<string> headers;
@@ -838,7 +838,7 @@ void ensure_enuwallet_running(CLI::App* app) {
                                      bp::std_err > bp::null);
         if (enuwallet.running()) {
             std::cerr << binPath << " launched" << std::endl;
-            keos.detach();
+            enuwallet.detach();
             try_local_port(2000);
         } else {
             std::cerr << "No wallet service listening on " << wallet_url << ". Failed to launch " << binPath << std::endl;
@@ -893,7 +893,7 @@ struct create_account_subcommand {
    string stake_cpu;
    uint32_t buy_ram_bytes_in_kbytes = 0;
    uint32_t buy_ram_bytes = 0;
-   string buy_ram_eos;
+   string buy_ram_enu;
    bool transfer;
    bool simple;
 
@@ -917,8 +917,8 @@ struct create_account_subcommand {
                                    (localized("The amount of RAM bytes to purchase for the new account in kibibytes (KiB)")));
          createAccount->add_option("--buy-ram-bytes", buy_ram_bytes,
                                    (localized("The amount of RAM bytes to purchase for the new account in bytes")));
-         createAccount->add_option("--buy-ram", buy_ram_eos,
-                                   (localized("The amount of RAM bytes to purchase for the new account in EOS")));
+         createAccount->add_option("--buy-ram", buy_ram_enu,
+                                   (localized("The amount of RAM bytes to purchase for the new account in ENU")));
          createAccount->add_flag("--transfer", transfer,
                                  (localized("Transfer voting power and right to unstake ENU to receiver")));
       }
@@ -937,9 +937,9 @@ struct create_account_subcommand {
             } ENU_RETHROW_EXCEPTIONS(public_key_type_exception, "Invalid active public key: ${public_key}", ("public_key", active_key_str));
             auto create = create_newaccount(creator, account_name, owner_key, active_key);
             if (!simple) {
-               ENUC_ASSERT( buy_ram_eos.size() || buy_ram_bytes_in_kbytes || buy_ram_bytes, "ERROR: One of --buy-ram, --buy-ram-kbytes or --buy-ram-bytes should have non-zero value" );
+               ENUC_ASSERT( buy_ram_enu.size() || buy_ram_bytes_in_kbytes || buy_ram_bytes, "ERROR: One of --buy-ram, --buy-ram-kbytes or --buy-ram-bytes should have non-zero value" );
                ENUC_ASSERT( !buy_ram_bytes_in_kbytes || !buy_ram_bytes, "ERROR: --buy-ram-kbytes and --buy-ram-bytes cannot be set at the same time" );
-               action buyram = !buy_ram_eos.empty() ? create_buyram(creator, account_name, to_asset(buy_ram_eos))
+               action buyram = !buy_ram_enu.empty() ? create_buyram(creator, account_name, to_asset(buy_ram_enu))
                   : create_buyrambytes(creator, account_name, (buy_ram_bytes_in_kbytes) ? (buy_ram_bytes_in_kbytes * 1024) : buy_ram_bytes);
                auto net = to_asset(stake_net);
                auto cpu = to_asset(stake_cpu);
@@ -1208,11 +1208,11 @@ struct delegate_bandwidth_subcommand {
       auto delegate_bandwidth = actionRoot->add_subcommand("delegatebw", localized("Delegate bandwidth"));
       delegate_bandwidth->add_option("from", from_str, localized("The account to delegate bandwidth from"))->required();
       delegate_bandwidth->add_option("receiver", receiver_str, localized("The account to receive the delegated bandwidth"))->required();
-      delegate_bandwidth->add_option("stake_net_quantity", stake_net_amount, localized("The amount of EOS to stake for network bandwidth"))->required();
-      delegate_bandwidth->add_option("stake_cpu_quantity", stake_cpu_amount, localized("The amount of EOS to stake for CPU bandwidth"))->required();
-      delegate_bandwidth->add_option("--buyram", buy_ram_amount, localized("The amount of EOS to buyram"));
+      delegate_bandwidth->add_option("stake_net_quantity", stake_net_amount, localized("The amount of ENU to stake for network bandwidth"))->required();
+      delegate_bandwidth->add_option("stake_cpu_quantity", stake_cpu_amount, localized("The amount of ENU to stake for CPU bandwidth"))->required();
+      delegate_bandwidth->add_option("--buyram", buy_ram_amount, localized("The amount of ENU to buyram"));
       delegate_bandwidth->add_option("--buy-ram-bytes", buy_ram_bytes, localized("The amount of RAM to buy in number of bytes"));
-      delegate_bandwidth->add_flag("--transfer", transfer, localized("Transfer voting power and right to unstake EOS to receiver"));
+      delegate_bandwidth->add_flag("--transfer", transfer, localized("Transfer voting power and right to unstake ENU to receiver"));
       add_standard_transaction_options(delegate_bandwidth);
 
       delegate_bandwidth->set_callback([this] {
@@ -1223,7 +1223,7 @@ struct delegate_bandwidth_subcommand {
                   ("stake_cpu_quantity", to_asset(stake_cpu_amount))
                   ("transfer", transfer);
          std::vector<chain::action> acts{create_action({permission_level{from_str,config::active_name}}, config::system_account_name, N(delegatebw), act_payload)};
-         EOSC_ASSERT( !(buy_ram_amount.size()) || !buy_ram_bytes, "ERROR: --buyram and --buy-ram-bytes cannot be set at the same time" );
+         ENUC_ASSERT( !(buy_ram_amount.size()) || !buy_ram_bytes, "ERROR: --buyram and --buy-ram-bytes cannot be set at the same time" );
          if (buy_ram_amount.size()) {
             acts.push_back( create_buyram(from_str, receiver_str, to_asset(buy_ram_amount)) );
          } else if (buy_ram_bytes) {
@@ -1361,12 +1361,12 @@ struct buyram_subcommand {
       auto buyram = actionRoot->add_subcommand("buyram", localized("Buy RAM"));
       buyram->add_option("payer", from_str, localized("The account paying for RAM"))->required();
       buyram->add_option("receiver", receiver_str, localized("The account receiving bought RAM"))->required();
-      buyram->add_option("amount", amount, localized("The amount of EOS to pay for RAM, or number of bytes/kibibytes of RAM if --bytes/--kbytes is set"))->required();
+      buyram->add_option("amount", amount, localized("The amount of ENU to pay for RAM, or number of bytes/kibibytes of RAM if --bytes/--kbytes is set"))->required();
       buyram->add_flag("--kbytes,-k", kbytes, localized("buyram in number of kibibytes (KiB)"));
       buyram->add_flag("--bytes,-b", bytes, localized("buyram in number of bytes"));
       add_standard_transaction_options(buyram);
       buyram->set_callback([this] {
-         EOSC_ASSERT( !kbytes || !bytes, "ERROR: --kbytes and --bytes cannot be set at the same time" );
+         ENUC_ASSERT( !kbytes || !bytes, "ERROR: --kbytes and --bytes cannot be set at the same time" );
          if (kbytes || bytes) {
             send_actions( { create_buyrambytes(from_str, receiver_str, fc::to_uint64(amount) * ((kbytes) ? 1024ull : 1ull)) } );
          } else {
@@ -3072,7 +3072,7 @@ int main( int argc, char** argv ) {
    wrap->require_subcommand();
 
    // wrap exec
-   string wrap_con = "eosio.wrap";
+   string wrap_con = "enu.wrap";
    executer = "";
    string trx_to_exec;
    auto wrap_exec = wrap->add_subcommand("exec", localized("Execute a transaction while bypassing authorization checks"));

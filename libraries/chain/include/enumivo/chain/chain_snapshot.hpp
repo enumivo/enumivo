@@ -1,12 +1,12 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE
  */
 #pragma once
 
 #include <enumivo/chain/exceptions.hpp>
 
-namespace eosio { namespace chain {
+namespace enumivo { namespace chain {
 
 struct chain_snapshot_header {
    /**

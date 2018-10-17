@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE
  */
 #pragma once
 
@@ -10,7 +10,7 @@
 #include <boost/core/demangle.hpp>
 #include <ostream>
 
-namespace eosio { namespace chain {
+namespace enumivo { namespace chain {
    /**
     * History:
     * Version 1: initial version with string identified sections and rows

@@ -21,7 +21,7 @@ target_link_libraries( plugin_test enumivo_testing enumivo_chain chainbase enu_u
 target_include_directories( plugin_test PUBLIC
                             ${CMAKE_SOURCE_DIR}/plugins/net_plugin/include
                             ${CMAKE_SOURCE_DIR}/plugins/chain_plugin/include )
-add_dependencies(plugin_test asserter test_api test_api_mem test_api_db test_api_multi_index proxy identity identity_test stltest infinite eosio.system eosio.token eosio.bios test.inline multi_index_test noop eosio.msig)
+add_dependencies(plugin_test asserter test_api test_api_mem test_api_db test_api_multi_index proxy identity identity_test stltest infinite enu.system enu.token enu.bios test.inline multi_index_test noop enu.msig)
 
 #
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/core_symbol.py.in ${CMAKE_CURRENT_BINARY_DIR}/core_symbol.py)
@@ -48,20 +48,20 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/launcher_test.py ${CMAKE_CURRENT_BINA
 #To run plugin_test with all log from blockchain displayed, put --verbose after --, i.e. plugin_test -- --verbose
 add_test(NAME plugin_test COMMAND plugin_test --report_level=detailed --color_output)
 
-add_test(NAME nodeos_sanity_test COMMAND tests/nodeos_run_test.py -v --sanity-test --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
-set_property(TEST nodeos_sanity_test PROPERTY LABELS nonparallelizable_tests)
-add_test(NAME nodeos_sanity_bnet_test COMMAND tests/nodeos_run_test.py -v --sanity-test --clean-run --p2p-plugin bnet --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
-set_property(TEST nodeos_sanity_bnet_test PROPERTY LABELS nonparallelizable_tests)
-add_test(NAME nodeos_run_test COMMAND tests/nodeos_run_test.py -v --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
-set_property(TEST nodeos_run_test PROPERTY LABELS nonparallelizable_tests)
-add_test(NAME nodeos_run_bnet_test COMMAND tests/nodeos_run_test.py -v --clean-run --p2p-plugin bnet --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
-set_property(TEST nodeos_run_bnet_test PROPERTY LABELS nonparallelizable_tests)
+add_test(NAME enunode_sanity_test COMMAND tests/enunode_run_test.py -v --sanity-test --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+set_property(TEST enunode_sanity_test PROPERTY LABELS nonparallelizable_tests)
+add_test(NAME enunode_sanity_bnet_test COMMAND tests/enunode_run_test.py -v --sanity-test --clean-run --p2p-plugin bnet --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+set_property(TEST enunode_sanity_bnet_test PROPERTY LABELS nonparallelizable_tests)
+add_test(NAME enunode_run_test COMMAND tests/enunode_run_test.py -v --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+set_property(TEST enunode_run_test PROPERTY LABELS nonparallelizable_tests)
+add_test(NAME enunode_run_bnet_test COMMAND tests/enunode_run_test.py -v --clean-run --p2p-plugin bnet --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+set_property(TEST enunode_run_bnet_test PROPERTY LABELS nonparallelizable_tests)
 
 add_test(NAME p2p_dawn515_test COMMAND tests/p2p_tests/dawn_515/test.sh WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 set_property(TEST p2p_dawn515_test PROPERTY LABELS nonparallelizable_tests)
 if(BUILD_MONGO_DB_PLUGIN)
-  add_test(NAME nodeos_run_test-mongodb COMMAND tests/nodeos_run_test.py --mongodb -v --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
-  set_property(TEST nodeos_run_test-mongodb PROPERTY LABELS nonparallelizable_tests)
+  add_test(NAME enunode_run_test-mongodb COMMAND tests/enunode_run_test.py --mongodb -v --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+  set_property(TEST enunode_run_test-mongodb PROPERTY LABELS nonparallelizable_tests)
 endif()
 
 add_test(NAME distributed-transactions-test COMMAND tests/distributed-transactions-test.py -d 2 -p 4 -n 6 -v --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
@@ -81,27 +81,27 @@ add_test(NAME launcher_test COMMAND tests/launcher_test.py -v --clean-run --dump
 set_property(TEST launcher_test PROPERTY LABELS nonparallelizable_tests)
 
 # Long running tests
-add_test(NAME nodeos_sanity_lr_test COMMAND tests/nodeos_run_test.py -v --sanity-test --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
-set_property(TEST nodeos_sanity_lr_test PROPERTY LABELS long_running_tests)
-add_test(NAME nodeos_sanity_bnet_lr_test COMMAND tests/nodeos_run_test.py -v --sanity-test --p2p-plugin bnet --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
-set_property(TEST nodeos_sanity_bnet_lr_test PROPERTY LABELS long_running_tests)
-add_test(NAME nodeos_run_check_lr_test COMMAND tests/nodeos_run_test.py -v --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
-set_property(TEST nodeos_run_check_lr_test PROPERTY LABELS long_running_tests)
+add_test(NAME enunode_sanity_lr_test COMMAND tests/enunode_run_test.py -v --sanity-test --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+set_property(TEST enunode_sanity_lr_test PROPERTY LABELS long_running_tests)
+add_test(NAME enunode_sanity_bnet_lr_test COMMAND tests/enunode_run_test.py -v --sanity-test --p2p-plugin bnet --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+set_property(TEST enunode_sanity_bnet_lr_test PROPERTY LABELS long_running_tests)
+add_test(NAME enunode_run_check_lr_test COMMAND tests/enunode_run_test.py -v --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+set_property(TEST enunode_run_check_lr_test PROPERTY LABELS long_running_tests)
 
 #add_test(NAME distributed_transactions_lr_test COMMAND tests/distributed-transactions-test.py -d 2 -p 21 -n 21 -v --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 #set_property(TEST distributed_transactions_lr_test PROPERTY LABELS long_running_tests)
 
-add_test(NAME nodeos_forked_chain_lr_test COMMAND tests/nodeos_forked_chain_test.py -v --wallet-port 9901 --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
-set_property(TEST nodeos_forked_chain_lr_test PROPERTY LABELS long_running_tests)
+add_test(NAME enunode_forked_chain_lr_test COMMAND tests/enunode_forked_chain_test.py -v --wallet-port 9901 --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+set_property(TEST enunode_forked_chain_lr_test PROPERTY LABELS long_running_tests)
 
-add_test(NAME nodeos_voting_lr_test COMMAND tests/nodeos_voting_test.py -v --wallet-port 9902 --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
-set_property(TEST nodeos_voting_lr_test PROPERTY LABELS long_running_tests)
+add_test(NAME enunode_voting_lr_test COMMAND tests/enunode_voting_test.py -v --wallet-port 9902 --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+set_property(TEST enunode_voting_lr_test PROPERTY LABELS long_running_tests)
 
-add_test(NAME nodeos_voting_bnet_lr_test COMMAND tests/nodeos_voting_test.py -v --wallet-port 9903 --p2p-plugin bnet --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
-set_property(TEST nodeos_voting_bnet_lr_test PROPERTY LABELS long_running_tests)
+add_test(NAME enunode_voting_bnet_lr_test COMMAND tests/enunode_voting_test.py -v --wallet-port 9903 --p2p-plugin bnet --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+set_property(TEST enunode_voting_bnet_lr_test PROPERTY LABELS long_running_tests)
 
-add_test(NAME nodeos_under_min_avail_ram_lr_test COMMAND tests/nodeos_under_min_avail_ram.py -v --wallet-port 9904 --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
-set_property(TEST nodeos_under_min_avail_ram_lr_test PROPERTY LABELS long_running_tests)
+add_test(NAME enunode_under_min_avail_ram_lr_test COMMAND tests/enunode_under_min_avail_ram.py -v --wallet-port 9904 --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+set_property(TEST enunode_under_min_avail_ram_lr_test PROPERTY LABELS long_running_tests)
 
 
 if(ENABLE_COVERAGE_TESTING)

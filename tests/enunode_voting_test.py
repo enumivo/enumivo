@@ -158,7 +158,7 @@ testSuccessful=False
 killEnuInstances=not dontKill
 killWallet=not dontKill
 
-WalletdName=Utils.EosWalletName
+WalletdName=Utils.EnuWalletName
 ClientName="enucli"
 
 try:
@@ -187,7 +187,7 @@ try:
     testWalletName="test"
 
     Print("Creating wallet \"%s\"." % (testWalletName))
-    testWallet=walletMgr.create(testWalletName, [cluster.eosioAccount,accounts[0],accounts[1],accounts[2],accounts[3],accounts[4]])
+    testWallet=walletMgr.create(testWalletName, [cluster.enumivoAccount,accounts[0],accounts[1],accounts[2],accounts[3],accounts[4]])
 
     for _, account in cluster.defProducerAccounts.items():
         walletMgr.importKey(account, testWallet, ignoreDupKeyWarning=True)
@@ -211,8 +211,8 @@ try:
         Print("Create new account %s via %s" % (account.name, cluster.enumivoAccount.name))
         trans=node.createInitializeAccount(account, cluster.enumivoAccount, stakedDeposit=0, waitForTransBlock=False, stakeNet=1000, stakeCPU=1000, buyRAM=1000, exitOnError=True)
         transferAmount="100000000.0000 {0}".format(CORE_SYMBOL)
-        Print("Transfer funds %s from account %s to %s" % (transferAmount, cluster.eosioAccount.name, account.name))
-        node.transferFunds(cluster.eosioAccount, account, transferAmount, "test transfer")
+        Print("Transfer funds %s from account %s to %s" % (transferAmount, cluster.enumivoAccount.name, account.name))
+        node.transferFunds(cluster.enumivoAccount, account, transferAmount, "test transfer")
         trans=node.delegatebw(account, 20000000.0000, 20000000.0000, waitForTransBlock=True, exitOnError=True)
 
     # containers for tracking producers

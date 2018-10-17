@@ -64,7 +64,7 @@ try:
 
         Print("Stand up cluster")
         if cluster.launch(pnodes, total_nodes, topo=topo, delay=delay, p2pPlugin=p2pPlugin) is False:
-            errorExit("Failed to stand up eos cluster.")
+            errorExit("Failed to stand up enu cluster.")
 
         Print ("Wait for Cluster stabilization")
         # wait for cluster to start producing blocks
@@ -76,7 +76,7 @@ try:
     Print("Creating wallet %s if one doesn't already exist." % walletName)
     walletAccounts=[cluster.defproduceraAccount,cluster.defproducerbAccount]
     if not dontLaunch:
-        walletAccounts.append(cluster.eosioAccount)
+        walletAccounts.append(cluster.enumivoAccount)
     wallet=walletMgr.create(walletName, walletAccounts)
     if wallet is None:
         errorExit("Failed to create wallet %s" % (walletName))

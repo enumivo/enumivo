@@ -16,7 +16,7 @@ fi
 
 NAME="${PROJECT}-${VERSION}.${MAC_VERSION}.bottle.tar.gz"
 
-mkdir -p ${PROJECT}/${VERSION}/opt/eosio/lib/cmake
+mkdir -p ${PROJECT}/${VERSION}/opt/enumivo/lib/cmake
 
 PREFIX="${PROJECT}/${VERSION}"
 SPREFIX="\/usr\/local"
@@ -32,11 +32,11 @@ bash generate_tarball.sh ${NAME}
 
 hash=`openssl dgst -sha256 ${NAME} | awk 'NF>1{print $NF}'`
 
-echo "class Eosio < Formula
+echo "class Enumivo < Formula
 
    homepage \"${URL}\"
    revision 0
-   url \"https://github.com/eosio/eos/archive/v${VERSION}.tar.gz\"
+   url \"https://github.com/enumivo/enumivo/archive/v${VERSION}.tar.gz\"
    version \"${VERSION}\"
    
    option :universal
@@ -50,13 +50,13 @@ echo "class Eosio < Formula
    depends_on :arch =>  :intel
   
    bottle do
-      root_url \"https://github.com/eosio/eos/releases/download/v${VERSION}\"
+      root_url \"https://github.com/enumivo/enumivo/releases/download/v${VERSION}\"
       sha256 \"${hash}\" => :${MAC_VERSION}
    end
    def install
       raise \"Error, only supporting binary packages at this time\"
    end
 end
-__END__" &> eosio.rb
+__END__" &> enumivo.rb
 
 rm -r ${PROJECT}

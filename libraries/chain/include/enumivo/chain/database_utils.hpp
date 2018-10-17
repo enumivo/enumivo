@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE
  */
 #pragma once
 
@@ -8,7 +8,7 @@
 #include <fc/io/raw.hpp>
 #include <softfloat.hpp>
 
-namespace eosio { namespace chain {
+namespace enumivo { namespace chain {
 
    template<typename ...Indices>
    class index_set;

@@ -72,10 +72,10 @@ class TestHelper(object):
             parser.add_argument("-p", "--port", type=int, help="%s host port" % Utils.EnuServerName,
                                      default=TestHelper.DEFAULT_PORT)
         if "--wallet-host" in includeArgs:
-            parser.add_argument("--wallet-host", type=str, help="%s host" % Utils.EosWalletName,
+            parser.add_argument("--wallet-host", type=str, help="%s host" % Utils.EnuWalletName,
                                      default=TestHelper.LOCAL_HOST)
         if "--wallet-port" in includeArgs:
-            parser.add_argument("--wallet-port", type=int, help="%s port" % Utils.EosWalletName,
+            parser.add_argument("--wallet-port", type=int, help="%s port" % Utils.EnuWalletName,
                                      default=TestHelper.DEFAULT_WALLET_PORT)
         if "--prod-count" in includeArgs:
             parser.add_argument("-c", "--prod-count", type=int, help="Per node producer count", default=1)

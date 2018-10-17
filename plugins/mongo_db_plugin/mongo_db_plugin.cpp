@@ -1485,8 +1485,8 @@ void mongo_db_plugin::set_program_options(options_description& cli, options_desc
                " If not specified then plugin is disabled. Default database 'ENU' is used if not specified in URI."
                " Example: mongodb://127.0.0.1:27017/ENU")
 =======
-               " If not specified then plugin is disabled. Default database 'EOS' is used if not specified in URI."
-               " Example: mongodb://127.0.0.1:27017/EOS")
+               " If not specified then plugin is disabled. Default database 'ENU' is used if not specified in URI."
+               " Example: mongodb://127.0.0.1:27017/ENU")
          ("mongodb-update-via-block-num", bpo::value<bool>()->default_value(false),
           "Update blocks/block_state with latest via block number so that duplicates are overwritten.")
 >>>>>>> upstream/master
