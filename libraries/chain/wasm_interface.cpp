@@ -1914,13 +1914,7 @@ std::istream& operator>>(std::istream& in, wasm_interface::vm_type& runtime) {
    std::string s;
    in >> s;
    if (s == "wavm")
-<<<<<<< HEAD
       runtime = enumivo::chain::wasm_interface::vm_type::wavm;
-   else if (s == "binaryen")
-      runtime = enumivo::chain::wasm_interface::vm_type::binaryen;
-=======
-      runtime = enumivo::chain::wasm_interface::vm_type::wavm;
->>>>>>> upstream/master
    else if (s == "wabt")
       runtime = enumivo::chain::wasm_interface::vm_type::wabt;
    else
