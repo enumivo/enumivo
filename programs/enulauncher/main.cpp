@@ -406,7 +406,7 @@ struct launcher_def {
    bfs::path config_dir_base;
    bfs::path data_dir_base;
    bool skip_transaction_signatures = false;
-   string enud_extra_args;
+   string enunode_extra_args;
    std::map<uint,string> specific_enunode_args;
    testnet_def network;
    string gelf_endpoint;
@@ -487,7 +487,7 @@ launcher_def::set_options (bpo::options_description &cfg) {
     ("p2p-plugin", bpo::value<string>()->default_value("net"),"select a p2p plugin to use (either net or bnet). Defaults to net.")
     ("genesis,g",bpo::value<string>()->default_value("./genesis.json"),"set the path to genesis.json")
     ("skip-signature", bpo::bool_switch(&skip_transaction_signatures)->default_value(false), "enunode does not require transaction signatures.")
-    ("enunode", bpo::value<string>(&enud_extra_args), "forward enunode command line argument(s) to each instance of enunode, enclose arg(s) in quotes")
+    ("enunode", bpo::value<string>(&enunode_extra_args), "forward enunode command line argument(s) to each instance of enunode, enclose arg(s) in quotes")
     ("specific-num", bpo::value<vector<uint>>()->composing(), "forward enunode command line argument(s) (using \"--specific-enunode\" flag) to this specific instance of enunode. This parameter can be entered multiple times and requires a paired \"--specific-enunode\" flag")
     ("specific-enunode", bpo::value<vector<string>>()->composing(), "forward enunode command line argument(s) to its paired specific instance of enunode(using \"--specific-num\"), enclose arg(s) in quotes")
     ("delay,d",bpo::value<int>(&start_delay)->default_value(0),"seconds delay before starting each node after the first")
@@ -1717,7 +1717,7 @@ launcher_def::bounce (const string& node_numbers) {
       const enunode_def& node = node_pair.second;
       const string node_num = node.get_node_num();
       cout << "Bouncing " << node.name << endl;
-      string cmd = "./scripts/enumivo-tn_bounce.sh " + enud_extra_args;
+      string cmd = "./scripts/enumivo-tn_bounce.sh " + enunode_extra_args;
       if (node_num != "bios" && !specific_enunode_args.empty()) {
          const auto node_num_i = boost::lexical_cast<uint16_t,string>(node_num);
          if (specific_enunode_args.count(node_num_i)) {
