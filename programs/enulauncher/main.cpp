@@ -462,12 +462,12 @@ struct launcher_def {
    void format_ssh (const string &cmd, const string &host_name, string &ssh_cmd_line);
    void do_command(const host_def& host, const string& name, vector<pair<string, string>> env_pairs, const string& cmd);
    bool do_ssh (const string &cmd, const string &host_name);
-   void prep_remote_config_dir (enud_def &node, host_def *host);
-   void launch (enud_def &node, string &gts);
+   void prep_remote_config_dir (enunode_def &node, host_def *host);
+   void launch (enunode_def &node, string &gts);
    void kill (launch_modes mode, string sig_opt);
    static string get_node_num(uint16_t node_num);
-   pair<host_def, enud_def> find_node(uint16_t node_num);
-   vector<pair<host_def, enud_def>> get_nodes(const string& node_number_list);
+   pair<host_def, enunode_def> find_node(uint16_t node_num);
+   vector<pair<host_def, enunode_def>> get_nodes(const string& node_number_list);
    void bounce (const string& node_numbers);
    void down (const string& node_numbers);
    void roll (const string& host_names);
