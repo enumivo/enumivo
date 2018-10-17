@@ -3,7 +3,7 @@
  *  @copyright defined in enumivo/LICENSE
  */
 #pragma once
-#include <fc/io/raw.hpp>
+#include <enumivo/chain/database_utils.hpp>
 
 #include <enumivo/chain/transaction.hpp>
 #include <fc/uint128.hpp>
@@ -34,7 +34,7 @@ namespace enumivo { namespace chain {
          time_point                    delay_until; /// this generated transaction will not be applied until the specified time
          time_point                    expiration; /// this generated transaction will not be applied after this time
          time_point                    published;
-         shared_string                 packed_trx;
+         shared_blob                   packed_trx;
 
          uint32_t set( const transaction& trx ) {
             auto trxsize = fc::raw::pack_size( trx );
@@ -115,3 +115,5 @@ namespace enumivo { namespace chain {
 } } // enumivo::chain
 
 CHAINBASE_SET_INDEX_TYPE(enumivo::chain::generated_transaction_object, enumivo::chain::generated_transaction_multi_index)
+
+FC_REFLECT(enumivo::chain::generated_transaction_object, (trx_id)(sender)(sender_id)(payer)(delay_until)(expiration)(published)(packed_trx))

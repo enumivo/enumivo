@@ -57,6 +57,13 @@ fi
       popd &> /dev/null
    }
 
+   create_cmake_symlink() {
+      mkdir -p /usr/local/lib/cmake/eosio
+      pushd /usr/local/lib/cmake/eosio &> /dev/null
+      ln -sf ../../../eosio/lib/cmake/eosio/$1 $1
+      popd &> /dev/null
+   }
+
    install_symlinks() {
       printf "\\n\\tInstalling Enumivo Binary Symlinks\\n\\n"
       create_symlink "enucli"
@@ -94,6 +101,7 @@ fi
    popd &> /dev/null 
 
    install_symlinks   
+   create_cmake_symlink "eosio-config.cmake"
 
 
    printf "\\tFor more information:\\n"

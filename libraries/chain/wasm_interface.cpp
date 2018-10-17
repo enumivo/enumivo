@@ -57,6 +57,10 @@ namespace enumivo { namespace chain {
       my->get_instantiated_module(code_id, code, context.trx_context)->apply(context);
    }
 
+   void wasm_interface::exit() {
+      my->runtime_interface->immediately_exit_currently_running_module();
+   }
+
    wasm_instantiated_module_interface::~wasm_instantiated_module_interface() {}
    wasm_runtime_interface::~wasm_runtime_interface() {}
 
@@ -948,7 +952,7 @@ public:
    }
 
    void enumivo_exit(int32_t code) {
-      throw wasm_exit{code};
+      context.control.get_wasm_interface().exit();
    }
 
 };
@@ -1910,9 +1914,13 @@ std::istream& operator>>(std::istream& in, wasm_interface::vm_type& runtime) {
    std::string s;
    in >> s;
    if (s == "wavm")
+<<<<<<< HEAD
       runtime = enumivo::chain::wasm_interface::vm_type::wavm;
    else if (s == "binaryen")
       runtime = enumivo::chain::wasm_interface::vm_type::binaryen;
+=======
+      runtime = enumivo::chain::wasm_interface::vm_type::wavm;
+>>>>>>> upstream/master
    else if (s == "wabt")
       runtime = enumivo::chain::wasm_interface::vm_type::wabt;
    else

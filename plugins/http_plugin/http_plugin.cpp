@@ -606,4 +606,8 @@ namespace enumivo {
       return (!my->listen_endpoint || my->listen_endpoint->address().is_loopback());
    }
 
+   bool http_plugin::verbose_errors()const {
+      return verbose_http_errors;
+   }
+
 }
