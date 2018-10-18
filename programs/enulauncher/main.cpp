@@ -1717,7 +1717,7 @@ launcher_def::bounce (const string& node_numbers) {
       const enunode_def& node = node_pair.second;
       const string node_num = node.get_node_num();
       cout << "Bouncing " << node.name << endl;
-      string cmd = "./scripts/enumivo-tn_bounce.sh " + enunode_extra_args;
+      string cmd = "./scripts/enumivo_tn_bounce.sh " + enunode_extra_args;
       if (node_num != "bios" && !specific_enunode_args.empty()) {
          const auto node_num_i = boost::lexical_cast<uint16_t,string>(node_num);
          if (specific_enunode_args.count(node_num_i)) {

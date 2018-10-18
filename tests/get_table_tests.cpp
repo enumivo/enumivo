@@ -61,14 +61,14 @@ BOOST_FIXTURE_TEST_CASE( get_scope_test, TESTER ) try {
    // create currency 
    auto act = mutable_variant_object()
          ("issuer",       "enumivo")
-         ("maximum_supply", enumivo::chain::asset::from_string("1000000000.0000 SYS"));
+         ("maximum_supply", enumivo::chain::asset::from_string("1000000000.0000 ENU"));
    push_action(N(enu.token), N(create), N(enu.token), act );
 
    // issue
    for (account_name a: accs) {
       push_action( N(enu.token), N(issue), "enumivo", mutable_variant_object()
                   ("to",      name(a) )
-                  ("quantity", enumivo::chain::asset::from_string("999.0000 SYS") )
+                  ("quantity", enumivo::chain::asset::from_string("999.0000 ENU") )
                   ("memo", "")
                   );
    }
