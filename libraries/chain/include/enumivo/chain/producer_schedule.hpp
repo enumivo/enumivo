@@ -84,3 +84,4 @@ namespace enumivo { namespace chain {
 
 FC_REFLECT( enumivo::chain::producer_key, (producer_name)(block_signing_key) )
 FC_REFLECT( enumivo::chain::producer_schedule_type, (version)(producers) )
+FC_REFLECT( enumivo::chain::shared_producer_schedule_type, (version)(producers) )

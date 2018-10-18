@@ -57,6 +57,13 @@ fi
       popd &> /dev/null
    }
 
+   create_cmake_symlink() {
+      mkdir -p /usr/local/lib/cmake/enumivo
+      pushd /usr/local/lib/cmake/enumivo &> /dev/null
+      ln -sf ../../../enumivo/lib/cmake/enumivo/$1 $1
+      popd &> /dev/null
+   }
+
    install_symlinks() {
       printf "\\n\\tInstalling Enumivo Binary Symlinks\\n\\n"
       create_symlink "enucli"
@@ -94,6 +101,7 @@ fi
    popd &> /dev/null 
 
    install_symlinks   
+   create_cmake_symlink "enumivo-config.cmake"
 
 
    printf "\\tFor more information:\\n"

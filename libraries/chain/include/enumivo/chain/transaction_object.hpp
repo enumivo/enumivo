@@ -51,3 +51,4 @@ namespace enumivo { namespace chain {
 
 CHAINBASE_SET_INDEX_TYPE(enumivo::chain::transaction_object, enumivo::chain::transaction_multi_index)
 
+FC_REFLECT(enumivo::chain::transaction_object, (expiration)(trx_id))

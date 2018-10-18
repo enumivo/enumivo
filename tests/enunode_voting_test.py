@@ -140,7 +140,8 @@ errorExit=Utils.errorExit
 
 from core_symbol import CORE_SYMBOL
 
-args = TestHelper.parse_args({"--prod-count","--dump-error-details","--keep-logs","-v","--leave-running","--clean-run","--p2p-plugin"})
+args = TestHelper.parse_args({"--prod-count","--dump-error-details","--keep-logs","-v","--leave-running","--clean-run",
+                              "--p2p-plugin","--wallet-port"})
 Utils.Debug=args.v
 totalNodes=4
 cluster=Cluster(walletd=True)
@@ -150,22 +151,24 @@ dontKill=args.leave_running
 prodCount=args.prod_count
 killAll=args.clean_run
 p2pPlugin=args.p2p_plugin
+walletPort=args.wallet_port
 
-walletMgr=WalletMgr(True)
+walletMgr=WalletMgr(True, port=walletPort)
 testSuccessful=False
 killEnuInstances=not dontKill
 killWallet=not dontKill
 
-WalletdName="enuwallet"
+WalletdName=Utils.EnuWalletName
 ClientName="enucli"
 
 try:
     TestHelper.printSystemInfo("BEGIN")
+    cluster.setWalletMgr(walletMgr)
 
     cluster.killall(allInstances=killAll)
     cluster.cleanup()
     Print("Stand up cluster")
-    if cluster.launch(prodCount=prodCount, onlyBios=False, dontKill=dontKill, pnodes=totalNodes, totalNodes=totalNodes, totalProducers=totalNodes*21, p2pPlugin=p2pPlugin, useBiosBootFile=False) is False:
+    if cluster.launch(prodCount=prodCount, onlyBios=False, pnodes=totalNodes, totalNodes=totalNodes, totalProducers=totalNodes*21, p2pPlugin=p2pPlugin, useBiosBootFile=False) is False:
         Utils.cmdError("launcher")
         Utils.errorExit("Failed to stand up enu cluster.")
 
@@ -184,12 +187,6 @@ try:
     testWalletName="test"
 
     Print("Creating wallet \"%s\"." % (testWalletName))
-    walletMgr.killall(allInstances=killAll)
-    walletMgr.cleanup()
-    if walletMgr.launch() is False:
-        Utils.cmdError("%s" % (WalletdName))
-        Utils.errorExit("Failed to stand up enu walletd.")
-
     testWallet=walletMgr.create(testWalletName, [cluster.enumivoAccount,accounts[0],accounts[1],accounts[2],accounts[3],accounts[4]])
 
     for _, account in cluster.defProducerAccounts.items():
@@ -216,7 +213,7 @@ try:
         transferAmount="100000000.0000 {0}".format(CORE_SYMBOL)
         Print("Transfer funds %s from account %s to %s" % (transferAmount, cluster.enumivoAccount.name, account.name))
         node.transferFunds(cluster.enumivoAccount, account, transferAmount, "test transfer")
-        trans=node.delegatebw(account, 20000000.0000, 20000000.0000, exitOnError=True)
+        trans=node.delegatebw(account, 20000000.0000, 20000000.0000, waitForTransBlock=True, exitOnError=True)
 
     # containers for tracking producers
     prodsActive={}
@@ -229,7 +226,7 @@ try:
     #first account will vote for node0 producers, all others will vote for node1 producers
     node=node0
     for account in accounts:
-        trans=node.vote(account, node.producers)
+        trans=node.vote(account, node.producers, waitForTransBlock=True)
         node=node1
 
     setActiveProducers(prodsActive, node1.producers)
@@ -240,7 +237,7 @@ try:
     # first account will vote for node2 producers, all others will vote for node3 producers
     node1
     for account in accounts:
-        trans=node.vote(account, node.producers)
+        trans=node.vote(account, node.producers, waitForTransBlock=True)
         node=node2
 
     setActiveProducers(prodsActive, node2.producers)

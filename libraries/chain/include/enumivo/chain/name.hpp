@@ -91,12 +91,6 @@ namespace enumivo { namespace chain {
       operator unsigned __int128()const       { return value; }
    };
 
-
-   inline std::vector<name> sort_names( std::vector<name>&& names ) {
-      fc::deduplicate(names);
-      return names;
-   }
-
 } } // enumivo::chain
 
 namespace std {

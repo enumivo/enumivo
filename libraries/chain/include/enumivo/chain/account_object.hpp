@@ -3,7 +3,7 @@
  *  @copyright defined in enumivo/LICENSE
  */
 #pragma once
-#include <enumivo/chain/types.hpp>
+#include <enumivo/chain/database_utils.hpp>
 #include <enumivo/chain/authority.hpp>
 #include <enumivo/chain/block_timestamp.hpp>
 #include <enumivo/chain/abi_def.hpp>
@@ -25,8 +25,8 @@ namespace enumivo { namespace chain {
       digest_type          code_version;
       block_timestamp_type creation_date;
 
-      shared_string  code;
-      shared_string  abi;
+      shared_blob    code;
+      shared_blob    abi;
 
       void set_abi( const enumivo::chain::abi_def& a ) {
          abi.resize( fc::raw::pack_size( a ) );
@@ -81,4 +81,5 @@ CHAINBASE_SET_INDEX_TYPE(enumivo::chain::account_object, enumivo::chain::account
 CHAINBASE_SET_INDEX_TYPE(enumivo::chain::account_sequence_object, enumivo::chain::account_sequence_index)
 
 
-FC_REFLECT(enumivo::chain::account_object, (name)(vm_type)(vm_version)(code_version)(code)(creation_date))
+FC_REFLECT(enumivo::chain::account_object, (name)(vm_type)(vm_version)(privileged)(last_code_update)(code_version)(creation_date)(code)(abi))
+FC_REFLECT(enumivo::chain::account_sequence_object, (name)(recv_sequence)(auth_sequence)(code_sequence)(abi_sequence))

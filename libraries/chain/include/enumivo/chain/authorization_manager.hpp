@@ -6,6 +6,7 @@
 
 #include <enumivo/chain/types.hpp>
 #include <enumivo/chain/permission_object.hpp>
+#include <enumivo/chain/snapshot.hpp>
 
 #include <utility>
 #include <functional>
@@ -27,6 +28,8 @@ namespace enumivo { namespace chain {
 
          void add_indices();
          void initialize_database();
+         void add_to_snapshot( const snapshot_writer_ptr& snapshot ) const;
+         void read_from_snapshot( const snapshot_reader_ptr& snapshot );
 
          const permission_object& create_permission( account_name account,
                                                      permission_name name,
