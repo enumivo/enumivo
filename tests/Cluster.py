@@ -1233,7 +1233,7 @@ class Cluster(object):
         else:
             self.biosNode.pid=int(m.group(1))
 
-    # Kills a percentange of Enu instances starting from the tail and update enuInstanceInfos state
+    # Kills a percentange of Enumivo instances starting from the tail and update enuInstanceInfos state
     def killSomeEnuInstances(self, killCount, killSignalStr=Utils.SigKillTag):
         killSignal=signal.SIGKILL
         if killSignalStr == Utils.SigTermTag:
