@@ -701,14 +701,14 @@ struct set_account_permission_subcommand {
       permissions->add_option("permission", permission, localized("The permission name to set/delete an authority for"))->required();
       permissions->add_option("authority", authority_json_or_file, localized("[delete] NULL, [create/update] public key, JSON string or filename defining the authority, [code] contract name"));
       permissions->add_option("parent", parent, localized("[create] The permission name of this parents permission, defaults to 'active'"));
-      permissions->add_flag("--add-code", add_code, localized("[code] add '${code}' permission to specified permission authority", ("code", name(config::eosio_code_name))));
-      permissions->add_flag("--remove-code", remove_code, localized("[code] remove '${code}' permission from specified permission authority", ("code", name(config::eosio_code_name))));
+      permissions->add_flag("--add-code", add_code, localized("[code] add '${code}' permission to specified permission authority", ("code", name(config::enumivo_code_name))));
+      permissions->add_flag("--remove-code", remove_code, localized("[code] remove '${code}' permission from specified permission authority", ("code", name(config::enumivo_code_name))));
 
       add_standard_transaction_options(permissions, "account@active");
 
       permissions->set_callback([this] {
-         EOSC_ASSERT( !(add_code && remove_code), "ERROR: Either --add-code or --remove-code can be set" );
-         EOSC_ASSERT( (add_code ^ remove_code) || !authority_json_or_file.empty(), "ERROR: authority should be specified unless add or remove code permission" );
+         ENUC_ASSERT( !(add_code && remove_code), "ERROR: Either --add-code or --remove-code can be set" );
+         ENUC_ASSERT( (add_code ^ remove_code) || !authority_json_or_file.empty(), "ERROR: authority should be specified unless add or remove code permission" );
 
          authority auth;
 
@@ -722,7 +722,7 @@ struct set_account_permission_subcommand {
 
          if ( need_parent || need_auth ) {
             fc::variant json = call(get_account_func, fc::mutable_variant_object("account_name", account.to_string()));
-            auto res = json.as<eosio::chain_apis::read_only::get_account_results>();
+            auto res = json.as<enumivo::chain_apis::read_only::get_account_results>();
             auto itr = std::find_if(res.permissions.begin(), res.permissions.end(), [&](const auto& perm) {
                return perm.perm_name == permission;
             });
@@ -739,7 +739,7 @@ struct set_account_permission_subcommand {
 
             if ( need_auth ) {
                auto actor = (authority_json_or_file.empty()) ? account : name(authority_json_or_file);
-               auto code_name = name(config::eosio_code_name);
+               auto code_name = name(config::enumivo_code_name);
 
                if ( itr != res.permissions.end() ) {
                   // fetch existing authority
@@ -1119,12 +1119,12 @@ struct approve_producer_subcommand {
                                ("table_key", "owner")
                                ("lower_bound", voter.value)
                                ("upper_bound", voter.value + 1)
-                               // Less than ideal upper_bound usage preserved so cleos can still work with old buggy nodeos versions
-                               // Change to voter.value when cleos no longer needs to support nodeos versions older than 1.5.0
+                               // Less than ideal upper_bound usage preserved so enucli can still work with old buggy enunode versions
+                               // Change to voter.value when enucli no longer needs to support enunode versions older than 1.5.0
                                ("limit", 1)
             );
-            auto res = result.as<eosio::chain_apis::read_only::get_table_rows_result>();
-            // Condition in if statement below can simply be res.rows.empty() when cleos no longer needs to support nodeos versions older than 1.5.0
+            auto res = result.as<enumivo::chain_apis::read_only::get_table_rows_result>();
+            // Condition in if statement below can simply be res.rows.empty() when enucli no longer needs to support enunode versions older than 1.5.0
             // Although since this subcommand will actually change the voter's vote, it is probably better to just keep this check to protect
             //  against future potential chain_plugin bugs.
             if( res.rows.empty() || res.rows[0].get_object()["owner"].as_string() != name(voter).to_string() ) {
@@ -1172,12 +1172,12 @@ struct unapprove_producer_subcommand {
                                ("table_key", "owner")
                                ("lower_bound", voter.value)
                                ("upper_bound", voter.value + 1)
-                               // Less than ideal upper_bound usage preserved so cleos can still work with old buggy nodeos versions
-                               // Change to voter.value when cleos no longer needs to support nodeos versions older than 1.5.0
+                               // Less than ideal upper_bound usage preserved so enucli can still work with old buggy enunode versions
+                               // Change to voter.value when enucli no longer needs to support enunode versions older than 1.5.0
                                ("limit", 1)
             );
             auto res = result.as<enumivo::chain_apis::read_only::get_table_rows_result>();
-            // Condition in if statement below can simply be res.rows.empty() when cleos no longer needs to support nodeos versions older than 1.5.0
+            // Condition in if statement below can simply be res.rows.empty() when enucli no longer needs to support enunode versions older than 1.5.0
             // Although since this subcommand will actually change the voter's vote, it is probably better to just keep this check to protect
             //  against future potential chain_plugin bugs.
             if( res.rows.empty() || res.rows[0].get_object()["owner"].as_string() != name(voter).to_string() ) {
@@ -1394,15 +1394,15 @@ struct bidname_info_subcommand {
                                ("code", "enumivo")("scope", "enumivo")("table", "namebids")
                                ("lower_bound", newname.value)
                                ("upper_bound", newname.value + 1)
-                               // Less than ideal upper_bound usage preserved so cleos can still work with old buggy nodeos versions
-                               // Change to newname.value when cleos no longer needs to support nodeos versions older than 1.5.0
+                               // Less than ideal upper_bound usage preserved so enucli can still work with old buggy enunode versions
+                               // Change to newname.value when enucli no longer needs to support enunode versions older than 1.5.0
                                ("limit", 1));
          if ( print_json ) {
             std::cout << fc::json::to_pretty_string(rawResult) << std::endl;
             return;
          }
          auto result = rawResult.as<enumivo::chain_apis::read_only::get_table_rows_result>();
-         // Condition in if statement below can simply be res.rows.empty() when cleos no longer needs to support nodeos versions older than 1.5.0
+         // Condition in if statement below can simply be res.rows.empty() when enucli no longer needs to support enunode versions older than 1.5.0
          if( result.rows.empty() || result.rows[0].get_object()["newname"].as_string() != newname.to_string() ) {
             std::cout << "No bidname record found" << std::endl;
             return;
@@ -3081,7 +3081,7 @@ int main( int argc, char** argv ) {
       //std::cout << fc::json::to_pretty_string(result) << std::endl;
 
       const auto& rows1 = result1.get_object()["rows"].get_array();
-      // Condition in if statement below can simply be rows.empty() when cleos no longer needs to support nodeos versions older than 1.5.0
+      // Condition in if statement below can simply be rows.empty() when enucli no longer needs to support enunode versions older than 1.5.0
       if( rows1.empty() || rows1[0].get_object()["proposal_name"] != proposal_name ) {
          std::cerr << "Proposal not found" << std::endl;
          return;
@@ -3096,7 +3096,7 @@ int main( int argc, char** argv ) {
       };
 
       std::map<permission_level, std::pair<fc::time_point, approval_status>>                               all_approvals;
-      std::map<eosio::account_name, std::pair<fc::time_point, vector<decltype(all_approvals)::iterator>>>  provided_approvers;
+      std::map<enumivo::account_name, std::pair<fc::time_point, vector<decltype(all_approvals)::iterator>>>  provided_approvers;
 
       bool new_multisig = true;
       if( show_approvals_in_multisig_review ) {
@@ -3104,14 +3104,14 @@ int main( int argc, char** argv ) {
 
          try {
             const auto& result2 = call(get_table_func, fc::mutable_variant_object("json", true)
-                                       ("code", "eosio.msig")
+                                       ("code", "enu.msig")
                                        ("scope", proposer)
                                        ("table", "approvals2")
                                        ("table_key", "")
                                        ("lower_bound", name(proposal_name).value)
                                        ("upper_bound", name(proposal_name).value + 1)
-                                       // Less than ideal upper_bound usage preserved so cleos can still work with old buggy nodeos versions
-                                       // Change to name(proposal_name).value when cleos no longer needs to support nodeos versions older than 1.5.0
+                                       // Less than ideal upper_bound usage preserved so enucli can still work with old buggy enunode versions
+                                       // Change to name(proposal_name).value when enucli no longer needs to support enunode versions older than 1.5.0
                                        ("limit", 1)
                                  );
             rows2 = result2.get_object()["rows"].get_array();
@@ -3136,14 +3136,14 @@ int main( int argc, char** argv ) {
             }
          } else {
             const auto result3 = call(get_table_func, fc::mutable_variant_object("json", true)
-                                       ("code", "eosio.msig")
+                                       ("code", "enu.msig")
                                        ("scope", proposer)
                                        ("table", "approvals")
                                        ("table_key", "")
                                        ("lower_bound", name(proposal_name).value)
                                        ("upper_bound", name(proposal_name).value + 1)
-                                       // Less than ideal upper_bound usage preserved so cleos can still work with old buggy nodeos versions
-                                       // Change to name(proposal_name).value when cleos no longer needs to support nodeos versions older than 1.5.0
+                                       // Less than ideal upper_bound usage preserved so enucli can still work with old buggy enunode versions
+                                       // Change to name(proposal_name).value when enucli no longer needs to support enunode versions older than 1.5.0
                                        ("limit", 1)
                                  );
             const auto& rows3 = result3.get_object()["rows"].get_array();
@@ -3169,18 +3169,18 @@ int main( int argc, char** argv ) {
          if( new_multisig ) {
             for( auto& a : provided_approvers ) {
                const auto result4 = call(get_table_func, fc::mutable_variant_object("json", true)
-                                          ("code", "eosio.msig")
-                                          ("scope", "eosio.msig")
+                                          ("code", "enu.msig")
+                                          ("scope", "enu.msig")
                                           ("table", "invals")
                                           ("table_key", "")
                                           ("lower_bound", a.first.value)
                                           ("upper_bound", a.first.value + 1)
-                                          // Less than ideal upper_bound usage preserved so cleos can still work with old buggy nodeos versions
-                                          // Change to name(proposal_name).value when cleos no longer needs to support nodeos versions older than 1.5.0
+                                          // Less than ideal upper_bound usage preserved so enucli can still work with old buggy enunode versions
+                                          // Change to name(proposal_name).value when enucli no longer needs to support enunode versions older than 1.5.0
                                           ("limit", 1)
                                     );
                const auto& rows4 = result4.get_object()["rows"].get_array();
-               if( rows4.empty() || rows4[0].get_object()["account"].as<eosio::name>() != a.first ) {
+               if( rows4.empty() || rows4[0].get_object()["account"].as<enumivo::name>() != a.first ) {
                   continue;
                }
 
@@ -3305,7 +3305,7 @@ int main( int argc, char** argv ) {
          ("account", invalidator);
 
       auto accountPermissions = get_account_permissions(tx_permission, {invalidator,config::active_name});
-      send_actions({chain::action{accountPermissions, "eosio.msig", "invalidate", variant_to_bin( N(eosio.msig), "invalidate", args ) }});
+      send_actions({chain::action{accountPermissions, "enu.msig", "invalidate", variant_to_bin( N(enu.msig), "invalidate", args ) }});
    });
 
    // multisig cancel

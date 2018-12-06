@@ -1278,7 +1278,7 @@ struct controller_impl {
    } FC_CAPTURE_AND_RETHROW() } /// apply_block
 
    std::future<block_state_ptr> create_block_state_future( const signed_block_ptr& b ) {
-      EOS_ASSERT( b, block_validate_exception, "null block" );
+      ENU_ASSERT( b, block_validate_exception, "null block" );
 
       auto id = b->id();
 
@@ -1325,11 +1325,11 @@ struct controller_impl {
       self.validate_db_available_size();
       self.validate_reversible_available_size();
 
-      EOS_ASSERT(!pending, block_validate_exception, "it is not valid to push a block when there is a pending block");
+      ENU_ASSERT(!pending, block_validate_exception, "it is not valid to push a block when there is a pending block");
 
       try {
-         EOS_ASSERT( b, block_validate_exception, "trying to push empty block" );
-         EOS_ASSERT( (s == controller::block_status::irreversible || s == controller::block_status::validated),
+         ENU_ASSERT( b, block_validate_exception, "trying to push empty block" );
+         ENU_ASSERT( (s == controller::block_status::irreversible || s == controller::block_status::validated),
                      block_validate_exception, "invalid block status for replay" );
          emit( self.pre_accepted_block, b );
          const bool skip_validate_signee = !conf.force_all_checks;

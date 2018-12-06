@@ -28,7 +28,7 @@ target_include_directories( unit_test PUBLIC
                             ${CMAKE_CURRENT_SOURCE_DIR}/contracts
                             ${CMAKE_CURRENT_BINARY_DIR}/contracts
                             ${CMAKE_CURRENT_BINARY_DIR}/include )
-add_dependencies(unit_test asserter test_api test_api_mem test_api_db test_ram_limit test_api_multi_index enu.token proxy identity identity_test stltest eosio.system enu.token enu.bios multi_index_test noop enu.msig payloadless tic_tac_toe deferred_test snapshot_test)
+add_dependencies(unit_test asserter test_api test_api_mem test_api_db test_ram_limit test_api_multi_index enu.token proxy identity identity_test stltest enu.system enu.token enu.bios multi_index_test noop enu.msig payloadless tic_tac_toe deferred_test snapshot_test)
 
 #Manually run unit_test for all supported runtimes
 #To run unit_test with all log from blockchain displayed, put --verbose after --, i.e. unit_test -- --verbose

@@ -422,7 +422,7 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
 
       if( options.count( "chain-threads" )) {
          my->chain_config->thread_pool_size = options.at( "chain-threads" ).as<uint16_t>();
-         EOS_ASSERT( my->chain_config->thread_pool_size > 0, plugin_config_exception,
+         ENU_ASSERT( my->chain_config->thread_pool_size > 0, plugin_config_exception,
                      "chain-threads ${num} must be greater than 0", ("num", my->chain_config->thread_pool_size) );
       }
 
@@ -615,7 +615,7 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
                wlog( "Starting up fresh blockchain with default genesis state." );
             }
          } else {
-            EOS_ASSERT( my->chain_config->genesis == *existing_genesis, plugin_config_exception,
+            ENU_ASSERT( my->chain_config->genesis == *existing_genesis, plugin_config_exception,
                         "Genesis state provided via command line arguments does not match the existing genesis state in blocks.log. "
                         "It is not necessary to provide genesis state arguments when a blocks.log file already exists."
                       );
@@ -1117,7 +1117,7 @@ double convert_to_type(const string& str, const string& desc) {
       val = fc::variant(str).as<double>();
    } FC_RETHROW_EXCEPTIONS(warn, "Could not convert ${desc} string '${str}' to key type.", ("desc", desc)("str",str) )
 
-   EOS_ASSERT( !std::isnan(val), chain::contract_table_query_exception,
+   ENU_ASSERT( !std::isnan(val), chain::contract_table_query_exception,
                "Converted ${desc} string '${str}' to NaN which is not a permitted value for the key type", ("desc", desc)("str",str) );
 
    return val;

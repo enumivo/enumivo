@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE
  */
 #pragma once
 
@@ -8,11 +8,11 @@
 #include <fstream>
 #include <stdint.h>
 
-#include <eosio/chain/exceptions.hpp>
-#include <eosio/chain/types.hpp>
+#include <enumivo/chain/exceptions.hpp>
+#include <enumivo/chain/types.hpp>
 #include <fc/log/logger.hpp>
 
-namespace eosio {
+namespace enumivo {
 
 /*
  *   *.log:
@@ -80,17 +80,17 @@ class state_history_log {
 
    template <typename F>
    void write_entry(const state_history_log_header& header, const chain::block_id_type& prev_id, F write_payload) {
-      EOS_ASSERT(_begin_block == _end_block || header.block_num <= _end_block, chain::plugin_exception,
+      ENU_ASSERT(_begin_block == _end_block || header.block_num <= _end_block, chain::plugin_exception,
                  "missed a block in ${name}.log", ("name", name));
 
       if (_begin_block != _end_block && header.block_num > _begin_block) {
          if (header.block_num == _end_block) {
-            EOS_ASSERT(prev_id == last_block_id, chain::plugin_exception, "missed a fork change in ${name}.log",
+            ENU_ASSERT(prev_id == last_block_id, chain::plugin_exception, "missed a fork change in ${name}.log",
                        ("name", name));
          } else {
             state_history_log_header prev;
             get_entry(header.block_num - 1, prev);
-            EOS_ASSERT(prev_id == prev.block_id, chain::plugin_exception, "missed a fork change in ${name}.log",
+            ENU_ASSERT(prev_id == prev.block_id, chain::plugin_exception, "missed a fork change in ${name}.log",
                        ("name", name));
          }
       }
@@ -102,7 +102,7 @@ class state_history_log {
       log.write((char*)&header, sizeof(header));
       write_payload(log);
       uint64_t end = log.tellg();
-      EOS_ASSERT(end == pos + sizeof(header) + header.payload_size, chain::plugin_exception,
+      ENU_ASSERT(end == pos + sizeof(header) + header.payload_size, chain::plugin_exception,
                  "wrote payload with incorrect size to ${name}.log", ("name", name));
       log.write((char*)&pos, sizeof(pos));
 
@@ -117,7 +117,7 @@ class state_history_log {
 
    // returns stream positioned at payload
    std::fstream& get_entry(uint32_t block_num, state_history_log_header& header) {
-      EOS_ASSERT(block_num >= _begin_block && block_num < _end_block, chain::plugin_exception,
+      ENU_ASSERT(block_num >= _begin_block && block_num < _end_block, chain::plugin_exception,
                  "read non-existing block in ${name}.log", ("name", name));
       log.seekg(get_pos(block_num));
       log.read((char*)&header, sizeof(header));
@@ -181,7 +181,7 @@ class state_history_log {
       log.flush();
       boost::filesystem::resize_file(log_filename, pos);
       log.sync();
-      EOS_ASSERT(get_last_block(pos), chain::plugin_exception, "recover ${name}.log failed", ("name", name));
+      ENU_ASSERT(get_last_block(pos), chain::plugin_exception, "recover ${name}.log failed", ("name", name));
    }
 
    void open_log() {
@@ -192,7 +192,7 @@ class state_history_log {
          state_history_log_header header;
          log.seekg(0);
          log.read((char*)&header, sizeof(header));
-         EOS_ASSERT(header.version == 0 && sizeof(header) + header.payload_size + sizeof(uint64_t) <= size,
+         ENU_ASSERT(header.version == 0 && sizeof(header) + header.payload_size + sizeof(uint64_t) <= size,
                     chain::plugin_exception, "corrupt ${name}.log (1)", ("name", name));
          _begin_block  = header.block_num;
          last_block_id = header.block_id;
@@ -200,7 +200,7 @@ class state_history_log {
             recover_blocks(size);
          ilog("${name}.log has blocks ${b}-${e}", ("name", name)("b", _begin_block)("e", _end_block - 1));
       } else {
-         EOS_ASSERT(!size, chain::plugin_exception, "corrupt ${name}.log (5)", ("name", name));
+         ENU_ASSERT(!size, chain::plugin_exception, "corrupt ${name}.log (5)", ("name", name));
          ilog("${name}.log is empty", ("name", name));
       }
    }
@@ -220,18 +220,18 @@ class state_history_log {
       uint32_t num_found = 0;
       while (pos < size) {
          state_history_log_header header;
-         EOS_ASSERT(pos + sizeof(header) <= size, chain::plugin_exception, "corrupt ${name}.log (6)", ("name", name));
+         ENU_ASSERT(pos + sizeof(header) <= size, chain::plugin_exception, "corrupt ${name}.log (6)", ("name", name));
          log.seekg(pos);
          log.read((char*)&header, sizeof(header));
          uint64_t suffix_pos = pos + sizeof(header) + header.payload_size;
          uint64_t suffix;
-         EOS_ASSERT(suffix_pos + sizeof(suffix) <= size, chain::plugin_exception, "corrupt ${name}.log (7)",
+         ENU_ASSERT(suffix_pos + sizeof(suffix) <= size, chain::plugin_exception, "corrupt ${name}.log (7)",
                     ("name", name));
          log.seekg(suffix_pos);
          log.read((char*)&suffix, sizeof(suffix));
          // ilog("block ${b} at ${pos}-${end} suffix=${suffix} file_size=${fs}",
          //      ("b", header.block_num)("pos", pos)("end", suffix_pos + sizeof(suffix))("suffix", suffix)("fs", size));
-         EOS_ASSERT(suffix == pos, chain::plugin_exception, "corrupt ${name}.log (8)", ("name", name));
+         ENU_ASSERT(suffix == pos, chain::plugin_exception, "corrupt ${name}.log (8)", ("name", name));
 
          state_history_summary summary{.pos = pos};
          index.write((char*)&summary, sizeof(summary));
@@ -276,4 +276,4 @@ class state_history_log {
    }
 }; // state_history_log
 
-} // namespace eosio
+} // namespace enumivo

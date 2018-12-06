@@ -234,7 +234,7 @@ namespace enumivo { namespace chain {
   }
 
   void block_header_state::verify_signee( const public_key_type& signee )const {
-     EOS_ASSERT( block_signing_key == signee, wrong_signing_key, "block not signed by expected key",
+     ENU_ASSERT( block_signing_key == signee, wrong_signing_key, "block not signed by expected key",
                  ("block_signing_key", block_signing_key)( "signee", signee ) );
   }
 

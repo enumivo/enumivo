@@ -803,7 +803,7 @@ namespace enumivo { namespace testing {
             if( block ) { //&& !b.control->is_known_block(block->id()) ) {
                auto bs = b.control->create_block_state_future( block );
                b.control->abort_block();
-               b.control->push_block(bs); //, eosio::chain::validation_steps::created_block);
+               b.control->push_block(bs); //, enumivo::chain::validation_steps::created_block);
             }
          }
       };

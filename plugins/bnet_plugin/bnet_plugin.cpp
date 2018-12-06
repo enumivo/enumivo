@@ -1544,7 +1544,7 @@ namespace enumivo {
       peer_ilog(this, "received packed_transaction_ptr");
       if (!p) {
         peer_elog(this, "bad packed_transaction_ptr : null pointer");
-        EOS_THROW(transaction_exception, "bad transaction");
+        ENU_THROW(transaction_exception, "bad transaction");
       }
       if( !_net_plugin->_request_trx )
         return;

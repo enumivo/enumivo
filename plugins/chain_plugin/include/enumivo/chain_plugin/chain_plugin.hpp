@@ -410,10 +410,10 @@ public:
 
          const auto& secidx = d.get_index<IndexType, chain::by_secondary>();
          auto lower_bound_lookup_tuple = std::make_tuple( index_t_id->id._id,
-                                                          eosio::chain::secondary_key_traits<secondary_key_type>::true_lowest(),
+                                                          enumivo::chain::secondary_key_traits<secondary_key_type>::true_lowest(),
                                                           std::numeric_limits<uint64_t>::lowest() );
          auto upper_bound_lookup_tuple = std::make_tuple( index_t_id->id._id,
-                                                          eosio::chain::secondary_key_traits<secondary_key_type>::true_highest(),
+                                                          enumivo::chain::secondary_key_traits<secondary_key_type>::true_highest(),
                                                           std::numeric_limits<uint64_t>::max() );
 
          if( p.lower_bound.size() ) {

@@ -621,9 +621,9 @@ namespace bacc = boost::accumulators;
 
       for( const auto& a : trx.context_free_actions ) {
          auto* code = db.find<account_object, by_name>(a.account);
-         EOS_ASSERT( code != nullptr, transaction_exception,
+         ENU_ASSERT( code != nullptr, transaction_exception,
                      "action's code account '${account}' does not exist", ("account", a.account) );
-         EOS_ASSERT( a.authorization.size() == 0, transaction_exception,
+         ENU_ASSERT( a.authorization.size() == 0, transaction_exception,
                      "context-free actions cannot have authorizations" );
       }
 
@@ -632,21 +632,21 @@ namespace bacc = boost::accumulators;
       bool one_auth = false;
       for( const auto& a : trx.actions ) {
          auto* code = db.find<account_object, by_name>(a.account);
-         EOS_ASSERT( code != nullptr, transaction_exception,
+         ENU_ASSERT( code != nullptr, transaction_exception,
                      "action's code account '${account}' does not exist", ("account", a.account) );
          for( const auto& auth : a.authorization ) {
             one_auth = true;
             auto* actor = db.find<account_object, by_name>(auth.actor);
-            EOS_ASSERT( actor  != nullptr, transaction_exception,
+            ENU_ASSERT( actor  != nullptr, transaction_exception,
                         "action's authorizing actor '${account}' does not exist", ("account", auth.actor) );
-            EOS_ASSERT( auth_manager.find_permission(auth) != nullptr, transaction_exception,
+            ENU_ASSERT( auth_manager.find_permission(auth) != nullptr, transaction_exception,
                         "action's authorizations include a non-existent permission: {permission}",
                         ("permission", auth) );
             if( enforce_actor_whitelist_blacklist )
                actors.insert( auth.actor );
          }
       }
-      EOS_ASSERT( one_auth, tx_no_auths, "transaction must have at least one authorization" );
+      ENU_ASSERT( one_auth, tx_no_auths, "transaction must have at least one authorization" );
 
       if( enforce_actor_whitelist_blacklist ) {
          control.check_actor_list( actors );

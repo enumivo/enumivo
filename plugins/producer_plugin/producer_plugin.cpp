@@ -289,7 +289,7 @@ class producer_plugin_impl : public std::enable_shared_from_this<producer_plugin
 
          fc_dlog(_log, "received incoming block ${id}", ("id", id));
 
-         EOS_ASSERT( block->timestamp < (fc::time_point::now() + fc::seconds( 7 )), block_from_the_future,
+         ENU_ASSERT( block->timestamp < (fc::time_point::now() + fc::seconds( 7 )), block_from_the_future,
                      "received a block from the future, ignoring it: ${id}", ("id", id) );
 
          chain::controller& chain = app().get_plugin<chain_plugin>().chain();
