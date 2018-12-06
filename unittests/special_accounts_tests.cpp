@@ -14,8 +14,6 @@
 
 #include <enumivo/testing/tester.hpp>
 
-#include <enumivo/utilities/tempdir.hpp>
-
 #include <fc/crypto/digest.hpp>
 
 #include <boost/test/unit_test.hpp>

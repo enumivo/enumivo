@@ -50,7 +50,7 @@ add_library( enumivo_chain
              ${HEADERS}
              )
 
-target_link_libraries( enumivo_chain enu_utilities fc chainbase Logging IR WAST WASM Runtime
+target_link_libraries( enumivo_chain fc chainbase Logging IR WAST WASM Runtime
                        softfloat builtins wabt
                      )
 target_include_directories( enumivo_chain

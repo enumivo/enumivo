@@ -16,12 +16,11 @@ include_directories("${CMAKE_SOURCE_DIR}/plugins/wallet_plugin/include")
 file(GLOB UNIT_TESTS "*.cpp")
 
 add_executable( plugin_test ${UNIT_TESTS} ${WASM_UNIT_TESTS} )
-target_link_libraries( plugin_test enumivo_testing enumivo_chain chainbase enu_utilities chain_plugin wallet_plugin abi_generator fc ${PLATFORM_SPECIFIC_LIBS} )
+target_link_libraries( plugin_test enumivo_testing enumivo_chain chainbase chain_plugin wallet_plugin fc ${PLATFORM_SPECIFIC_LIBS} )
 
 target_include_directories( plugin_test PUBLIC
                             ${CMAKE_SOURCE_DIR}/plugins/net_plugin/include
                             ${CMAKE_SOURCE_DIR}/plugins/chain_plugin/include )
-add_dependencies(plugin_test asserter test_api test_api_mem test_api_db test_api_multi_index proxy identity identity_test stltest infinite enu.system enu.token enu.bios test.inline multi_index_test noop enu.msig)
 
 #
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/core_symbol.py.in ${CMAKE_CURRENT_BINARY_DIR}/core_symbol.py)
@@ -87,6 +86,8 @@ add_test(NAME enunode_sanity_bnet_lr_test COMMAND tests/enunode_run_test.py -v -
 set_property(TEST enunode_sanity_bnet_lr_test PROPERTY LABELS long_running_tests)
 add_test(NAME enunode_run_check_lr_test COMMAND tests/enunode_run_test.py -v --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 set_property(TEST enunode_run_check_lr_test PROPERTY LABELS long_running_tests)
+add_test(NAME enunode_remote_lr_test COMMAND tests/enunode_run_remote_test.py -v --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+set_property(TEST enunode_remote_lr_test PROPERTY LABELS long_running_tests)
 
 #add_test(NAME distributed_transactions_lr_test COMMAND tests/distributed-transactions-test.py -d 2 -p 21 -n 21 -v --clean-run --dump-error-detail WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 #set_property(TEST distributed_transactions_lr_test PROPERTY LABELS long_running_tests)

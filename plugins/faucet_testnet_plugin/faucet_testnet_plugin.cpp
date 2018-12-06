@@ -4,7 +4,6 @@
  */
 #include <enumivo/faucet_testnet_plugin/faucet_testnet_plugin.hpp>
 #include <enumivo/chain_plugin/chain_plugin.hpp>
-#include <enumivo/utilities/key_conversion.hpp>
 
 #include <fc/variant.hpp>
 #include <fc/io/json.hpp>
