@@ -2,8 +2,6 @@
  *  @file
  *  @copyright defined in enumivo/LICENSE
  */
-#include <enumivo/utilities/key_conversion.hpp>
-#include <enumivo/utilities/rand.hpp>
 #include <enumivo/chain/genesis_state.hpp>
 #include <enumivo/wallet_plugin/wallet.hpp>
 #include <enumivo/wallet_plugin/wallet_manager.hpp>
@@ -20,7 +18,6 @@ BOOST_AUTO_TEST_SUITE(wallet_tests)
 BOOST_AUTO_TEST_CASE(wallet_test)
 { try {
    using namespace enumivo::wallet;
-   using namespace enumivo::utilities;
 
    wallet_data d;
    soft_wallet wallet(d);

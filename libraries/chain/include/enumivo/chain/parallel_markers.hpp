@@ -8,7 +8,7 @@
 #include <boost/range/adaptor/filtered.hpp>
 #include <boost/range/adaptor/transformed.hpp>
 
-namespace enumivo { namespace utilities {
+namespace enumivo { namespace chain {
 
 /**
  * @brief Return values in DataRange corresponding to matching Markers
@@ -39,5 +39,5 @@ DataRange filter_data_by_marker(DataRange data, MarkerRange markers, const Marke
    return {range.begin(), range.end()};
 }
 
-}} // namespace enumivo::utilities
+}} // namespace enumivo::chain
 

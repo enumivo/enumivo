@@ -5,7 +5,6 @@
 #include <enumivo/txn_test_gen_plugin/txn_test_gen_plugin.hpp>
 #include <enumivo/chain_plugin/chain_plugin.hpp>
 #include <enumivo/chain/wast_to_wasm.hpp>
-#include <enumivo/utilities/key_conversion.hpp>
 
 #include <fc/variant.hpp>
 #include <fc/io/json.hpp>

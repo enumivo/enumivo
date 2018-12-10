@@ -5,8 +5,6 @@
 #include <enu.system/enu.system.wast.hpp>
 #include <enu.system/enu.system.abi.hpp>
 // These contracts are still under dev
-#include <enu.bios/enu.bios.wast.hpp>
-#include <enu.bios/enu.bios.abi.hpp>
 #include <enu.token/enu.token.wast.hpp>
 #include <enu.token/enu.token.abi.hpp>
 #include <enu.msig/enu.msig.wast.hpp>
