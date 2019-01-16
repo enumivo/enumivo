@@ -622,7 +622,7 @@ make_enuwallet_signature_provider(const std::shared_ptr<producer_plugin_impl>& i
 void producer_plugin::plugin_initialize(const boost::program_options::variables_map& options)
 { try {
    my->chain_plug = app().find_plugin<chain_plugin>();
-   EOS_ASSERT( my->chain_plug, plugin_config_exception, "chain_plugin not found" );
+   ENU_ASSERT( my->chain_plug, plugin_config_exception, "chain_plugin not found" );
    my->_options = &options;
    LOAD_VALUE_SET(options, "producer-name", my->_producers, types::account_name)
 
@@ -685,7 +685,7 @@ void producer_plugin::plugin_initialize(const boost::program_options::variables_
    my->_incoming_defer_ratio = options.at("incoming-defer-ratio").as<double>();
 
    auto thread_pool_size = options.at( "producer-threads" ).as<uint16_t>();
-   EOS_ASSERT( thread_pool_size > 0, plugin_config_exception,
+   ENU_ASSERT( thread_pool_size > 0, plugin_config_exception,
                "producer-threads ${num} must be greater than 0", ("num", thread_pool_size));
    my->_thread_pool.emplace( thread_pool_size );
 

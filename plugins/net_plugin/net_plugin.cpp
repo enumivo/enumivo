@@ -564,16 +564,16 @@ namespace enumivo {
       msg_handler( net_plugin_impl &imp, const connection_ptr& conn) : impl(imp), c(conn) {}
 
       void operator()( const signed_block& msg ) const {
-         EOS_ASSERT( false, plugin_config_exception, "operator()(signed_block&&) should be called" );
+         ENU_ASSERT( false, plugin_config_exception, "operator()(signed_block&&) should be called" );
       }
       void operator()( signed_block& msg ) const {
-         EOS_ASSERT( false, plugin_config_exception, "operator()(signed_block&&) should be called" );
+         ENU_ASSERT( false, plugin_config_exception, "operator()(signed_block&&) should be called" );
       }
       void operator()( const packed_transaction& msg ) const {
-         EOS_ASSERT( false, plugin_config_exception, "operator()(packed_transaction&&) should be called" );
+         ENU_ASSERT( false, plugin_config_exception, "operator()(packed_transaction&&) should be called" );
       }
       void operator()( packed_transaction& msg ) const {
-         EOS_ASSERT( false, plugin_config_exception, "operator()(packed_transaction&&) should be called" );
+         ENU_ASSERT( false, plugin_config_exception, "operator()(packed_transaction&&) should be called" );
       }
 
       void operator()( signed_block&& msg ) const {

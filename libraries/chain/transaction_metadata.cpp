@@ -1,12 +1,12 @@
-#include <eosio/chain/transaction_metadata.hpp>
-#include <eosio/chain/thread_utils.hpp>
-#include <boost/asio/thread_pool.hpp>
+#include <enumivo/chain/transaction_metadata.hpp>
+#include <enumivo/chain/thread_utils.hpp>
+#include <enumivo/asio/thread_pool.hpp>
 
-namespace eosio { namespace chain {
+namespace enumivo { namespace chain {
 
 
 const flat_set<public_key_type>& transaction_metadata::recover_keys( const chain_id_type& chain_id ) {
-   // Unlikely for more than one chain_id to be used in one nodeos instance
+   // Unlikely for more than one chain_id to be used in one enunode instance
    if( !signing_keys || signing_keys->first != chain_id ) {
       if( signing_keys_future.valid() ) {
          std::tuple<chain_id_type, fc::microseconds, flat_set<public_key_type>> sig_keys = signing_keys_future.get();
@@ -44,4 +44,4 @@ void transaction_metadata::create_signing_keys_future( const transaction_metadat
 }
 
 
-} } // eosio::chain
+} } // enumivo::chain

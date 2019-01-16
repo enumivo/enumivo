@@ -9,7 +9,7 @@
 #include <future>
 #include <memory>
 
-namespace eosio { namespace chain {
+namespace enumivo { namespace chain {
 
    // async on thread_pool and return future
    template<typename F>
@@ -19,6 +19,6 @@ namespace eosio { namespace chain {
       return task->get_future();
    }
 
-} } // eosio::chain
+} } // enumivo::chain
 
 

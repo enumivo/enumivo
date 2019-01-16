@@ -292,11 +292,11 @@ def stepCreateTokens():
     run(args.enucli + 'push action enu.token issue \'["enumivo", "%s", "memo"]\' -p enumivo' % intToCurrency(totalAllocation))
     sleep(1)
 def stepSetSystemContract():
-    retry(args.cleos + 'set contract enumivo ' + args.contracts_dir + '/enu.system/')
+    retry(args.enucli + 'set contract enumivo ' + args.contracts_dir + '/enu.system/')
     sleep(1)
-    run(args.cleos + 'push action enumivo setpriv' + jsonArg(['enu.msig', 1]) + '-p enumivo@active')
+    run(args.enucli + 'push action enumivo setpriv' + jsonArg(['enu.msig', 1]) + '-p enumivo@active')
 def stepInitSystemContract():
-    run(args.cleos + 'push action enumivo init' + jsonArg(['0', '4,ENU']) + '-p enumivo@active')
+    run(args.enucli + 'push action enumivo init' + jsonArg(['0', '4,ENU']) + '-p enumivo@active')
     sleep(1)
 def stepCreateStakedAccounts():
     createStakedAccounts(0, len(accounts))

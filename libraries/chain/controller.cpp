@@ -1000,7 +1000,7 @@ struct controller_impl {
       try {
          auto start = fc::time_point::now();
          if( !explicit_billed_cpu_time ) {
-            fc::microseconds already_consumed_time( EOS_PERCENT(trx->sig_cpu_usage.count(), conf.sig_cpu_bill_pct) );
+            fc::microseconds already_consumed_time( ENU_PERCENT(trx->sig_cpu_usage.count(), conf.sig_cpu_bill_pct) );
 
             if( start.time_since_epoch() <  already_consumed_time ) {
                start = fc::time_point();

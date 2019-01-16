@@ -10,18 +10,18 @@ The `bios-boot-tutorial.py` script simulates the Enumivo bios boot sequence.
 
 ``Steps``:
 
-1. Install eosio binaries by following the steps outlined in below tutorial
-[Install eosio binaries](https://github.com/EOSIO/eos#mac-os-x-brew-install)
+1. Install enumivo binaries by following the steps outlined in below tutorial
+[Install enumivo binaries](https://github.com/enumivo/enumivo)
 
-2. Install eosio.cdt binaries by following the steps outlined in below tutorial
-[Install eosio.cdt binaries](https://github.com/EOSIO/eosio.cdt#binary-releases)
+2. Install enumivo.cdt binaries by following the steps outlined in below tutorial
+[Install enumivo.cdt binaries](https://github.com/enumivo/enumivo.cdt)
 
-3. Compile eosio.contracts
+3. Compile enumivo.contracts
 
 ```bash
 $ cd ~
-$ git clone https://github.com/EOSIO/eosio.contracts.git
-$ cd ./eosio.contracts/
+$ git clone https://github.com/enumivo/enumivo.contracts.git
+$ cd ./enumivo.contracts/
 $ ./build.sh
 $ pwd
 
@@ -37,5 +37,5 @@ Minimal command line to launch the script below, make sure you replace `ENUMIVO_
 $ cd ~
 $ git clone https://github.com/enumivo/enumivo.git
 $ cd ./enumivo/tutorials/bios-boot-tutorial/
-$ python3 bios-boot-tutorial.py --cleos="cleos --wallet-url http://127.0.0.1:6666 " --nodeos=nodeos --keosd=keosd --contracts-dir="/ENUMIVO_CONTRACTS_DIRECTORY/" -a
+$ python3 bios-boot-tutorial.py --enucli="enucli --wallet-url http://127.0.0.1:6666 " --enunode=enunode --enuwallet=enuwallet --contracts-dir="/ENUMIVO_CONTRACTS_DIRECTORY/" -a
 

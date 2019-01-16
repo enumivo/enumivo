@@ -101,7 +101,7 @@ fc::microseconds transaction::get_signature_keys( const vector<signature_type>& 
    fc::microseconds sig_cpu_usage;
    for(const signature_type& sig : signatures) {
       auto now = fc::time_point::now();
-      EOS_ASSERT( now < deadline, tx_cpu_usage_exceeded, "transaction signature verification executed for too long",
+      ENU_ASSERT( now < deadline, tx_cpu_usage_exceeded, "transaction signature verification executed for too long",
                   ("now", now)("deadline", deadline)("start", start) );
       public_key_type recov;
       const auto& tid = id();
@@ -330,7 +330,7 @@ void packed_transaction::reflector_init()
    static_assert(&fc::reflector_init_visitor<packed_transaction>::reflector_init, "FC with reflector_init required");
    static_assert(fc::raw::has_feature_reflector_init_on_unpacked_reflected_types,
                  "FC unpack needs to call reflector_init otherwise unpacked_trx will not be initialized");
-   EOS_ASSERT( unpacked_trx.expiration == time_point_sec(), tx_decompression_error, "packed_transaction already unpacked" );
+   ENU_ASSERT( unpacked_trx.expiration == time_point_sec(), tx_decompression_error, "packed_transaction already unpacked" );
    local_unpack_transaction({});
    local_unpack_context_free_data();
 }
@@ -354,7 +354,7 @@ void packed_transaction::local_unpack_transaction(vector<bytes>&& context_free_d
 void packed_transaction::local_unpack_context_free_data()
 {
    try {
-      EOS_ASSERT(unpacked_trx.context_free_data.empty(), tx_decompression_error, "packed_transaction.context_free_data not empty");
+      ENU_ASSERT(unpacked_trx.context_free_data.empty(), tx_decompression_error, "packed_transaction.context_free_data not empty");
       switch( compression ) {
          case none:
             unpacked_trx.context_free_data = unpack_context_free_data( packed_context_free_data );
