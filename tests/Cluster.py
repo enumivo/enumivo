@@ -896,7 +896,7 @@ class Cluster(object):
         contract="enu.token"
         action="transfer"
         for name, keys in producerKeys.items():
-            data="{\"from\":\"enumivo\",\"to\":\"%s\",\"quantity\":\"%s\",\"memo\":\"%s\"}" % (name, initialFunds, "init transfer")
+            data="{\"from\":\"enumivo\",\"to\":\"%s\",\"quantity\":\"%s\",\"memo\":\"%s\"}" % (name, initialFunds, "init enumivo transfer")
             opts="--permission enumivo@active"
             if name != "enumivo":
                 trans=biosNode.pushMessage(contract, action, data, opts)

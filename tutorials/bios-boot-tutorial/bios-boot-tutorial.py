@@ -284,17 +284,20 @@ def stepStartBoot():
     startNode(0, {'name': 'enumivo', 'pvt': args.private_key, 'pub': args.public_key})
     sleep(1.5)
 def stepInstallSystemContracts():
-    run(args.enucli + 'set contract enu.token ' + args.contracts_dir + 'enu.token/')
-    run(args.enucli + 'set contract enu.msig ' + args.contracts_dir + 'enu.msig/')
+    run(args.enucli + 'set contract enu.token ' + args.contracts_dir + '/enu.token/')
+    run(args.enucli + 'set contract enu.msig ' + args.contracts_dir + '/enu.msig/')
 def stepCreateTokens():
     run(args.enucli + 'push action enu.token create \'["enumivo", "10000000000.0000 %s"]\' -p enu.token' % (args.symbol))
     totalAllocation = allocateFunds(0, len(accounts))
     run(args.enucli + 'push action enu.token issue \'["enumivo", "%s", "memo"]\' -p enumivo' % intToCurrency(totalAllocation))
     sleep(1)
 def stepSetSystemContract():
-    retry(args.enucli + 'set contract enumivo ' + args.contracts_dir + 'enu.system/')
+    retry(args.cleos + 'set contract enumivo ' + args.contracts_dir + '/enu.system/')
     sleep(1)
-    run(args.enucli + 'push action enumivo setpriv' + jsonArg(['enu.msig', 1]) + '-p enumivo@active')
+    run(args.cleos + 'push action enumivo setpriv' + jsonArg(['enu.msig', 1]) + '-p enumivo@active')
+def stepInitSystemContract():
+    run(args.cleos + 'push action enumivo init' + jsonArg(['0', '4,ENU']) + '-p enumivo@active')
+    sleep(1)
 def stepCreateStakedAccounts():
     createStakedAccounts(0, len(accounts))
 def stepRegProducers():
@@ -326,23 +329,24 @@ def stepLog():
 parser = argparse.ArgumentParser()
 
 commands = [
-    ('k', 'kill',           stepKillAll,                True,    "Kill all enunode and enuwallet processes"),
-    ('w', 'wallet',         stepStartWallet,            True,    "Start enuwallet, create wallet, fill with keys"),
-    ('b', 'boot',           stepStartBoot,              True,    "Start boot node"),
-    ('s', 'sys',            createSystemAccounts,       True,    "Create system accounts (enu.*)"),
-    ('c', 'contracts',      stepInstallSystemContracts, True,    "Install system contracts (token, msig)"),
-    ('t', 'tokens',         stepCreateTokens,           True,    "Create tokens"),
-    ('S', 'sys-contract',   stepSetSystemContract,      True,    "Set system contract"),
-    ('T', 'stake',          stepCreateStakedAccounts,   True,    "Create staked accounts"),
-    ('p', 'reg-prod',       stepRegProducers,           True,    "Register producers"),
-    ('P', 'start-prod',     stepStartProducers,         True,    "Start producers"),
-    ('v', 'vote',           stepVote,                   True,    "Vote for producers"),
-    ('R', 'claim',          claimRewards,               True,    "Claim rewards"),
-    ('x', 'proxy',          stepProxyVotes,             True,    "Proxy votes"),
-    ('q', 'resign',         stepResign,                 True,    "Resign enumivo"),
-    ('m', 'msg-replace',    msigReplaceSystem,          False,   "Replace system contract using msig"),
-    ('X', 'xfer',           stepTransfer,               False,   "Random transfer tokens (infinite loop)"),
-    ('l', 'log',            stepLog,                    True,    "Show tail of node's log"),
+    ('k', 'kill',               stepKillAll,                True,    "Kill all enunode and enuwallet processes"),
+    ('w', 'wallet',             stepStartWallet,            True,    "Start enuwallet, create wallet, fill with keys"),
+    ('b', 'boot',               stepStartBoot,              True,    "Start boot node"),
+    ('s', 'sys',                createSystemAccounts,       True,    "Create system accounts (enu.*)"),
+    ('c', 'contracts',          stepInstallSystemContracts, True,    "Install system contracts (token, msig)"),
+    ('t', 'tokens',             stepCreateTokens,           True,    "Create tokens"),
+    ('S', 'sys-contract',       stepSetSystemContract,      True,    "Set system contract"),
+    ('I', 'init-sys-contract',  stepInitSystemContract,     True,    "Initialiaze system contract"),
+    ('T', 'stake',              stepCreateStakedAccounts,   True,    "Create staked accounts"),
+    ('p', 'reg-prod',           stepRegProducers,           True,    "Register producers"),
+    ('P', 'start-prod',         stepStartProducers,         True,    "Start producers"),
+    ('v', 'vote',               stepVote,                   True,    "Vote for producers"),
+    ('R', 'claim',              claimRewards,               True,    "Claim rewards"),
+    ('x', 'proxy',              stepProxyVotes,             True,    "Proxy votes"),
+    ('q', 'resign',             stepResign,                 True,    "Resign enumivo"),
+    ('m', 'msg-replace',        msigReplaceSystem,          False,   "Replace system contract using msig"),
+    ('X', 'xfer',               stepTransfer,               False,   "Random transfer tokens (infinite loop)"),
+    ('l', 'log',                stepLog,                    True,    "Show tail of node's log"),
 ]
 
 parser.add_argument('--public-key', metavar='', help="Enumivo Public Key", default='ENU8Znrtgwt8TfpmbVpTKvA2oB8Nqey625CLN8bCN3TEbgx86Dsvr', dest="public_key")
