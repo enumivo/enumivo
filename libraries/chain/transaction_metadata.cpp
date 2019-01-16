@@ -1,6 +1,6 @@
 #include <enumivo/chain/transaction_metadata.hpp>
 #include <enumivo/chain/thread_utils.hpp>
-#include <enumivo/asio/thread_pool.hpp>
+#include <boost/asio/thread_pool.hpp>
 
 namespace enumivo { namespace chain {
 
