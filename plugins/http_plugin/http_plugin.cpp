@@ -548,6 +548,8 @@ namespace enumivo {
          my->server.stop_listening();
       if(my->https_server.is_listening())
          my->https_server.stop_listening();
+      if(my->unix_server.is_listening())
+         my->unix_server.stop_listening();
    }
 
    void http_plugin::add_handler(const string& url, const url_handler& handler) {
@@ -561,6 +563,9 @@ namespace enumivo {
       try {
          try {
             throw;
+         } catch (chain::unknown_block_exception& e) {
+            error_results results{400, "Unknown Block", error_results::error_info(e, verbose_http_errors)};
+            cb( 400, fc::json::to_string( results ));
          } catch (chain::unsatisfied_authorization& e) {
             error_results results{401, "UnAuthorized", error_results::error_info(e, verbose_http_errors)};
             cb( 401, fc::json::to_string( results ));

@@ -91,7 +91,7 @@ try:
         assert(ret)
         assert(isinstance(ret, tuple))
         if not ret[0]:
-            errorExit("Failed to startup enunode sucessfully on try number %d" % (i))
+            errorExit("Failed to startup enunode successfully on try number %d" % (i))
         assert(ret[1])
         assert(isinstance(ret[1], dict))
         # pylint: disable=unsubscriptable-object
