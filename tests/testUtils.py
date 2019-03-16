@@ -34,6 +34,8 @@ class Utils:
 
     EnuBlockLogPath="programs/enublocklog/enublocklog"
 
+    FileDivider="================================================================="
+
     @staticmethod
     def Print(*args, **kwargs):
         stackDepth=len(inspect.stack())-2

@@ -5,18 +5,18 @@ Welcome to the Enumivo source code repository! This software enables businesses 
 
 Some of the groundbreaking features of Enumivo include:
 
-1. Free Rate Limited Transactions 
+1. Free Rate Limited Transactions
 1. Low Latency Block confirmation (0.5 seconds)
 1. Low-overhead Byzantine Fault Tolerant Finality
-1. Designed for optional high-overhead, low-latency BFT finality 
-1. Smart contract platform powered by Web Assembly
+1. Designed for optional high-overhead, low-latency BFT finality
+1. Smart contract platform powered by WebAssembly
 1. Designed for Sparse Header Light Client Validation
-1. Scheduled Recurring Transactions 
+1. Scheduled Recurring Transactions
 1. Time Delay Security
 1. Hierarchical Role Based Permissions
 1. Support for Biometric Hardware Secured Keys (e.g. Apple Secure Enclave)
 1. Designed for Parallel Execution of Context Free Validation Logic
-1. Designed for Inter Blockchain Communication 
+1. Designed for Inter Blockchain Communication
 
 ## Supported Operating Systems
 Enumivo currently supports the following operating systems:  

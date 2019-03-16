@@ -4,19 +4,12 @@
  */
 #pragma once
 
-#include <enumivo/testing/tester.hpp>
 #include <enumivo/chain/abi_serializer.hpp>
-
-#include <enu.system/enu.system.wast.hpp>
-#include <enu.system/enu.system.abi.hpp>
-
-#include <enu.token/enu.token.wast.hpp>
-#include <enu.token/enu.token.abi.hpp>
-
-#include <enu.msig/enu.msig.wast.hpp>
-#include <enu.msig/enu.msig.abi.hpp>
+#include <enumivo/testing/tester.hpp>
 
 #include <fc/variant_object.hpp>
+
+#include <contracts.hpp>
 
 using namespace enumivo::chain;
 using namespace enumivo::testing;
@@ -49,11 +42,10 @@ public:
       create_accounts({ N(enu.token), N(enu.ram), N(enu.ramfee), N(enu.stake),
                N(enu.blockpay), N(enu.votepay), N(enu.savings), N(enu.names) });
 
-
       produce_blocks( 100 );
 
-      set_code( N(enu.token), enu_token_wast );
-      set_abi( N(enu.token), enu_token_abi );
+      set_code( N(enu.token), contracts::enu_token_wasm() );
+      set_abi( N(enu.token), contracts::enu_token_abi().data() );
 
       {
          const auto& accnt = control->db().get<account_object,by_name>( N(enu.token) );
@@ -66,8 +58,13 @@ public:
       issue(config::system_account_name,      core_from_string("1000000000.0000"));
       BOOST_REQUIRE_EQUAL( core_from_string("1000000000.0000"), get_balance( "enumivo" ) );
 
-      set_code( config::system_account_name, enu_system_wast );
-      set_abi( config::system_account_name, enu_system_abi );
+      set_code( config::system_account_name, contracts::enu_system_wasm() );
+      set_abi( config::system_account_name, contracts::enu_system_abi().data() );
+
+      base_tester::push_action(config::system_account_name, N(init),
+                            config::system_account_name,  mutable_variant_object()
+                            ("version", 0)
+                            ("core", CORE_SYM_STR));
 
       {
          const auto& accnt = control->db().get<account_object,by_name>( config::system_account_name );
@@ -85,6 +82,15 @@ public:
       BOOST_REQUIRE_EQUAL( core_from_string("1000000000.0000"), get_balance("enumivo")  + get_balance("enu.ramfee") + get_balance("enu.stake") + get_balance("enu.ram") );
    }
 
+   action_result open( account_name  owner,
+                       const string& symbolname,
+                       account_name  ram_payer    ) {
+      return push_action( ram_payer, N(open), mvo()
+                          ( "owner", owner )
+                          ( "symbol", symbolname )
+                          ( "ram_payer", ram_payer )
+         );
+   }
 
    void create_accounts_with_resources( vector<account_name> accounts, account_name creator = config::system_account_name ) {
       for( auto a : accounts ) {
@@ -417,8 +423,8 @@ public:
                                                ("is_priv", 1)
          );
 
-         set_code( N(enu.msig), enu_msig_wast );
-         set_abi( N(enu.msig), enu_msig_abi );
+         set_code( N(enu.msig), contracts::enu_msig_wasm() );
+         set_abi( N(enu.msig), contracts::enu_msig_abi().data() );
 
          produce_blocks();
          const auto& accnt = control->db().get<account_object,by_name>( N(enu.msig) );
@@ -535,7 +541,6 @@ inline fc::mutable_variant_object voter( account_name acct ) {
       ("proxy", name(0).to_string())
       ("producers", variants() )
       ("staked", int64_t(0))
-      //("last_vote_weight", double(0))
       ("proxied_vote_weight", double(0))
       ("is_proxy", 0)
       ;

@@ -3,10 +3,14 @@
  *  @copyright defined in enumivo/LICENSE
  */
 #include <cstdlib>
+
 #include <iostream>
-#include <boost/test/included/unit_test.hpp>
-#include <fc/log/logger.hpp>
+
 #include <enumivo/chain/exceptions.hpp>
+
+#include <fc/log/logger.hpp>
+
+#include <boost/test/included/unit_test.hpp>
 
 //extern uint32_t ENU_TESTING_GENESIS_TIMESTAMP;
 

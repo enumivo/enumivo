@@ -2,7 +2,6 @@
  *  @file
  *  @copyright defined in enumivo/LICENSE
  */
-
 #include <boost/test/unit_test.hpp>
 #include <enumivo/testing/tester.hpp>
 

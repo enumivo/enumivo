@@ -62,7 +62,7 @@ class apply_context {
             const T& get( int iterator ) {
                ENU_ASSERT( iterator != -1, invalid_table_iterator, "invalid iterator" );
                ENU_ASSERT( iterator >= 0, table_operation_not_permitted, "dereference of end iterator" );
-               ENU_ASSERT( iterator < _iterator_to_object.size(), invalid_table_iterator, "iterator out of range" );
+               ENU_ASSERT( (size_t)iterator < _iterator_to_object.size(), invalid_table_iterator, "iterator out of range" );
                auto result = _iterator_to_object[iterator];
                ENU_ASSERT( result, table_operation_not_permitted, "dereference of deleted object" );
                return *result;
@@ -71,7 +71,8 @@ class apply_context {
             void remove( int iterator ) {
                ENU_ASSERT( iterator != -1, invalid_table_iterator, "invalid iterator" );
                ENU_ASSERT( iterator >= 0, table_operation_not_permitted, "cannot call remove on end iterators" );
-               ENU_ASSERT( iterator < _iterator_to_object.size(), invalid_table_iterator, "iterator out of range" );
+               ENU_ASSERT( (size_t)iterator < _iterator_to_object.size(), invalid_table_iterator, "iterator out of range" );
+
                auto obj_ptr = _iterator_to_object[iterator];
                if( !obj_ptr ) return;
                _iterator_to_object[iterator] = nullptr;

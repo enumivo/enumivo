@@ -3,6 +3,7 @@
  *  @copyright defined in enumivo/LICENSE
  */
 #pragma once
+#include <enumivo/chain/config.hpp>
 #include <enumivo/chain/database_utils.hpp>
 
 #include <enumivo/chain/transaction.hpp>

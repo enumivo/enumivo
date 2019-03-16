@@ -102,7 +102,7 @@ namespace enumivo { namespace chain {
                                                     bool allow_duplicate_keys = false )const;
    };
 
-   struct packed_transaction {
+   struct packed_transaction : fc::reflect_init {
       enum compression_type {
          none = 0,
          zlib = 1,
@@ -158,6 +158,7 @@ namespace enumivo { namespace chain {
 
       friend struct fc::reflector<packed_transaction>;
       friend struct fc::reflector_init_visitor<packed_transaction>;
+      friend struct fc::has_reflector_init<packed_transaction>;
       void reflector_init();
    private:
       vector<signature_type>                  signatures;
@@ -218,6 +219,7 @@ FC_REFLECT( enumivo::chain::transaction_header, (expiration)(ref_block_num)(ref_
 FC_REFLECT_DERIVED( enumivo::chain::transaction, (enumivo::chain::transaction_header), (context_free_actions)(actions)(transaction_extensions) )
 FC_REFLECT_DERIVED( enumivo::chain::signed_transaction, (enumivo::chain::transaction), (signatures)(context_free_data) )
 FC_REFLECT_ENUM( enumivo::chain::packed_transaction::compression_type, (none)(zlib))
+// @ignore unpacked_trx
 FC_REFLECT( enumivo::chain::packed_transaction, (signatures)(compression)(packed_context_free_data)(packed_trx) )
 FC_REFLECT_DERIVED( enumivo::chain::deferred_transaction, (enumivo::chain::signed_transaction), (sender_id)(sender)(payer)(execute_after) )
 FC_REFLECT( enumivo::chain::deferred_reference, (sender)(sender_id) )
