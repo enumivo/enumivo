@@ -419,7 +419,7 @@ void txn_test_gen_plugin::plugin_initialize(const variables_map& options) {
       my.reset( new txn_test_gen_plugin_impl );
       my->txn_reference_block_lag = options.at( "txn-reference-block-lag" ).as<int32_t>();
       my->thread_pool_size = options.at( "txn-test-gen-threads" ).as<uint16_t>();
-      EOS_ASSERT( my->thread_pool_size > 0, chain::plugin_config_exception,
+      ENU_ASSERT( my->thread_pool_size > 0, chain::plugin_config_exception,
                   "txn-test-gen-threads ${num} must be greater than 0", ("num", my->thread_pool_size) );
    } FC_LOG_AND_RETHROW()
 }

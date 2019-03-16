@@ -1,8 +1,8 @@
 #! /bin/bash
 ANSWER=0
 if [[ $1 =~ force-* ]]; then FORCED=1; else FORCED=0; fi
-if [ -d "/usr/local/include/eosio" ] || [ -d "$HOME/opt/eosio" ] || [ $FORCED == 1 ]; then # use force for running the script directly
-   printf "\nEOSIO installation (AND DEPENDENCIES) already found...\n"
+if [ -d "/usr/local/include/enumivo" ] || [ -d "$HOME/opt/enumivo" ] || [ $FORCED == 1 ]; then # use force for running the script directly
+   printf "\nEnumivo installation (AND DEPENDENCIES) already found...\n"
    if [ $1 == 0 ]; then
       read -p "Do you wish to remove them? (this includes dependencies)? (y/n) " ANSWER
    elif [ $1 == 1 ] || [ $FORCED == 1 ]; then
@@ -11,9 +11,9 @@ if [ -d "/usr/local/include/eosio" ] || [ -d "$HOME/opt/eosio" ] || [ $FORCED ==
    echo "Uninstalling..."
    case $ANSWER in
       1 | [Yy]* )
-         if [ -d "$HOME/opt/eosio" ] || [[ $1 == "force-new" ]]; then
+         if [ -d "$HOME/opt/enumivo" ] || [[ $1 == "force-new" ]]; then
             if [ $( uname ) == "Darwin" ]; then
-               # gettext and other brew packages are not modified as they can be dependencies for things other than eosio
+               # gettext and other brew packages are not modified as they can be dependencies for things other than enumivo
                if [ $ANSWER != 1 ]; then read -p "Do you wish to uninstall and unlink all brew installed llvm@4 versions? (y/n) " ANSWER; fi
                case $ANSWER in
                   1 | [Yy]* )
@@ -51,9 +51,9 @@ if [ -d "/usr/local/include/eosio" ] || [ -d "$HOME/opt/eosio" ] || [ $FORCED ==
                   * ) echo "Please type 'y' for yes or 'n' for no."; exit;;
                esac
             fi
-            rm -rf $HOME/opt/eosio
-            rm -f $HOME/bin/eosio-launcher
-            rm -rf $HOME/lib/cmake/eosios
+            rm -rf $HOME/opt/enumivo
+            rm -f $HOME/bin/enumivo-launcher
+            rm -rf $HOME/lib/cmake/enumivo
             rm -rf $HOME/opt/llvm
             rm -f $HOME/opt/boost
             rm -rf $HOME/src/boost_*
@@ -61,11 +61,11 @@ if [ -d "/usr/local/include/eosio" ] || [ -d "$HOME/opt/eosio" ] || [ $FORCED ==
             rm -rf $HOME/share/cmake-*
             rm -rf $HOME/share/aclocal/cmake*
             rm -rf $HOME/doc/cmake*
-            rm -f $HOME/bin/nodeos $HOME/bin/keosd $HOME/bin/cleos $HOME/bin/ctest $HOME/bin/*cmake* $HOME/bin/cpack
+            rm -f $HOME/bin/enunode $HOME/bin/enuwallet $HOME/bin/enucli $HOME/bin/ctest $HOME/bin/*cmake* $HOME/bin/cpack
             rm -rf $HOME/src/mongo*
          fi
 
-         if [ -d "/usr/local/include/eosio" ] || [[ $1 == "force-old" ]]; then
+         if [ -d "/usr/local/include/enumivo" ] || [[ $1 == "force-old" ]]; then
             if [ "$(id -u)" -ne 0 ]; then
                printf "\nCleanup requires sudo... Please manually run ./scripts/clean_old_install.sh with sudo.\n"
                exit -1
@@ -73,15 +73,15 @@ if [ -d "/usr/local/include/eosio" ] || [ -d "$HOME/opt/eosio" ] || [ $FORCED ==
             pushd /usr/local &> /dev/null
             rm -rf wasm
             pushd include &> /dev/null
-            rm -rf libbson-1.0 libmongoc-1.0 mongocxx bsoncxx appbase chainbase eosio.system eosiolib fc libc++ musl secp256k* 2>/dev/null
-            rm -rf eosio 2>/dev/null
+            rm -rf libbson-1.0 libmongoc-1.0 mongocxx bsoncxx appbase chainbase enu.system enulib fc libc++ musl secp256k* 2>/dev/null
+            rm -rf enumivo 2>/dev/null
             popd &> /dev/null
             pushd bin &> /dev/null
-            rm cleos eosio-abigen eosio-applesedemo eosio-launcher eosio-s2wasm eosio-wast2wasm eosiocpp keosd nodeos 2>/dev/null
+            rm enucli enumivo-abigen enumivo-applesedemo enumivo-launcher enumivo-s2wasm enumivo-wast2wasm enumivocpp enuwallet enunode 2>/dev/null
             popd &> /dev/null
             libraries=(
-               libeosio_testing
-               libeosio_chain
+               libenumivo_testing
+               libenumivo_chain
                libfc
                libbinaryen
                libWAST
@@ -110,19 +110,19 @@ if [ -d "/usr/local/include/eosio" ] || [ -d "$HOME/opt/eosio" ] || [ $FORCED ==
             done
             popd &> /dev/null
             pushd etc &> /dev/null
-            rm eosio 2>/dev/null
+            rm enumivo 2>/dev/null
             popd &> /dev/null
             pushd share &> /dev/null
-            rm eosio 2>/dev/null
+            rm enumivo 2>/dev/null
             popd &> /dev/null
             pushd usr/share &> /dev/null
-            rm eosio 2>/dev/null
+            rm enumivo 2>/dev/null
             popd &> /dev/null
             pushd var/lib &> /dev/null
-            rm eosio 2>/dev/null
+            rm enumivo 2>/dev/null
             popd &> /dev/null
             pushd var/log &> /dev/null
-            rm eosio 2>/dev/null
+            rm enumivo 2>/dev/null
             popd &> /dev/null
          fi
       ;;

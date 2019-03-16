@@ -505,7 +505,7 @@ namespace enumivo {
          verbose_http_errors = options.at( "verbose-http-errors" ).as<bool>();
 
          my->thread_pool_size = options.at( "http-threads" ).as<uint16_t>();
-         EOS_ASSERT( my->thread_pool_size > 0, chain::plugin_config_exception,
+         ENU_ASSERT( my->thread_pool_size > 0, chain::plugin_config_exception,
                      "http-threads ${num} must be greater than 0", ("num", my->thread_pool_size));
 
          my->max_bytes_in_flight = options.at( "http-max-bytes-in-flight-mb" ).as<uint32_t>() * 1024 * 1024;

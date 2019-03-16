@@ -1,9 +1,9 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE.txt
  */
-#include <eosio/chain/abi_serializer.hpp>
-#include <eosio/testing/tester.hpp>
+#include <enumivo/chain/abi_serializer.hpp>
+#include <enumivo/testing/tester.hpp>
 
 #include <Runtime/Runtime.h>
 
@@ -13,16 +13,16 @@
 
 #include <contracts.hpp>
 
-using namespace eosio::testing;
-using namespace eosio;
-using namespace eosio::chain;
-using namespace eosio::testing;
+using namespace enumivo::testing;
+using namespace enumivo;
+using namespace enumivo::chain;
+using namespace enumivo::testing;
 using namespace fc;
 using namespace std;
 
 using mvo = fc::mutable_variant_object;
 
-class eosio_token_tester : public tester {
+class enu_token_tester : public tester {
 public:
 
    eosio_token_tester() {

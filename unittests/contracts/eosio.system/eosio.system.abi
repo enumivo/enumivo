@@ -1,6 +1,6 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Thu Dec 13 12:22:07 2018",
-    "version": "eosio::abi/1.0",
+    "____comment": "This file was generated with enumivo-abigen. DO NOT EDIT Thu Dec 13 12:22:07 2018",
+    "version": "enumivo::abi/1.0",
     "structs": [
         {
             "name": "abi_hash",
@@ -427,7 +427,7 @@
             ]
         },
         {
-            "name": "eosio_global_state",
+            "name": "enumivo_global_state",
             "base": "blockchain_parameters",
             "fields": [
                 {
@@ -485,7 +485,7 @@
             ]
         },
         {
-            "name": "eosio_global_state2",
+            "name": "enumivo_global_state2",
             "base": "",
             "fields": [
                 {
@@ -511,7 +511,7 @@
             ]
         },
         {
-            "name": "eosio_global_state3",
+            "name": "enumivo_global_state3",
             "base": "",
             "fields": [
                 {
@@ -1724,21 +1724,21 @@
         },
         {
             "name": "global",
-            "type": "eosio_global_state",
+            "type": "enumivo_global_state",
             "index_type": "i64",
             "key_names": [],
             "key_types": []
         },
         {
             "name": "global2",
-            "type": "eosio_global_state2",
+            "type": "enumivo_global_state2",
             "index_type": "i64",
             "key_names": [],
             "key_types": []
         },
         {
             "name": "global3",
-            "type": "eosio_global_state3",
+            "type": "enumivo_global_state3",
             "index_type": "i64",
             "key_names": [],
             "key_types": []

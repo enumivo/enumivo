@@ -145,6 +145,6 @@ int main(int argc, char** argv)
       return OTHER_FAIL;
    }
 
-   ilog("nodeos successfully exiting");
+   ilog("enunode successfully exiting");
    return SUCCESS;
 }

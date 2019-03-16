@@ -1,6 +1,6 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Thu Nov 15 14:56:36 2018",
-    "version": "eosio::abi/1.1",
+    "____comment": "This file was generated with enumivo-abigen. DO NOT EDIT Thu Nov 15 14:56:36 2018",
+    "version": "enumivo::abi/1.1",
     "structs": [
         {
             "name": "action",

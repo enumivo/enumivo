@@ -1,7 +1,7 @@
 #!/bin/bash
 ##########################################################################
-# This is the EOSIO automated install script for Linux and Mac OS.
-# This file was downloaded from https://github.com/EOSIO/eos
+# This is the Enumivo automated install script for Linux and Mac OS.
+# This file was downloaded from https://github.com/enumivo/enumivo
 #
 # Copyright (c) 2017, Respective Authors all rights reserved.
 #
@@ -27,7 +27,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-# https://github.com/EOSIO/eos/blob/master/LICENSE.txt
+# https://github.com/enumivo/enumivo/blob/master/LICENSE.txt
 ##########################################################################
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -41,7 +41,7 @@ mkdir -p $LIB_LOCATION
 
 CMAKE_BUILD_TYPE=Release
 TIME_BEGIN=$( date -u +%s )
-INSTALL_PREFIX=$OPT_LOCATION/eosio
+INSTALL_PREFIX=$OPT_LOCATION/enumivo
 VERSION=1.2
 
 txtbld=$(tput bold)
@@ -49,7 +49,7 @@ bldred=${txtbld}$(tput setaf 1)
 txtrst=$(tput sgr0)
 
 if [ ! -d $BUILD_DIR ]; then
-   printf "\\nError, eosio_build.sh has not ran.  Please run ./eosio_build.sh first!\\n\\n"
+   printf "\\nError, enumivo_build.sh has not ran.  Please run ./enumivo_build.sh first!\\n\\n"
    exit -1
 fi
 
@@ -59,28 +59,14 @@ if ! pushd "${BUILD_DIR}" &> /dev/null;then
 fi
 
 if ! make install; then
-   printf "\\nMAKE installing EOSIO has exited with the above error.\\n\\n"
+   printf "\\nMAKE installing Enumivo has exited with the above error.\\n\\n"
    exit -1
 fi
 popd &> /dev/null 
 
-printf "\n${bldred}      ___           ___           ___                       ___\n"
-printf "     /  /\\         /  /\\         /  /\\        ___          /  /\\ \n"
-printf "    /  /:/_       /  /::\\       /  /:/_      /  /\\        /  /::\\ \n"
-printf "   /  /:/ /\\     /  /:/\\:\\     /  /:/ /\\    /  /:/       /  /:/\\:\\ \n"
-printf "  /  /:/ /:/_   /  /:/  \\:\\   /  /:/ /::\\  /__/::\\      /  /:/  \\:\\ \n"
-printf " /__/:/ /:/ /\\ /__/:/ \\__\\:\\ /__/:/ /:/\\:\\ \\__\\/\\:\\__  /__/:/ \\__\\:\\ \n"
-printf " \\  \\:\\/:/ /:/ \\  \\:\\ /  /:/ \\  \\:\\/:/~/:/    \\  \\:\\/\\ \\  \\:\\ /  /:/ \n"
-printf "  \\  \\::/ /:/   \\  \\:\\  /:/   \\  \\::/ /:/      \\__\\::/  \\  \\:\\  /:/ \n"
-printf "   \\  \\:\\/:/     \\  \\:\\/:/     \\__\\/ /:/       /__/:/    \\  \\:\\/:/ \n"
-printf "    \\  \\::/       \\  \\::/        /__/:/        \\__\\/      \\  \\::/ \n"
-printf "     \\__\\/         \\__\\/         \\__\\/                     \\__\\/ \n\n${txtrst}"
+printf "===================================================================================================\\n"
+printf "Enumivo has been installed into ${OPT_LOCATION}/enumivo/bin!\\n"
+printf "If you need to, you can fully uninstall using enumivo_uninstall.sh && scripts/clean_old_install.sh.\\n"
+printf "===================================================================================================\\n\\n"
 
-printf "==============================================================================================\\n"
-printf "EOSIO has been installed into ${OPT_LOCATION}/eosio/bin!\\n"
-printf "If you need to, you can fully uninstall using eosio_uninstall.sh && scripts/clean_old_install.sh.\\n"
-printf "==============================================================================================\\n\\n"
-
-printf "EOSIO website: https://eos.io\\n"
-printf "EOSIO resources: https://eos.io/resources/\\n"
-printf "EOSIO Stack Exchange: https://eosio.stackexchange.com\\n"
+printf "Enumivo Website: https://enumivo.org\\n"
