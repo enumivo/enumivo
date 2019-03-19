@@ -52,7 +52,7 @@ if [ -d "/usr/local/include/enumivo" ] || [ -d "$HOME/opt/enumivo" ] || [ $FORCE
                esac
             fi
             rm -rf $HOME/opt/enumivo
-            rm -f $HOME/bin/enumivo-launcher
+            rm -f $HOME/bin/enulauncher
             rm -rf $HOME/lib/cmake/enumivo
             rm -rf $HOME/opt/llvm
             rm -f $HOME/opt/boost
@@ -77,7 +77,7 @@ if [ -d "/usr/local/include/enumivo" ] || [ -d "$HOME/opt/enumivo" ] || [ $FORCE
             rm -rf enumivo 2>/dev/null
             popd &> /dev/null
             pushd bin &> /dev/null
-            rm enucli enumivo-abigen enumivo-applesedemo enumivo-launcher enumivo-s2wasm enumivo-wast2wasm enumivocpp enuwallet enunode 2>/dev/null
+            rm enucli enumivo-abigen enumivo-applesedemo enulauncher enumivo-s2wasm enumivo-wast2wasm enumivocpp enuwallet enunode 2>/dev/null
             popd &> /dev/null
             libraries=(
                libenumivo_testing

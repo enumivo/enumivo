@@ -5,7 +5,7 @@ OPT_LOCATION=$HOME/opt
 binaries=(
    enucli
    enumivo-abigen
-   enumivo-launcher
+   enulauncher
    enumivo-s2wasm
    enumivo-wast2wasm
    enumivocpp
