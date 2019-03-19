@@ -77,7 +77,7 @@ if [ -d "/usr/local/include/enumivo" ] || [ -d "$HOME/opt/enumivo" ] || [ $FORCE
             rm -rf enumivo 2>/dev/null
             popd &> /dev/null
             pushd bin &> /dev/null
-            rm enucli enumivo-abigen enumivo-applesedemo enulauncher enumivo-s2wasm enumivo-wast2wasm enumivocpp enuwallet enunode 2>/dev/null
+            rm enucli enuabigen enumivo-applesedemo enulauncher enumivo-s2wasm enumivo-wast2wasm enumivocpp enuwallet enunode 2>/dev/null
             popd &> /dev/null
             libraries=(
                libenumivo_testing
