@@ -1,13 +1,13 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in enumivo/LICENSE
  */
 #include "proxy.hpp"
-#include <eosio/transaction.hpp>
+#include <enumivo/transaction.hpp>
 
-using namespace eosio;
+using namespace enumivo;
 
-proxy::proxy( eosio::name self, eosio::name first_receiver, eosio::datastream<const char*> ds )
+proxy::proxy( enumivo::name self, enumivo::name first_receiver, enumivo::datastream<const char*> ds )
 :contract( self, first_receiver, ds )
 ,_config( get_self(), get_self().value )
 {}
@@ -36,14 +36,14 @@ void proxy::on_transfer( name from, name to, asset quantity, const std::string& 
       _config.set( cfg, self );
 
       transaction out;
-      eosio::token::transfer_action a( "eosio.token"_n, {self, "active"_n} );
+      enumivo::token::transfer_action a( "enu.token"_n, {self, "active"_n} );
       out.actions.emplace_back( a.to_action( self, cfg.owner, quantity, memo ) );
       out.delay_sec = cfg.delay;
       out.send( id, self );
    }
 }
 
-void proxy::on_error( uint128_t sender_id, eosio::ignore<std::vector<char>> ) {
+void proxy::on_error( uint128_t sender_id, enumivo::ignore<std::vector<char>> ) {
    print( "on_error called on ", get_self(), " contract with sender_id = ", sender_id, "\n" );
    check( _config.exists(), "Attempting use of unconfigured proxy" );
 

@@ -1724,8 +1724,8 @@ BOOST_FIXTURE_TEST_CASE( big_maligned_host_ptr, TESTER ) try {
    produce_block();
 
    string large_maligned_host_ptr_wast_f = fc::format_string(large_maligned_host_ptr, fc::mutable_variant_object()
-                                              ("MAX_WASM_PAGES", eosio::chain::wasm_constraints::maximum_linear_memory/(64*1024))
-                                              ("MAX_NAME_ARRAY", (eosio::chain::wasm_constraints::maximum_linear_memory-1)/sizeof(chain::account_name)));
+                                              ("MAX_WASM_PAGES", enumivo::chain::wasm_constraints::maximum_linear_memory/(64*1024))
+                                              ("MAX_NAME_ARRAY", (enumivo::chain::wasm_constraints::maximum_linear_memory-1)/sizeof(chain::account_name)));
 
    set_code(N(bigmaligned), large_maligned_host_ptr_wast_f.c_str());
    produce_blocks(1);

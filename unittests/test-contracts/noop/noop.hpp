@@ -1,17 +1,17 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in enumivo/LICENSE
  */
 #pragma once
 
-#include <eosio/eosio.hpp>
+#include <enumivo/enu.hpp>
 
-class [[eosio::contract]] noop : public eosio::contract {
+class [[enumivo::contract]] noop : public enumivo::contract {
 public:
-   using eosio::contract::contract;
+   using enumivo::contract::contract;
 
-   [[eosio::action]]
-   void anyaction( eosio::name                       from,
-                   const eosio::ignore<std::string>& type,
-                   const eosio::ignore<std::string>& data );
+   [[enumivo::action]]
+   void anyaction( enumivo::name                       from,
+                   const enumivo::ignore<std::string>& type,
+                   const enumivo::ignore<std::string>& data );
 };

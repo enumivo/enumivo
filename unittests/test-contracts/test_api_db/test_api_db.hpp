@@ -1,46 +1,46 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in enumivo/LICENSE
  */
 #pragma once
 
-#include <eosio/eosio.hpp>
+#include <enumivo/enu.hpp>
 
-class [[eosio::contract]] test_api_db : public eosio::contract {
+class [[enumivo::contract]] test_api_db : public enumivo::contract {
 public:
-   using eosio::contract::contract;
+   using enumivo::contract::contract;
 
-   [[eosio::action("pg")]]
+   [[enumivo::action("pg")]]
    void primary_i64_general();
 
-   [[eosio::action("pl")]]
+   [[enumivo::action("pl")]]
    void primary_i64_lowerbound();
 
-   [[eosio::action("pu")]]
+   [[enumivo::action("pu")]]
    void primary_i64_upperbound();
 
-   [[eosio::action("s1g")]]
+   [[enumivo::action("s1g")]]
    void idx64_general();
 
-   [[eosio::action("s1l")]]
+   [[enumivo::action("s1l")]]
    void idx64_lowerbound();
 
-   [[eosio::action("s1u")]]
+   [[enumivo::action("s1u")]]
    void idx64_upperbound();
 
-   [[eosio::action("tia")]]
-   void test_invalid_access( eosio::name code, uint64_t val, uint32_t index, bool store );
+   [[enumivo::action("tia")]]
+   void test_invalid_access( enumivo::name code, uint64_t val, uint32_t index, bool store );
 
-   [[eosio::action("sdnancreate")]]
+   [[enumivo::action("sdnancreate")]]
    void idx_double_nan_create_fail();
 
-   [[eosio::action("sdnanmodify")]]
+   [[enumivo::action("sdnanmodify")]]
    void idx_double_nan_modify_fail();
 
-   [[eosio::action("sdnanlookup")]]
+   [[enumivo::action("sdnanlookup")]]
    void idx_double_nan_lookup_fail( uint32_t lookup_type );
 
-   [[eosio::action("sk32align")]]
+   [[enumivo::action("sk32align")]]
    void misaligned_secondary_key256_tests();
 
 };

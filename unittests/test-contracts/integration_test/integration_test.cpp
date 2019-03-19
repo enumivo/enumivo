@@ -1,10 +1,10 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in enumivo/LICENSE
  */
 #include "integration_test.hpp"
 
-using namespace eosio;
+using namespace enumivo;
 
 void integration_test::store( name from, name to, uint64_t num ) {
    require_auth( from );

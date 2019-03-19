@@ -1,27 +1,27 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in enumivo/LICENSE
  */
 #pragma once
 
-#include <eosio/eosio.hpp>
+#include <enumivo/enu.hpp>
 
-class [[eosio::contract]] integration_test : public eosio::contract {
+class [[enumivo::contract]] integration_test : public enumivo::contract {
 public:
-   using eosio::contract::contract;
+   using enumivo::contract::contract;
 
-   [[eosio::action]]
-   void store( eosio::name from, eosio::name to, uint64_t num );
+   [[enumivo::action]]
+   void store( enumivo::name from, enumivo::name to, uint64_t num );
 
-   struct [[eosio::table("payloads")]] payload {
+   struct [[enumivo::table("payloads")]] payload {
       uint64_t              key;
       std::vector<uint64_t> data;
 
       uint64_t primary_key()const { return key; }
 
-      EOSLIB_SERIALIZE( payload, (key)(data) )
+      ENULIB_SERIALIZE( payload, (key)(data) )
    };
 
-   using payloads_table = eosio::multi_index< "payloads"_n,  payload >;
+   using payloads_table = enumivo::multi_index< "payloads"_n,  payload >;
 
 };

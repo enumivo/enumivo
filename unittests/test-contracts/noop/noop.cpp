@@ -1,10 +1,10 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in enumivo/LICENSE
  */
 #include "noop.hpp"
 
-using namespace eosio;
+using namespace enumivo;
 
 void noop::anyaction( name                       from,
                       const ignore<std::string>& type,

@@ -1,10 +1,10 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in enumivo/LICENSE
  */
 #include "asserter.hpp"
 
-using namespace eosio;
+using namespace enumivo;
 
 static int global_variable = 45;
 

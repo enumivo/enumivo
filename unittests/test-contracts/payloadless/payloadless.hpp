@@ -1,15 +1,15 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in enumivo/LICENSE
  */
 #pragma once
 
-#include <eosio/eosio.hpp>
+#include <enumivo/enu.hpp>
 
-class [[eosio::contract]] payloadless : public eosio::contract {
+class [[enumivo::contract]] payloadless : public enumivo::contract {
 public:
-   using eosio::contract::contract;
+   using enumivo::contract::contract;
 
-   [[eosio::action]]
+   [[enumivo::action]]
    void doit();
 };

@@ -1,26 +1,26 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in enumivo/LICENSE
  */
 #pragma once
 
-#include <eosio/eosio.hpp>
+#include <enumivo/enu.hpp>
 #include <vector>
 
-class [[eosio::contract]] deferred_test : public eosio::contract {
+class [[enumivo::contract]] deferred_test : public enumivo::contract {
 public:
-   using eosio::contract::contract;
+   using enumivo::contract::contract;
 
-   [[eosio::action]]
-   void defercall( eosio::name payer, uint64_t sender_id, eosio::name contract, uint64_t payload );
+   [[enumivo::action]]
+   void defercall( enumivo::name payer, uint64_t sender_id, enumivo::name contract, uint64_t payload );
 
-   [[eosio::action]]
+   [[enumivo::action]]
    void deferfunc( uint64_t payload );
-   using deferfunc_action = eosio::action_wrapper<"deferfunc"_n, &deferred_test::deferfunc>;
+   using deferfunc_action = enumivo::action_wrapper<"deferfunc"_n, &deferred_test::deferfunc>;
 
-   [[eosio::action]]
-   void inlinecall( eosio::name contract, eosio::name authorizer, uint64_t payload );
+   [[enumivo::action]]
+   void inlinecall( enumivo::name contract, enumivo::name authorizer, uint64_t payload );
 
-   [[eosio::on_notify("eosio::onerror")]]
-   void on_error( uint128_t sender_id, eosio::ignore<std::vector<char>> sent_trx );
+   [[enumivo::on_notify("enumivo::onerror")]]
+   void on_error( uint128_t sender_id, enumivo::ignore<std::vector<char>> sent_trx );
 };

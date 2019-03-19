@@ -25,18 +25,18 @@ using mvo = fc::mutable_variant_object;
 class enu_token_tester : public tester {
 public:
 
-   eosio_token_tester() {
+   enu_token_tester() {
       produce_blocks( 2 );
 
-      create_accounts( { N(alice), N(bob), N(carol), N(eosio.token) } );
+      create_accounts( { N(alice), N(bob), N(carol), N(enu.token) } );
       produce_blocks( 2 );
 
-      set_code( N(eosio.token), contracts::eosio_token_wasm() );
-      set_abi( N(eosio.token), contracts::eosio_token_abi().data() );
+      set_code( N(enu.token), contracts::enu_token_wasm() );
+      set_abi( N(enu.token), contracts::enu_token_abi().data() );
 
       produce_blocks();
 
-      const auto& accnt = control->db().get<account_object,by_name>( N(eosio.token) );
+      const auto& accnt = control->db().get<account_object,by_name>( N(enu.token) );
       abi_def abi;
       BOOST_REQUIRE_EQUAL(abi_serializer::to_abi(accnt.abi, abi), true);
       abi_ser.set_abi(abi, abi_serializer_max_time);
@@ -46,7 +46,7 @@ public:
       string action_type_name = abi_ser.get_action_type(name);
 
       action act;
-      act.account = N(eosio.token);
+      act.account = N(enu.token);
       act.name    = name;
       act.data    = abi_ser.variant_to_binary( action_type_name, data, abi_serializer_max_time );
 
@@ -55,24 +55,24 @@ public:
 
    fc::variant get_stats( const string& symbolname )
    {
-      auto symb = eosio::chain::symbol::from_string(symbolname);
+      auto symb = enumivo::chain::symbol::from_string(symbolname);
       auto symbol_code = symb.to_symbol_code().value;
-      vector<char> data = get_row_by_account( N(eosio.token), symbol_code, N(stat), symbol_code );
+      vector<char> data = get_row_by_account( N(enu.token), symbol_code, N(stat), symbol_code );
       return data.empty() ? fc::variant() : abi_ser.binary_to_variant( "currency_stats", data, abi_serializer_max_time );
    }
 
    fc::variant get_account( account_name acc, const string& symbolname)
    {
-      auto symb = eosio::chain::symbol::from_string(symbolname);
+      auto symb = enumivo::chain::symbol::from_string(symbolname);
       auto symbol_code = symb.to_symbol_code().value;
-      vector<char> data = get_row_by_account( N(eosio.token), acc, N(accounts), symbol_code );
+      vector<char> data = get_row_by_account( N(enu.token), acc, N(accounts), symbol_code );
       return data.empty() ? fc::variant() : abi_ser.binary_to_variant( "account", data, abi_serializer_max_time );
    }
 
    action_result create( account_name issuer,
                 asset        maximum_supply ) {
 
-      return push_action( N(eosio.token), N(create), mvo()
+      return push_action( N(enu.token), N(create), mvo()
            ( "issuer", issuer)
            ( "maximum_supply", maximum_supply)
       );
@@ -101,9 +101,9 @@ public:
    abi_serializer abi_ser;
 };
 
-BOOST_AUTO_TEST_SUITE(eosio_token_tests)
+BOOST_AUTO_TEST_SUITE(enu_token_tests)
 
-BOOST_FIXTURE_TEST_CASE( create_tests, eosio_token_tester ) try {
+BOOST_FIXTURE_TEST_CASE( create_tests, enu_token_tester ) try {
 
    auto token = create( N(alice), asset::from_string("1000.000 TKN"));
    auto stats = get_stats("3,TKN");
@@ -116,7 +116,7 @@ BOOST_FIXTURE_TEST_CASE( create_tests, eosio_token_tester ) try {
 
 } FC_LOG_AND_RETHROW()
 
-BOOST_FIXTURE_TEST_CASE( create_negative_max_supply, eosio_token_tester ) try {
+BOOST_FIXTURE_TEST_CASE( create_negative_max_supply, enu_token_tester ) try {
 
    BOOST_REQUIRE_EQUAL( wasm_assert_msg( "max-supply must be positive" ),
       create( N(alice), asset::from_string("-1000.000 TKN"))
@@ -124,7 +124,7 @@ BOOST_FIXTURE_TEST_CASE( create_negative_max_supply, eosio_token_tester ) try {
 
 } FC_LOG_AND_RETHROW()
 
-BOOST_FIXTURE_TEST_CASE( symbol_already_exists, eosio_token_tester ) try {
+BOOST_FIXTURE_TEST_CASE( symbol_already_exists, enu_token_tester ) try {
 
    auto token = create( N(alice), asset::from_string("100 TKN"));
    auto stats = get_stats("0,TKN");
@@ -141,7 +141,7 @@ BOOST_FIXTURE_TEST_CASE( symbol_already_exists, eosio_token_tester ) try {
 
 } FC_LOG_AND_RETHROW()
 
-BOOST_FIXTURE_TEST_CASE( create_max_supply, eosio_token_tester ) try {
+BOOST_FIXTURE_TEST_CASE( create_max_supply, enu_token_tester ) try {
 
    auto token = create( N(alice), asset::from_string("4611686018427387903 TKN"));
    auto stats = get_stats("0,TKN");
@@ -165,7 +165,7 @@ BOOST_FIXTURE_TEST_CASE( create_max_supply, eosio_token_tester ) try {
 
 } FC_LOG_AND_RETHROW()
 
-BOOST_FIXTURE_TEST_CASE( create_max_decimals, eosio_token_tester ) try {
+BOOST_FIXTURE_TEST_CASE( create_max_decimals, enu_token_tester ) try {
 
    auto token = create( N(alice), asset::from_string("1.000000000000000000 TKN"));
    auto stats = get_stats("18,TKN");
@@ -189,7 +189,7 @@ BOOST_FIXTURE_TEST_CASE( create_max_decimals, eosio_token_tester ) try {
 
 } FC_LOG_AND_RETHROW()
 
-BOOST_FIXTURE_TEST_CASE( issue_tests, eosio_token_tester ) try {
+BOOST_FIXTURE_TEST_CASE( issue_tests, enu_token_tester ) try {
 
    auto token = create( N(alice), asset::from_string("1000.000 TKN"));
    produce_blocks(1);
@@ -223,7 +223,7 @@ BOOST_FIXTURE_TEST_CASE( issue_tests, eosio_token_tester ) try {
 
 } FC_LOG_AND_RETHROW()
 
-BOOST_FIXTURE_TEST_CASE( transfer_tests, eosio_token_tester ) try {
+BOOST_FIXTURE_TEST_CASE( transfer_tests, enu_token_tester ) try {
 
    auto token = create( N(alice), asset::from_string("1000 CERO"));
    produce_blocks(1);

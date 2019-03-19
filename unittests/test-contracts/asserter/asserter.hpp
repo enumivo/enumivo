@@ -1,18 +1,18 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in enumivo/LICENSE
  */
 #pragma once
 
-#include <eosio/eosio.hpp>
+#include <enumivo/enu.hpp>
 
-class [[eosio::contract]] asserter : public eosio::contract {
+class [[enumivo::contract]] asserter : public enumivo::contract {
 public:
-   using eosio::contract::contract;
+   using enumivo::contract::contract;
 
-   [[eosio::action]]
+   [[enumivo::action]]
    void procassert( int8_t condition, std::string message );
 
-   [[eosio::action]]
+   [[enumivo::action]]
    void provereset();
 };
