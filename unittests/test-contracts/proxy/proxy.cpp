@@ -3,7 +3,7 @@
  *  @copyright defined in enumivo/LICENSE
  */
 #include "proxy.hpp"
-#include <enumivo/transaction.hpp>
+#include <enulib/transaction.hpp>
 
 using namespace enumivo;
 
