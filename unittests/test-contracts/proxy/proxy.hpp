@@ -5,7 +5,7 @@
 #pragma once
 
 #include <enulib/enu.hpp>
-#include <enumivo/singleton.hpp>
+#include <enulib/singleton.hpp>
 #include <enumivo/asset.hpp>
 
 // Extacted from enu.token contract:
