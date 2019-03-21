@@ -1,5 +1,5 @@
 {
-    "____comment": "This file was generated with enuabigen. DO NOT EDIT Thu Nov 15 14:56:36 2018",
+    "____comment": "This file was generated with enumivo-abigen. DO NOT EDIT Tue Mar 19 14:28:07 2019",
     "version": "enumivo::abi/1.1",
     "structs": [
         {
