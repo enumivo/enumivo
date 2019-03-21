@@ -6,7 +6,7 @@
 
 #include <enulib/enu.hpp>
 #include <enulib/singleton.hpp>
-#include <enumivo/asset.hpp>
+#include <enulib/asset.hpp>
 
 // Extacted from enu.token contract:
 namespace enumivo {
