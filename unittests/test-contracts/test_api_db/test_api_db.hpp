@@ -4,7 +4,7 @@
  */
 #pragma once
 
-#include <enumivo/enu.hpp>
+#include <enulib/enu.hpp>
 
 class [[enumivo::contract]] test_api_db : public enumivo::contract {
 public:

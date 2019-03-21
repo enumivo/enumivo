@@ -4,7 +4,7 @@
  */
 #pragma once
 
-#include <enumivo/enu.hpp>
+#include <enulib/enu.hpp>
 #include <enumivo/singleton.hpp>
 #include <enumivo/asset.hpp>
 
