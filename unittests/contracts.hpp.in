@@ -30,11 +30,11 @@ namespace enumivo {
    namespace testing {
       struct contracts {
          // Contracts in `enumivo/unittests/contracts' directory
-         MAKE_READ_WASM_ABI(enu_bios,   enu.bios, contracts)
-         MAKE_READ_WASM_ABI(enu_msig,   enu.msig, contracts)
-         MAKE_READ_WASM_ABI(enu_system, enu.system, contracts)
-         MAKE_READ_WASM_ABI(enu_token,  enu.token,  contracts)
-         MAKE_READ_WASM_ABI(enu_wrap,   enu.wrap,   contracts)
+         MAKE_READ_WASM_ABI(enumivo_bios,   enumivo.bios, contracts)
+         MAKE_READ_WASM_ABI(enumivo_msig,   enumivo.msig, contracts)
+         MAKE_READ_WASM_ABI(enumivo_system, enumivo.system, contracts)
+         MAKE_READ_WASM_ABI(enumivo_token,  enumivo.token,  contracts)
+         MAKE_READ_WASM_ABI(enumivo_wrap,   enumivo.wrap,   contracts)
 
          // Contracts in `enumivo/unittests/unittests/test-contracts' directory
          MAKE_READ_WASM_ABI(asserter,             asserter,             test-contracts)

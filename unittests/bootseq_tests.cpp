@@ -70,8 +70,8 @@ std::vector<genesis_account> test_genesis( {
 class bootseq_tester : public TESTER {
 public:
    void deploy_contract( bool call_init = true ) {
-      set_code( config::system_account_name, contracts::enu_system_wasm() );
-      set_abi( config::system_account_name, contracts::enu_system_abi().data() );
+      set_code( config::system_account_name, contracts::enumivo_system_wasm() );
+      set_abi( config::system_account_name, contracts::enumivo_system_abi().data() );
       if( call_init ) {
          base_tester::push_action(config::system_account_name, N(init),
                                   config::system_account_name,  mutable_variant_object()
@@ -167,7 +167,7 @@ public:
     }
 
     asset get_balance( const account_name& act ) {
-         return get_currency_balance(N(enu.token), symbol(CORE_SYMBOL), act);
+         return get_currency_balance(N(enumivo.token), symbol(CORE_SYMBOL), act);
     }
 
     void set_code_abi(const account_name& account, const vector<uint8_t>& wasm, const char* abi, const private_key_type* signer = nullptr) {
@@ -192,39 +192,39 @@ BOOST_AUTO_TEST_SUITE(bootseq_tests)
 BOOST_FIXTURE_TEST_CASE( bootseq_test, bootseq_tester ) {
     try {
 
-        // Create enu.msig and enu.token
-        create_accounts({N(enu.msig), N(enu.token), N(enu.ram), N(enu.ramfee), N(enu.stake), N(enu.votepay), N(enu.blockpay), N(enu.savings) });
+        // Create enumivo.msig and enumivo.token
+        create_accounts({N(enumivo.msig), N(enumivo.token), N(enumivo.ram), N(enumivo.ramfee), N(enumivo.stake), N(enumivo.vpay), N(enumivo.bpay), N(enumivo.saving) });
         // Set code for the following accounts:
-        //  - enumivo (code: enu.bios) (already set by tester constructor)
-        //  - enu.msig (code: enu.msig)
-        //  - enu.token (code: enu.token)
-        // set_code_abi(N(enu.msig), contracts::enu_msig_wasm(), contracts::enu_msig_abi().data());//, &enumivo_active_pk);
-        // set_code_abi(N(enu.token), contracts::enu_token_wasm(), contracts::enu_token_abi().data()); //, &enumivo_active_pk);
+        //  - enumivo (code: enumivo.bios) (already set by tester constructor)
+        //  - enumivo.msig (code: enumivo.msig)
+        //  - enumivo.token (code: enumivo.token)
+        // set_code_abi(N(enumivo.msig), contracts::enumivo_msig_wasm(), contracts::enumivo_msig_abi().data());//, &enumivo_active_pk);
+        // set_code_abi(N(enumivo.token), contracts::enumivo_token_wasm(), contracts::enumivo_token_abi().data()); //, &enumivo_active_pk);
 
-        set_code_abi(N(enu.msig),
-                     contracts::enu_msig_wasm(),
-                     contracts::enu_msig_abi().data());//, &enumivo_active_pk);
-        set_code_abi(N(enu.token),
-                     contracts::enu_token_wasm(),
-                     contracts::enu_token_abi().data()); //, &enumivo_active_pk);
+        set_code_abi(N(enumivo.msig),
+                     contracts::enumivo_msig_wasm(),
+                     contracts::enumivo_msig_abi().data());//, &enumivo_active_pk);
+        set_code_abi(N(enumivo.token),
+                     contracts::enumivo_token_wasm(),
+                     contracts::enumivo_token_abi().data()); //, &enumivo_active_pk);
 
-        // Set privileged for enu.msig and enu.token
-        set_privileged(N(enu.msig));
-        set_privileged(N(enu.token));
+        // Set privileged for enumivo.msig and enumivo.token
+        set_privileged(N(enumivo.msig));
+        set_privileged(N(enumivo.token));
 
-        // Verify enu.msig and enu.token is privileged
-        const auto& enu_msig_acc = get<account_object, by_name>(N(enu.msig));
-        BOOST_TEST(enu_msig_acc.privileged == true);
-        const auto& enu_token_acc = get<account_object, by_name>(N(enu.token));
-        BOOST_TEST(enu_token_acc.privileged == true);
+        // Verify enumivo.msig and enumivo.token is privileged
+        const auto& enumivo_msig_acc = get<account_object, by_name>(N(enumivo.msig));
+        BOOST_TEST(enumivo_msig_acc.privileged == true);
+        const auto& enumivo_token_acc = get<account_object, by_name>(N(enumivo.token));
+        BOOST_TEST(enumivo_token_acc.privileged == true);
 
 
-        // Create ENU tokens in enu.token, set its manager as enumivo
-        auto max_supply = core_from_string("5000000000.0000"); /// 1x larger than 1B initial tokens
-        auto initial_supply = core_from_string("500000000.0000"); /// 1x larger than 1B initial tokens
-        create_currency(N(enu.token), config::system_account_name, max_supply);
-        // Issue the genesis supply of 1 billion ENU tokens to enu.system
-        issue(N(enu.token), config::system_account_name, config::system_account_name, initial_supply);
+        // Create ENU tokens in enumivo.token, set its manager as enumivo
+        auto max_supply = core_from_string("10000000000.0000"); /// 1x larger than 1B initial tokens
+        auto initial_supply = core_from_string("1000000000.0000"); /// 1x larger than 1B initial tokens
+        create_currency(N(enumivo.token), config::system_account_name, max_supply);
+        // Issue the genesis supply of 1 billion ENU tokens to enumivo.system
+        issue(N(enumivo.token), config::system_account_name, config::system_account_name, initial_supply);
 
         auto actual = get_balance(config::system_account_name);
         BOOST_REQUIRE_EQUAL(initial_supply, actual);
@@ -246,7 +246,7 @@ BOOST_FIXTURE_TEST_CASE( bootseq_test, bootseq_tester ) {
            auto r = buyram(config::system_account_name, a.aname, asset(ram));
            BOOST_REQUIRE( !r->except_ptr );
 
-           r = delegate_bandwidth(N(enu.stake), a.aname, asset(net), asset(cpu));
+           r = delegate_bandwidth(N(enumivo.stake), a.aname, asset(net), asset(cpu));
            BOOST_REQUIRE( !r->except_ptr );
         }
 
@@ -256,10 +256,6 @@ BOOST_FIXTURE_TEST_CASE( bootseq_test, bootseq_tester ) {
                 N(prodo), N(prodp), N(prodq), N(prodr), N(prods), N(prodt), N(produ),
                 N(runnerup1), N(runnerup2), N(runnerup3)
         };
-
-        //enumivo.prods should not receive ram
-        BOOST_REQUIRE_THROW( buyram(N(enumivo), N(enumivo.prods), asset(1)), enumivo_assert_message_exception);
-
 
         // Register producers
         for( auto pro : producer_candidates ) {

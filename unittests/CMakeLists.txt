@@ -3,8 +3,6 @@ find_package( Gperftools QUIET )
 ### Build contracts with cdt if available ###
 include(ExternalProject)
 
-set (ENUMIVO_COMPILE_TEST_CONTRACTS true)
-
 if( ENUMIVO_COMPILE_TEST_CONTRACTS )
    set(ENUMIVO_WASM_OLD_BEHAVIOR "Off")
    find_package(enumivo.cdt REQUIRED)

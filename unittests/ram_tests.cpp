@@ -16,7 +16,7 @@
 
 #include <contracts.hpp>
 
-#include "enu_system_tester.hpp"
+#include "enumivo_system_tester.hpp"
 
 /*
  * register test suite `ram_tests`
@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_SUITE(ram_tests)
 /*************************************************************************************
  * ram_tests test case
  *************************************************************************************/
-BOOST_FIXTURE_TEST_CASE(ram_tests, enu_system::enu_system_tester) { try {
+BOOST_FIXTURE_TEST_CASE(ram_tests, enumivo_system::enumivo_system_tester) { try {
    auto init_request_bytes = 80000 + 7110; // `7110' is for table token row
    const auto increment_contract_bytes = 10000;
    const auto table_allocation_bytes = 12000;
@@ -36,7 +36,7 @@ BOOST_FIXTURE_TEST_CASE(ram_tests, enu_system::enu_system_tester) { try {
    create_account_with_resources(N(testram11111),config::system_account_name, init_request_bytes + 40);
    create_account_with_resources(N(testram22222),config::system_account_name, init_request_bytes + 1190);
    produce_blocks(10);
-   BOOST_REQUIRE_EQUAL( success(), stake( "enu.stake", "testram11111", core_from_string("10.0000"), core_from_string("5.0000") ) );
+   BOOST_REQUIRE_EQUAL( success(), stake( "enumivo.stake", "testram11111", core_from_string("10.0000"), core_from_string("5.0000") ) );
    produce_blocks(10);
 
    for (auto i = 0; i < 10; ++i) {
@@ -85,7 +85,7 @@ BOOST_FIXTURE_TEST_CASE(ram_tests, enu_system::enu_system_tester) { try {
                         ("payer", "testram11111")
                         ("from", 1)
                         ("to", 10)
-                        ("size", 1779 /*1910*/));
+                        ("size", 1780 /*1910*/));
    produce_blocks(1);
    auto ram_usage = rlm.get_account_ram_usage(N(testram11111));
 
@@ -112,7 +112,7 @@ BOOST_FIXTURE_TEST_CASE(ram_tests, enu_system::enu_system_tester) { try {
                         ("payer", "testram11111")
                         ("from", 1)
                         ("to", 10)
-                        ("size", 1679/*1810*/));
+                        ("size", 1680/*1810*/));
    produce_blocks(1);
    BOOST_REQUIRE_EQUAL(ram_usage - 1000, rlm.get_account_ram_usage(N(testram11111)));
 
@@ -122,7 +122,7 @@ BOOST_FIXTURE_TEST_CASE(ram_tests, enu_system::enu_system_tester) { try {
                            ("payer", "testram11111")
                            ("from", 1)
                            ("to", 11)
-                           ("size", 1679/*1810*/)),
+                           ("size", 1680/*1810*/)),
                            ram_usage_exceeded,
                            fc_exception_message_starts_with("account testram11111 has insufficient ram"));
    produce_blocks(1);
@@ -159,7 +159,7 @@ BOOST_FIXTURE_TEST_CASE(ram_tests, enu_system::enu_system_tester) { try {
                            ("payer", "testram11111")
                            ("from", 12)
                            ("to", 12)
-                           ("size", 1779)),
+                           ("size", 1780)),
                            ram_usage_exceeded,
                            fc_exception_message_starts_with("account testram11111 has insufficient ram"));
    produce_blocks(1);
@@ -208,7 +208,7 @@ BOOST_FIXTURE_TEST_CASE(ram_tests, enu_system::enu_system_tester) { try {
                         ("payer", "testram11111")
                         ("from", 13)
                         ("to", 13)
-                        ("size", 1673));
+                        ("size", 1720));
    produce_blocks(1);
    
    // verify that new entries for testram22222 exceed the allocation bytes limit
@@ -227,7 +227,7 @@ BOOST_FIXTURE_TEST_CASE(ram_tests, enu_system::enu_system_tester) { try {
                         ("payer", "testram22222")
                         ("from", 12)
                         ("to", 21)
-                        ("size", 1855));
+                        ("size", 1910));
    produce_blocks(1);
 
    // verify that new entry for testram22222 exceed the allocation bytes limit

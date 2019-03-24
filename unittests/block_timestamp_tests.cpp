@@ -5,6 +5,7 @@
 #include <enumivo/chain/block_timestamp.hpp>
 
 #include <boost/test/unit_test.hpp>
+
 #include <fc/time.hpp>
 #include <fc/exception/exception.hpp>
 

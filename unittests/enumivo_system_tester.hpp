@@ -25,41 +25,41 @@ using mvo = fc::mutable_variant_object;
 #endif
 #endif
 
-namespace enu_system {
+namespace enumivo_system {
 
-class enu_system_tester : public TESTER {
+class enumivo_system_tester : public TESTER {
 public:
 
-   enu_system_tester()
-   : enu_system_tester([](TESTER& ) {}){}
+   enumivo_system_tester()
+   : enumivo_system_tester([](TESTER& ) {}){}
 
    template<typename Lambda>
-   enu_system_tester(Lambda setup) {
+   enumivo_system_tester(Lambda setup) {
       setup(*this);
 
       produce_blocks( 2 );
 
-      create_accounts({ N(enu.token), N(enu.ram), N(enu.ramfee), N(enu.stake),
-               N(enu.blockpay), N(enu.votepay), N(enu.savings), N(enu.names) });
+      create_accounts({ N(enumivo.token), N(enumivo.ram), N(enumivo.ramfee), N(enumivo.stake),
+               N(enumivo.bpay), N(enumivo.vpay), N(enumivo.saving), N(enumivo.names) });
 
       produce_blocks( 100 );
 
-      set_code( N(enu.token), contracts::enu_token_wasm() );
-      set_abi( N(enu.token), contracts::enu_token_abi().data() );
+      set_code( N(enumivo.token), contracts::enumivo_token_wasm() );
+      set_abi( N(enumivo.token), contracts::enumivo_token_abi().data() );
 
       {
-         const auto& accnt = control->db().get<account_object,by_name>( N(enu.token) );
+         const auto& accnt = control->db().get<account_object,by_name>( N(enumivo.token) );
          abi_def abi;
          BOOST_REQUIRE_EQUAL(abi_serializer::to_abi(accnt.abi, abi), true);
          token_abi_ser.set_abi(abi, abi_serializer_max_time);
       }
 
-      create_currency( N(enu.token), config::system_account_name, core_from_string("10000000000.0000") );
+      create_currency( N(enumivo.token), config::system_account_name, core_from_string("10000000000.0000") );
       issue(config::system_account_name,      core_from_string("1000000000.0000"));
       BOOST_REQUIRE_EQUAL( core_from_string("1000000000.0000"), get_balance( "enumivo" ) );
 
-      set_code( config::system_account_name, contracts::enu_system_wasm() );
-      set_abi( config::system_account_name, contracts::enu_system_abi().data() );
+      set_code( config::system_account_name, contracts::enumivo_system_wasm() );
+      set_abi( config::system_account_name, contracts::enumivo_system_abi().data() );
 
       base_tester::push_action(config::system_account_name, N(init),
                             config::system_account_name,  mutable_variant_object()
@@ -79,7 +79,7 @@ public:
       create_account_with_resources( N(bob111111111), config::system_account_name, core_from_string("0.4500"), false );
       create_account_with_resources( N(carol1111111), config::system_account_name, core_from_string("1.0000"), false );
 
-      BOOST_REQUIRE_EQUAL( core_from_string("1000000000.0000"), get_balance("enumivo")  + get_balance("enu.ramfee") + get_balance("enu.stake") + get_balance("enu.ram") );
+      BOOST_REQUIRE_EQUAL( core_from_string("1000000000.0000"), get_balance("enumivo")  + get_balance("enumivo.ramfee") + get_balance("enumivo.stake") + get_balance("enumivo.ram") );
    }
 
    action_result open( account_name  owner,
@@ -335,7 +335,7 @@ public:
    }
 
    asset get_balance( const account_name& act ) {
-      vector<char> data = get_row_by_account( N(enu.token), act, N(accounts), symbol(CORE_SYMBOL).to_symbol_code().value );
+      vector<char> data = get_row_by_account( N(enumivo.token), act, N(accounts), symbol(CORE_SYMBOL).to_symbol_code().value );
       return data.empty() ? asset(0, symbol(CORE_SYMBOL)) : token_abi_ser.binary_to_variant("account", data, abi_serializer_max_time)["balance"].as<asset>();
    }
 
@@ -363,14 +363,14 @@ public:
    }
 
    void issue( name to, const asset& amount, name manager = config::system_account_name ) {
-      base_tester::push_action( N(enu.token), N(issue), manager, mutable_variant_object()
+      base_tester::push_action( N(enumivo.token), N(issue), manager, mutable_variant_object()
                                 ("to",      to )
                                 ("quantity", amount )
                                 ("memo", "")
                                 );
    }
    void transfer( name from, name to, const asset& amount, name manager = config::system_account_name ) {
-      base_tester::push_action( N(enu.token), N(transfer), manager, mutable_variant_object()
+      base_tester::push_action( N(enumivo.token), N(transfer), manager, mutable_variant_object()
                                 ("from",    from)
                                 ("to",      to )
                                 ("quantity", amount)
@@ -390,7 +390,7 @@ public:
    fc::variant get_stats( const string& symbolname ) {
       auto symb = enumivo::chain::symbol::from_string(symbolname);
       auto symbol_code = symb.to_symbol_code().value;
-      vector<char> data = get_row_by_account( N(enu.token), symbol_code, N(stat), symbol_code );
+      vector<char> data = get_row_by_account( N(enumivo.token), symbol_code, N(stat), symbol_code );
       return data.empty() ? fc::variant() : token_abi_ser.binary_to_variant( "currency_stats", data, abi_serializer_max_time );
    }
 
@@ -413,21 +413,21 @@ public:
    abi_serializer initialize_multisig() {
       abi_serializer msig_abi_ser;
       {
-         create_account_with_resources( N(enu.msig), config::system_account_name );
-         BOOST_REQUIRE_EQUAL( success(), buyram( "enumivo", "enu.msig", core_from_string("5000.0000") ) );
+         create_account_with_resources( N(enumivo.msig), config::system_account_name );
+         BOOST_REQUIRE_EQUAL( success(), buyram( "enumivo", "enumivo.msig", core_from_string("5000.0000") ) );
          produce_block();
 
          auto trace = base_tester::push_action(config::system_account_name, N(setpriv),
                                                config::system_account_name,  mutable_variant_object()
-                                               ("account", "enu.msig")
+                                               ("account", "enumivo.msig")
                                                ("is_priv", 1)
          );
 
-         set_code( N(enu.msig), contracts::enu_msig_wasm() );
-         set_abi( N(enu.msig), contracts::enu_msig_abi().data() );
+         set_code( N(enumivo.msig), contracts::enumivo_msig_wasm() );
+         set_abi( N(enumivo.msig), contracts::enumivo_msig_abi().data() );
 
          produce_blocks();
-         const auto& accnt = control->db().get<account_object,by_name>( N(enu.msig) );
+         const auto& accnt = control->db().get<account_object,by_name>( N(enumivo.msig) );
          abi_def msig_abi;
          BOOST_REQUIRE_EQUAL(abi_serializer::to_abi(accnt.abi, msig_abi), true);
          msig_abi_ser.set_abi(msig_abi, abi_serializer_max_time);
