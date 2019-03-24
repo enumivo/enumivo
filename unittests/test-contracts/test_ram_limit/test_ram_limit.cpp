@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 
-#include <enulib/enu.hpp>
+#include <enumivolib/enumivo.hpp>
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wsign-conversion"

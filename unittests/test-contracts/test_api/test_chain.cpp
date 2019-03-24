@@ -2,9 +2,9 @@
  *  @file
  *  @copyright defined in enumivo/LICENSE
  */
-#include <enulib/action.h>
-#include <enulib/chain.h>
-#include <enulib/enu.hpp>
+#include <enumivolib/action.h>
+#include <enumivolib/chain.h>
+#include <enumivolib/enumivo.hpp>
 
 #include "test_api.hpp"
 

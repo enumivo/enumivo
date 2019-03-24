@@ -1,27 +1,35 @@
 {
-  "version": "enumivo::abi/1.0",
-  "types": [{
-      "new_type_name": "account_name",
-      "type": "name"
-    }
-  ],
-  "structs": [{
-      "name": "anyaction",
-      "base": "",
-      "fields": [
-        {"name":"from", "type":"account_name"},
-        {"name":"type", "type":"string"},
-        {"name":"data", "type":"string"}
-      ]
-    }
-  ],
-  "actions": [{
-  "name":"anyaction",
-  "type":"anyaction",
-  "ricardian_contract": ""
-  }
-],
-  "tables": [],
-  "ricardian_clauses": [],
-  "abi_extensions": []
+    "____comment": "This file was generated with enuabigen. DO NOT EDIT ",
+    "version": "enumivo::abi/1.1",
+    "types": [],
+    "structs": [
+        {
+            "name": "anyaction",
+            "base": "",
+            "fields": [
+                {
+                    "name": "from",
+                    "type": "name"
+                },
+                {
+                    "name": "type",
+                    "type": "string"
+                },
+                {
+                    "name": "data",
+                    "type": "string"
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "name": "anyaction",
+            "type": "anyaction",
+            "ricardian_contract": ""
+        }
+    ],
+    "tables": [],
+    "ricardian_clauses": [],
+    "variants": []
 }

@@ -4,9 +4,9 @@
  */
 #include <vector>
 
-#include <enulib/crypto.h>
-#include <enulib/enu.hpp>
-#include <enulib/print.h>
+#include <enumivolib/crypto.h>
+#include <enumivolib/enumivo.hpp>
+#include <enumivolib/print.h>
 
 #include "test_api.hpp"
 

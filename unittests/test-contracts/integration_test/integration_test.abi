@@ -1,41 +1,57 @@
 {
-   "version": "enumivo::abi/1.0",
-   "types": [{
-      "new_type_name": "account_name",
-      "type": "name"
-   }],
-  "structs": [{
-      "name": "store",
-      "base": "",
-      "fields": [
-        {"name":"from", "type":"account_name"},
-        {"name":"to", "type":"account_name"},
-        {"name":"num", "type":"uint64"}
-      ]
-    },{
-     "name": "payload",
-     "base": "",
-     "fields": [
-        {"name":"key", "type":"uint64"},
-        {"name":"data", "type":"uint64[]"}
-     ]
-  }
-  ],
-  "actions": [{
-      "name": "store",
-      "type": "store",
-      "ricardian_contract": ""
-    }
-
-  ],
-  "tables": [{
-      "name": "payloads",
-      "type": "payload",
-      "index_type": "i64",
-      "key_names" : ["key"],
-      "key_types" : ["uint64"]
-    }
-  ],
-  "ricardian_clauses": [],
-  "abi_extensions": []
+    "____comment": "This file was generated with enuabigen. DO NOT EDIT ",
+    "version": "enumivo::abi/1.1",
+    "types": [],
+    "structs": [
+        {
+            "name": "payload",
+            "base": "",
+            "fields": [
+                {
+                    "name": "key",
+                    "type": "uint64"
+                },
+                {
+                    "name": "data",
+                    "type": "uint64[]"
+                }
+            ]
+        },
+        {
+            "name": "store",
+            "base": "",
+            "fields": [
+                {
+                    "name": "from",
+                    "type": "name"
+                },
+                {
+                    "name": "to",
+                    "type": "name"
+                },
+                {
+                    "name": "num",
+                    "type": "uint64"
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "name": "store",
+            "type": "store",
+            "ricardian_contract": ""
+        }
+    ],
+    "tables": [
+        {
+            "name": "payloads",
+            "type": "payload",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        }
+    ],
+    "ricardian_clauses": [],
+    "variants": []
 }

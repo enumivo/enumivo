@@ -2,9 +2,9 @@
  *  @file
  *  @copyright defined in enumivo/LICENSE
  */
-#include <enulib/crypto.h>
-#include <enulib/enu.hpp>
-#include <enulib/print.hpp>
+#include <enumivolib/crypto.h>
+#include <enumivolib/enumivo.hpp>
+#include <enumivolib/print.hpp>
 
 #include "test_api.hpp"
 

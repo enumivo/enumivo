@@ -3,7 +3,7 @@
  *  @copyright defined in enumivo/LICENSE
  */
 #include "proxy.hpp"
-#include <enulib/transaction.hpp>
+#include <enumivo/transaction.hpp>
 
 using namespace enumivo;
 
@@ -36,7 +36,7 @@ void proxy::on_transfer( name from, name to, asset quantity, const std::string& 
       _config.set( cfg, self );
 
       transaction out;
-      enumivo::token::transfer_action a( "enu.token"_n, {self, "active"_n} );
+      enumivo::token::transfer_action a( "enumivo.token"_n, {self, "active"_n} );
       out.actions.emplace_back( a.to_action( self, cfg.owner, quantity, memo ) );
       out.delay_sec = cfg.delay;
       out.send( id, self );

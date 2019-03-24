@@ -2,8 +2,8 @@
  *  @file
  *  @copyright defined in enumivo/LICENSE
  */
-#include <enulib/enu.hpp>
-#include <enulib/transaction.hpp>
+#include <enumivolib/enumivo.hpp>
+#include <enumivolib/transaction.hpp>
 
 #include "test_api.hpp"
 

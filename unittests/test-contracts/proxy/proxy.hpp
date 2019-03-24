@@ -4,13 +4,13 @@
  */
 #pragma once
 
-#include <enulib/enu.hpp>
-#include <enulib/singleton.hpp>
-#include <enulib/asset.hpp>
+#include <enumivo/enumivo.hpp>
+#include <enumivo/singleton.hpp>
+#include <enumivo/asset.hpp>
 
-// Extacted from enu.token contract:
+// Extacted from enumivo.token contract:
 namespace enumivo {
-   class [[enumivo::contract("enu.token")]] token : public enumivo::contract {
+   class [[enumivo::contract("enumivo.token")]] token : public enumivo::contract {
    public:
       using enumivo::contract::contract;
 
@@ -31,7 +31,7 @@ public:
    [[enumivo::action]]
    void setowner( enumivo::name owner, uint32_t delay );
 
-   [[enumivo::on_notify("enu.token::transfer")]]
+   [[enumivo::on_notify("enumivo.token::transfer")]]
    void on_transfer( enumivo::name        from,
                      enumivo::name        to,
                      enumivo::asset       quantity,

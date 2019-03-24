@@ -4,12 +4,12 @@
  */
 #include <limits>
 
-#include <enulib/action.hpp>
-#include <enulib/db.h>
-#include <enulib/enu.hpp>
-#include <enulib/permission.h>
-#include <enulib/print.hpp>
-#include <enulib/serialize.hpp>
+#include <enumivolib/action.hpp>
+#include <enumivolib/db.h>
+#include <enumivolib/enumivo.hpp>
+#include <enumivolib/permission.h>
+#include <enumivolib/print.hpp>
+#include <enumivolib/serialize.hpp>
 
 #include "test_api.hpp"
 

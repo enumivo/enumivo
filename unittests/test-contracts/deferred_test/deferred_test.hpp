@@ -4,7 +4,7 @@
  */
 #pragma once
 
-#include <enulib/enu.hpp>
+#include <enumivo/enumivo.hpp>
 #include <vector>
 
 class [[enumivo::contract]] deferred_test : public enumivo::contract {

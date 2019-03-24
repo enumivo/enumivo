@@ -2,9 +2,9 @@
  *  @file
  *  @copyright defined in enumivo/LICENSE
  */
-#include <enulib/action.hpp>
-#include <enulib/crypto.h>
-#include <enulib/transaction.hpp>
+#include <enumivolib/action.hpp>
+#include <enumivolib/crypto.h>
+#include <enumivolib/transaction.hpp>
 
 #include "test_api.hpp"
 

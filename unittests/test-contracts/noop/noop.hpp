@@ -4,7 +4,7 @@
  */
 #pragma once
 
-#include <enulib/enu.hpp>
+#include <enumivo/enumivo.hpp>
 
 class [[enumivo::contract]] noop : public enumivo::contract {
 public:

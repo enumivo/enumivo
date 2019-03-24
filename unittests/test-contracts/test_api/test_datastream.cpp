@@ -1,11 +1,11 @@
 /**
  * @file action_test.cpp
- * @copyright defined in enumivo/LICENSE.txt
+ * @copyright defined in enumivo/LICENSE
  */
 #include <cmath>
 
-#include <enulib/enu.hpp>
-#include <enulib/datastream.hpp>
+#include <enumivolib/enumivo.hpp>
+#include <enumivolib/datastream.hpp>
 
 #include "test_api.hpp"
 

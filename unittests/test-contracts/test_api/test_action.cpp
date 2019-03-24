@@ -2,15 +2,15 @@
  * @file action_test.cpp
  * @copyright defined in enumivo/LICENSE
  */
-#include <enulib/action.hpp>
-#include <enulib/chain.h>
-#include <enulib/crypto.h>
-#include <enulib/datastream.hpp>
-#include <enulib/db.h>
-#include <enulib/enu.hpp>
-#include <enulib/print.hpp>
-#include <enulib/privileged.h>
-#include <enulib/transaction.hpp>
+#include <enumivolib/action.hpp>
+#include <enumivolib/chain.h>
+#include <enumivolib/crypto.h>
+#include <enumivolib/datastream.hpp>
+#include <enumivolib/db.h>
+#include <enumivolib/enumivo.hpp>
+#include <enumivolib/print.hpp>
+#include <enumivolib/privileged.h>
+#include <enumivolib/transaction.hpp>
 
 #include "test_api.hpp"
 
