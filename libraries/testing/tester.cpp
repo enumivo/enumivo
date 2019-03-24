@@ -828,8 +828,8 @@ namespace enumivo { namespace testing {
    }
 
    void base_tester::push_genesis_block() {
-      set_code(config::system_account_name, contracts::enu_bios_wasm());
-      set_abi(config::system_account_name, contracts::enu_bios_abi().data());
+      set_code(config::system_account_name, contracts::enumivo_bios_wasm());
+      set_abi(config::system_account_name, contracts::enumivo_bios_abi().data());
    }
 
    vector<producer_key> base_tester::get_producer_keys( const vector<account_name>& producer_names )const {
