@@ -115,7 +115,7 @@ struct local_identity {
 
 } local_id;
 
-class enunode_def;
+class enud_def;
 
 class host_def {
 public:
@@ -136,17 +136,17 @@ public:
       dot_label_str()
   {}
 
-  string              genesis;
-  string              ssh_identity;
-  string              ssh_args;
-  string              enumivo_home;
-  string              host_name;
-  string              public_name;
-  string              listen_addr;
-  uint16_t            base_p2p_port;
-  uint16_t            base_http_port;
-  uint16_t            def_file_size;
-  vector<enunode_def> instances;
+  string           genesis;
+  string           ssh_identity;
+  string           ssh_args;
+  string           enumivo_home;
+  string           host_name;
+  string           public_name;
+  string           listen_addr;
+  uint16_t         base_p2p_port;
+  uint16_t         base_http_port;
+  uint16_t         def_file_size;
+  vector<enud_def> instances;
 
   uint16_t p2p_port() {
     return base_p2p_port + p2p_count++;
@@ -196,9 +196,9 @@ protected:
 
 class tn_node_def;
 
-class enunode_def {
+class enud_def {
 public:
-  enunode_def()
+  enud_def()
     : config_dir_name (),
       data_dir_name (),
       p2p_port(),
@@ -245,12 +245,12 @@ public:
   vector<private_key_type> keys;
   vector<string>  peers;
   vector<string>  producers;
-  enunode_def*       instance;
+  enud_def*       instance;
   string          gelf_endpoint;
 };
 
 void
-enunode_def::mk_dot_label () {
+enud_def::mk_dot_label () {
   dot_label_str = name + "\\nprod=";
   if (node == 0 || node->producers.empty()) {
     dot_label_str += "<none>";
@@ -268,7 +268,7 @@ enunode_def::mk_dot_label () {
 }
 
 void
-enunode_def::set_host( host_def* h, bool is_bios ) {
+enud_def::set_host( host_def* h, bool is_bios ) {
   host = h->host_name;
   p2p_port = is_bios ? h->p2p_bios_port() : h->p2p_port();
   http_port = is_bios ? h->http_bios_port() : h->http_port();
@@ -406,7 +406,7 @@ struct launcher_def {
    bfs::path config_dir_base;
    bfs::path data_dir_base;
    bool skip_transaction_signatures = false;
-   string enunode_extra_args;
+   string enud_extra_args;
    std::map<uint,string> specific_enunode_args;
    testnet_def network;
    string gelf_endpoint;
@@ -429,7 +429,7 @@ struct launcher_def {
    fc::optional<uint32_t> max_transaction_cpu_usage;
    enumivo::chain::genesis_state genesis_from_file;
 
-   void assign_name (enunode_def &node, bool is_bios);
+   void assign_name (enud_def &node, bool is_bios);
 
    void set_options (bpo::options_description &cli);
    void initialize (const variables_map &vmap);
@@ -462,12 +462,12 @@ struct launcher_def {
    void format_ssh (const string &cmd, const string &host_name, string &ssh_cmd_line);
    void do_command(const host_def& host, const string& name, vector<pair<string, string>> env_pairs, const string& cmd);
    bool do_ssh (const string &cmd, const string &host_name);
-   void prep_remote_config_dir (enunode_def &node, host_def *host);
-   void launch (enunode_def &node, string &gts);
+   void prep_remote_config_dir (enud_def &node, host_def *host);
+   void launch (enud_def &node, string &gts);
    void kill (launch_modes mode, string sig_opt);
    static string get_node_num(uint16_t node_num);
-   pair<host_def, enunode_def> find_node(uint16_t node_num);
-   vector<pair<host_def, enunode_def>> get_nodes(const string& node_number_list);
+   pair<host_def, enud_def> find_node(uint16_t node_num);
+   vector<pair<host_def, enud_def>> get_nodes(const string& node_number_list);
    void bounce (const string& node_numbers);
    void down (const string& node_numbers);
    void roll (const string& host_names);
@@ -487,7 +487,7 @@ launcher_def::set_options (bpo::options_description &cfg) {
     ("p2p-plugin", bpo::value<string>()->default_value("net"),"select a p2p plugin to use (either net or bnet). Defaults to net.")
     ("genesis,g",bpo::value<string>()->default_value("./genesis.json"),"set the path to genesis.json")
     ("skip-signature", bpo::bool_switch(&skip_transaction_signatures)->default_value(false), "enunode does not require transaction signatures.")
-    ("enunode", bpo::value<string>(&enunode_extra_args), "forward enunode command line argument(s) to each instance of enunode, enclose arg(s) in quotes")
+    ("enunode", bpo::value<string>(&enud_extra_args), "forward enunode command line argument(s) to each instance of enunode, enclose arg(s) in quotes")
     ("specific-num", bpo::value<vector<uint>>()->composing(), "forward enunode command line argument(s) (using \"--specific-enunode\" flag) to this specific instance of enunode. This parameter can be entered multiple times and requires a paired \"--specific-enunode\" flag")
     ("specific-enunode", bpo::value<vector<string>>()->composing(), "forward enunode command line argument(s) to its paired specific instance of enunode(using \"--specific-num\"), enclose arg(s) in quotes")
     ("delay,d",bpo::value<int>(&start_delay)->default_value(0),"seconds delay before starting each node after the first")
@@ -603,11 +603,11 @@ launcher_def::initialize (const variables_map &vmap) {
     try {
       fc::json::from_file(host_map_file).as<vector<host_def>>(bindings);
       for (auto &binding : bindings) {
-        for (auto &enunode : binding.instances) {
-          enunode.host = binding.host_name;
-          enunode.p2p_endpoint = binding.public_name + ":" + boost::lexical_cast<string,uint16_t>(enunode.p2p_port);
+        for (auto &enud : binding.instances) {
+          enud.host = binding.host_name;
+          enud.p2p_endpoint = binding.public_name + ":" + boost::lexical_cast<string,uint16_t>(enud.p2p_port);
 
-          aliases.push_back (enunode.name);
+          aliases.push_back (enud.name);
         }
       }
     } catch (...) { // this is an optional feature, so an exception is OK
@@ -678,7 +678,7 @@ launcher_def::load_servers () {
 
 
 void
-launcher_def::assign_name (enunode_def &node, bool is_bios) {
+launcher_def::assign_name (enud_def &node, bool is_bios) {
    string node_cfg_name;
 
    if (is_bios) {
@@ -771,11 +771,11 @@ launcher_def::define_network () {
     local_host.enumivo_home = erd;
     local_host.genesis = genesis.string();
     for (size_t i = 0; i < (total_nodes); i++) {
-      enunode_def enunode;
-      assign_name(enunode, i == 0);
-      aliases.push_back(enunode.name);
-      enunode.set_host (&local_host, i == 0);
-      local_host.instances.emplace_back(move(enunode));
+      enud_def enud;
+      assign_name(enud, i == 0);
+      aliases.push_back(enud.name);
+      enud.set_host (&local_host, i == 0);
+      local_host.instances.emplace_back(move(enud));
     }
     bindings.emplace_back(move(local_host));
   }
@@ -820,22 +820,22 @@ launcher_def::define_network () {
         host_ndx++;
       } // ph_count == 0
 
-      enunode_def enunode;
-      assign_name(enunode, do_bios);
-      enunode.has_db = false;
+      enud_def enud;
+      assign_name(enud, do_bios);
+      enud.has_db = false;
 
       if (servers.db.size()) {
         for (auto &dbn : servers.db) {
           if (lhost->host_name == dbn) {
-            enunode.has_db = true;
+            enud.has_db = true;
             break;
          }
         }
       }
-      aliases.push_back(enunode.name);
-      enunode.set_host (lhost, do_bios);
+      aliases.push_back(enud.name);
+      enud.set_host (lhost, do_bios);
       do_bios = false;
-      lhost->instances.emplace_back(move(enunode));
+      lhost->instances.emplace_back(move(enud));
       --ph_count;
     } // for i
     bindings.emplace_back( move(*lhost) );
@@ -931,7 +931,7 @@ launcher_def::find_host_by_name_or_address (const string &host_id)
 host_def *
 launcher_def::deploy_config_files (tn_node_def &node) {
   boost::system::error_code ec;
-  enunode_def &instance = *node.instance;
+  enud_def &instance = *node.instance;
   host_def *host = find_host (instance.host);
 
   bfs::path source = stage / instance.config_dir_name / "config.ini";
@@ -1044,7 +1044,7 @@ void
 launcher_def::write_config_file (tn_node_def &node) {
    bool is_bios = (node.name == "bios");
    bfs::path filename;
-   enunode_def &instance = *node.instance;
+   enud_def &instance = *node.instance;
    host_def *host = find_host (instance.host);
 
    bfs::path dd = stage / instance.config_dir_name;
@@ -1140,7 +1140,7 @@ launcher_def::write_config_file (tn_node_def &node) {
 void
 launcher_def::write_logging_config_file(tn_node_def &node) {
   bfs::path filename;
-  enunode_def &instance = *node.instance;
+  enud_def &instance = *node.instance;
 
   bfs::path dd = stage / instance.config_dir_name;
   if (!bfs::exists(dd)) {
@@ -1197,7 +1197,7 @@ launcher_def::init_genesis () {
 void
 launcher_def::write_genesis_file(tn_node_def &node) {
   bfs::path filename;
-  enunode_def &instance = *node.instance;
+  enud_def &instance = *node.instance;
 
   bfs::path dd = stage / instance.config_dir_name;
   if (!bfs::exists(dd)) {
@@ -1443,7 +1443,7 @@ launcher_def::do_ssh (const string &cmd, const string &host_name) {
 }
 
 void
-launcher_def::prep_remote_config_dir (enunode_def &node, host_def *host) {
+launcher_def::prep_remote_config_dir (enud_def &node, host_def *host) {
   bfs::path abs_config_dir = bfs::path(host->enumivo_home) / node.config_dir_name;
   bfs::path abs_data_dir = bfs::path(host->enumivo_home) / node.data_dir_name;
 
@@ -1493,7 +1493,7 @@ launcher_def::prep_remote_config_dir (enunode_def &node, host_def *host) {
 }
 
 void
-launcher_def::launch (enunode_def &instance, string &gts) {
+launcher_def::launch (enud_def &instance, string &gts) {
   bfs::path dd = instance.data_dir_name;
   bfs::path reout = dd / "stdout.txt";
   bfs::path reerr_sl = dd / "stderr.txt";
@@ -1511,45 +1511,45 @@ launcher_def::launch (enunode_def &instance, string &gts) {
   node_rt_info info;
   info.remote = !host->is_local();
 
-  string enunodecmd = "programs/enunode/enunode ";
+  string enudcmd = "programs/enunode/enunode ";
   if (skip_transaction_signatures) {
-    enunodecmd += "--skip-transaction-signatures ";
+    enudcmd += "--skip-transaction-signatures ";
   }
-  if (!enunode_extra_args.empty()) {
+  if (!enud_extra_args.empty()) {
     if (instance.name == "bios") {
        // Strip the mongo-related options out of the bios node so
        // the plugins don't conflict between 00 and bios.
        regex r("--plugin +enumivo::mongo_db_plugin");
-       string args = std::regex_replace (enunode_extra_args,r,"");
+       string args = std::regex_replace (enud_extra_args,r,"");
        regex r2("--mongodb-uri +[^ ]+");
        args = std::regex_replace (args,r2,"");
-       enunodecmd += args + " ";
+       enudcmd += args + " ";
     }
     else {
-       enunodecmd += enunode_extra_args + " ";
+       enudcmd += enud_extra_args + " ";
     }
   }
   if (instance.name != "bios" && !specific_enunode_args.empty()) {
      const auto node_num = boost::lexical_cast<uint16_t,string>(instance.get_node_num());
      if (specific_enunode_args.count(node_num)) {
-        enunodecmd += specific_enunode_args[node_num] + " ";
+        enudcmd += specific_enunode_args[node_num] + " ";
      }
   }
 
   if( add_enable_stale_production ) {
-    enunodecmd += "--enable-stale-production true ";
+    enudcmd += "--enable-stale-production true ";
     add_enable_stale_production = false;
   }
 
-  enunodecmd += " --config-dir " + instance.config_dir_name + " --data-dir " + instance.data_dir_name;
-  enunodecmd += " --genesis-json " + instance.config_dir_name + "/genesis.json";
+  enudcmd += " --config-dir " + instance.config_dir_name + " --data-dir " + instance.data_dir_name;
+  enudcmd += " --genesis-json " + instance.config_dir_name + "/genesis.json";
   if (gts.length()) {
-    enunodecmd += " --genesis-timestamp " + gts;
+    enudcmd += " --genesis-timestamp " + gts;
   }
 
   if (!host->is_local()) {
     string cmdl ("cd ");
-    cmdl += host->enumivo_home + "; nohup " + enunodecmd + " > "
+    cmdl += host->enumivo_home + "; nohup " + enudcmd + " > "
       + reout.string() + " 2> " + reerr.string() + "& echo $! > " + pidf.string()
       + "; rm -f " + reerr_sl.string()
       + "; ln -s " + reerr_base.string() + " " + reerr_sl.string();
@@ -1563,9 +1563,9 @@ launcher_def::launch (enunode_def &instance, string &gts) {
     format_ssh (cmd, host->host_name, info.kill_cmd);
   }
   else {
-    cerr << "spawning child, " << enunodecmd << endl;
+    cerr << "spawning child, " << enudcmd << endl;
 
-    bp::child c(enunodecmd, bp::std_out > reout, bp::std_err > reerr );
+    bp::child c(enudcmd, bp::std_out > reout, bp::std_err > reerr );
     bfs::remove(reerr_sl);
     bfs::create_symlink (reerr_base, reerr_sl);
 
@@ -1577,7 +1577,7 @@ launcher_def::launch (enunode_def &instance, string &gts) {
     info.kill_cmd = "";
 
     if(!c.running()) {
-      cerr << "child not running after spawn " << enunodecmd << endl;
+      cerr << "child not running after spawn " << enudcmd << endl;
       for (int i = 0; i > 0; i++) {
         if (c.running () ) break;
       }
@@ -1589,7 +1589,7 @@ launcher_def::launch (enunode_def &instance, string &gts) {
 
 #if 0
 void
-launcher_def::kill_instance(enunode_def, string sig_opt) {
+launcher_def::kill_instance(enud_def, string sig_opt) {
 }
 #endif
 
@@ -1639,7 +1639,7 @@ launcher_def::get_node_num(uint16_t node_num) {
    return node_num_str;
 }
 
-pair<host_def, enunode_def>
+pair<host_def, enud_def>
 launcher_def::find_node(uint16_t node_num) {
    const string node_name = network.name + get_node_num(node_num);
    for (const auto& host: bindings) {
@@ -1653,9 +1653,9 @@ launcher_def::find_node(uint16_t node_num) {
    exit (-1);
 }
 
-vector<pair<host_def, enunode_def>>
+vector<pair<host_def, enud_def>>
 launcher_def::get_nodes(const string& node_number_list) {
-   vector<pair<host_def, enunode_def>> node_list;
+   vector<pair<host_def, enud_def>> node_list;
    if (fc::to_lower(node_number_list) == "all") {
       for (auto host: bindings) {
          for (auto node: host.instances) {
@@ -1714,10 +1714,10 @@ launcher_def::bounce (const string& node_numbers) {
    auto node_list = get_nodes(node_numbers);
    for (auto node_pair: node_list) {
       const host_def& host = node_pair.first;
-      const enunode_def& node = node_pair.second;
+      const enud_def& node = node_pair.second;
       const string node_num = node.get_node_num();
       cout << "Bouncing " << node.name << endl;
-      string cmd = "./scripts/enumivo_tn_bounce.sh " + enunode_extra_args;
+      string cmd = "./scripts/enumivo_tn_bounce.sh " + enud_extra_args;
       if (node_num != "bios" && !specific_enunode_args.empty()) {
          const auto node_num_i = boost::lexical_cast<uint16_t,string>(node_num);
          if (specific_enunode_args.count(node_num_i)) {
@@ -1734,7 +1734,7 @@ launcher_def::down (const string& node_numbers) {
    auto node_list = get_nodes(node_numbers);
    for (auto node_pair: node_list) {
       const host_def& host = node_pair.first;
-      const enunode_def& node = node_pair.second;
+      const enud_def& node = node_pair.second;
       const string node_num = node.get_node_num();
       cout << "Taking down " << node.name << endl;
       string cmd = "./scripts/enumivo_tn_down.sh ";
@@ -2024,7 +2024,7 @@ FC_REFLECT( host_def,
             (instances) )
 
 // @ignore node, dot_label_str
-FC_REFLECT( enunode_def,
+FC_REFLECT( enud_def,
             (config_dir_name)(data_dir_name)(p2p_port)
             (http_port)(file_size)(has_db)(name)(host)
             (p2p_endpoint) )
