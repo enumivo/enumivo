@@ -126,7 +126,7 @@ struct abi_def {
    may_not_exist<vector<variant_def>>  variants;
 };
 
-abi_def enumivo_contract_abi(const abi_def& enu_system_abi);
+abi_def enumivo_contract_abi(const abi_def& enumivo_system_abi);
 vector<type_def> common_type_defs();
 
 } } /// namespace enumivo::chain
