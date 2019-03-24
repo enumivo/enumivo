@@ -102,9 +102,9 @@ class TestHelper(object):
         if "--only-bios" in includeArgs:
             parser.add_argument("--only-bios", help="Limit testing to bios node.", action='store_true')
         if "--clean-run" in includeArgs:
-            parser.add_argument("--clean-run", help="Kill all enunode and enuwallet instances", action='store_true')
+            parser.add_argument("--clean-run", help="Kill all enunode and enucli instances", action='store_true')
         if "--sanity-test" in includeArgs:
-            parser.add_argument("--sanity-test", help="Validates enunode and enuwallet are in path and can be started up.", action='store_true')
+            parser.add_argument("--sanity-test", help="Validates enunode and enucli are in path and can be started up.", action='store_true')
 
         for arg in applicationSpecificArgs.args:
             parser.add_argument(arg.flag, type=arg.type, help=arg.help, choices=arg.choices, default=arg.default)

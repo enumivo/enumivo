@@ -892,7 +892,7 @@ class Cluster(object):
         initialFunds="1000000.0000 {0}".format(CORE_SYMBOL)
         Utils.Print("Transfer initial fund %s to individual accounts." % (initialFunds))
         trans=None
-        contract="enu.token"
+        contract="enumivo.token"
         action="transfer"
         for name, keys in producerKeys.items():
             data="{\"from\":\"enumivo\",\"to\":\"%s\",\"quantity\":\"%s\",\"memo\":\"%s\"}" % (name, initialFunds, "init enumivo transfer")
@@ -900,7 +900,7 @@ class Cluster(object):
             if name != "enumivo":
                 trans=biosNode.pushMessage(contract, action, data, opts)
                 if trans is None or not trans[0]:
-                    Utils.Print("ERROR: Failed to transfer funds from enu.token to %s." % (name))
+                    Utils.Print("ERROR: Failed to transfer funds from enumivo.token to %s." % (name))
                     return None
 
             Node.validateTransaction(trans[1])
@@ -959,7 +959,7 @@ class Cluster(object):
             Utils.Print("ERROR: Failed to import %s account keys into ignition wallet." % (enumivoName))
             return None
 
-        contract="enu.bios"
+        contract="enumivo.bios"
         contractDir="unittests/contracts/%s" % (contract)
         wasmFile="%s.wasm" % (contract)
         abiFile="%s.abi" % (contract)
@@ -1050,28 +1050,28 @@ class Cluster(object):
                 return None
 
         enumivoTokenAccount=copy.deepcopy(enumivoAccount)
-        enumivoTokenAccount.name="enu.token"
+        enumivoTokenAccount.name="enumivo.token"
         trans=biosNode.createAccount(enumivoTokenAccount, enumivoAccount, 0)
         if trans is None:
             Utils.Print("ERROR: Failed to create account %s" % (enumivoTokenAccount.name))
             return None
 
         enumivoRamAccount=copy.deepcopy(enumivoAccount)
-        enumivoRamAccount.name="enu.ram"
+        enumivoRamAccount.name="enumivo.ram"
         trans=biosNode.createAccount(enumivoRamAccount, enumivoAccount, 0)
         if trans is None:
             Utils.Print("ERROR: Failed to create account %s" % (enumivoRamAccount.name))
             return None
 
         enumivoRamfeeAccount=copy.deepcopy(enumivoAccount)
-        enumivoRamfeeAccount.name="enu.ramfee"
+        enumivoRamfeeAccount.name="enumivo.ramfee"
         trans=biosNode.createAccount(enumivoRamfeeAccount, enumivoAccount, 0)
         if trans is None:
             Utils.Print("ERROR: Failed to create account %s" % (enumivoRamfeeAccount.name))
             return None
 
         enumivoStakeAccount=copy.deepcopy(enumivoAccount)
-        enumivoStakeAccount.name="enu.stake"
+        enumivoStakeAccount.name="enumivo.stake"
         trans=biosNode.createAccount(enumivoStakeAccount, enumivoAccount, 0)
         if trans is None:
             Utils.Print("ERROR: Failed to create account %s" % (enumivoStakeAccount.name))
@@ -1083,7 +1083,7 @@ class Cluster(object):
             Utils.Print("ERROR: Failed to validate transaction %s got rolled into a block on server port %d." % (transId, biosNode.port))
             return None
 
-        contract="enu.token"
+        contract="enumivo.token"
         contractDir="unittests/contracts/%s" % (contract)
         wasmFile="%s.wasm" % (contract)
         abiFile="%s.abi" % (contract)
@@ -1138,7 +1138,7 @@ class Cluster(object):
                         (expectedAmount, actualAmount))
             return None
 
-        contract="enu.system"
+        contract="enumivo.system"
         contractDir="unittests/contracts/%s" % (contract)
         wasmFile="%s.wasm" % (contract)
         abiFile="%s.abi" % (contract)
@@ -1238,7 +1238,7 @@ class Cluster(object):
         else:
             self.biosNode.pid=int(m.group(1))
 
-    # Kills a percentange of Enumivo instances starting from the tail and update enuInstanceInfos state
+    # Kills a percentange of Enu instances starting from the tail and update enuInstanceInfos state
     def killSomeEnuInstances(self, killCount, killSignalStr=Utils.SigKillTag):
         killSignal=signal.SIGKILL
         if killSignalStr == Utils.SigTermTag:

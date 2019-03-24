@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in enu/LICENSE.txt
+ *  @copyright defined in enumivo/LICENSE
  */
 #include <boost/test/unit_test.hpp>
 #include <boost/algorithm/string/predicate.hpp>
@@ -41,26 +41,26 @@ BOOST_AUTO_TEST_SUITE(get_table_tests)
 BOOST_FIXTURE_TEST_CASE( get_scope_test, TESTER ) try {
    produce_blocks(2);
 
-   create_accounts({ N(enu.token), N(enu.ram), N(enu.ramfee), N(enu.stake),
-      N(enu.blockpay), N(enu.votepay), N(enu.savings), N(enu.names) });
+   create_accounts({ N(enumivo.token), N(enumivo.ram), N(enumivo.ramfee), N(enumivo.stake),
+      N(enumivo.bpay), N(enumivo.vpay), N(enumivo.saving), N(enumivo.names) });
 
    std::vector<account_name> accs{N(inita), N(initb), N(initc), N(initd)};
    create_accounts(accs);
    produce_block();
 
-   set_code( N(enu.token), contracts::enu_token_wasm() );
-   set_abi( N(enu.token), contracts::enu_token_abi().data() );
+   set_code( N(enumivo.token), contracts::enumivo_token_wasm() );
+   set_abi( N(enumivo.token), contracts::enumivo_token_abi().data() );
    produce_blocks(1);
 
    // create currency
    auto act = mutable_variant_object()
          ("issuer",       "enumivo")
          ("maximum_supply", enumivo::chain::asset::from_string("1000000000.0000 ENU"));
-   push_action(N(enu.token), N(create), N(enu.token), act );
+   push_action(N(enumivo.token), N(create), N(enumivo.token), act );
 
    // issue
    for (account_name a: accs) {
-      push_action( N(enu.token), N(issue), "enumivo", mutable_variant_object()
+      push_action( N(enumivo.token), N(issue), "enumivo", mutable_variant_object()
                   ("to",      name(a) )
                   ("quantity", enumivo::chain::asset::from_string("999.0000 ENU") )
                   ("memo", "")
@@ -70,13 +70,13 @@ BOOST_FIXTURE_TEST_CASE( get_scope_test, TESTER ) try {
 
    // iterate over scope
    enumivo::chain_apis::read_only plugin(*(this->control), fc::microseconds::maximum());
-   enumivo::chain_apis::read_only::get_table_by_scope_params param{N(enu.token), N(accounts), "inita", "", 10};
+   enumivo::chain_apis::read_only::get_table_by_scope_params param{N(enumivo.token), N(accounts), "inita", "", 10};
    enumivo::chain_apis::read_only::get_table_by_scope_result result = plugin.read_only::get_table_by_scope(param);
 
    BOOST_REQUIRE_EQUAL(4u, result.rows.size());
    BOOST_REQUIRE_EQUAL("", result.more);
    if (result.rows.size() >= 4) {
-      BOOST_REQUIRE_EQUAL(name(N(enu.token)), result.rows[0].code);
+      BOOST_REQUIRE_EQUAL(name(N(enumivo.token)), result.rows[0].code);
       BOOST_REQUIRE_EQUAL(name(N(inita)), result.rows[0].scope);
       BOOST_REQUIRE_EQUAL(name(N(accounts)), result.rows[0].table);
       BOOST_REQUIRE_EQUAL(name(N(enumivo)), result.rows[0].payer);
@@ -117,26 +117,26 @@ BOOST_FIXTURE_TEST_CASE( get_scope_test, TESTER ) try {
 BOOST_FIXTURE_TEST_CASE( get_table_test, TESTER ) try {
    produce_blocks(2);
 
-   create_accounts({ N(enu.token), N(enu.ram), N(enu.ramfee), N(enu.stake),
-      N(enu.blockpay), N(enu.votepay), N(enu.savings), N(enu.names) });
+   create_accounts({ N(enumivo.token), N(enumivo.ram), N(enumivo.ramfee), N(enumivo.stake),
+      N(enumivo.bpay), N(enumivo.vpay), N(enumivo.saving), N(enumivo.names) });
 
    std::vector<account_name> accs{N(inita), N(initb)};
    create_accounts(accs);
    produce_block();
 
-   set_code( N(enu.token), contracts::enu_token_wasm() );
-   set_abi( N(enu.token), contracts::enu_token_abi().data() );
+   set_code( N(enumivo.token), contracts::enumivo_token_wasm() );
+   set_abi( N(enumivo.token), contracts::enumivo_token_abi().data() );
    produce_blocks(1);
 
    // create currency
    auto act = mutable_variant_object()
          ("issuer",       "enumivo")
          ("maximum_supply", enumivo::chain::asset::from_string("1000000000.0000 ENU"));
-   push_action(N(enu.token), N(create), N(enu.token), act );
+   push_action(N(enumivo.token), N(create), N(enumivo.token), act );
 
    // issue
    for (account_name a: accs) {
-      push_action( N(enu.token), N(issue), "enumivo", mutable_variant_object()
+      push_action( N(enumivo.token), N(issue), "enumivo", mutable_variant_object()
                   ("to",      name(a) )
                   ("quantity", enumivo::chain::asset::from_string("10000.0000 ENU") )
                   ("memo", "")
@@ -148,10 +148,10 @@ BOOST_FIXTURE_TEST_CASE( get_table_test, TESTER ) try {
    act = mutable_variant_object()
          ("issuer",       "enumivo")
          ("maximum_supply", enumivo::chain::asset::from_string("1000000000.0000 AAA"));
-   push_action(N(enu.token), N(create), N(enu.token), act );
+   push_action(N(enumivo.token), N(create), N(enumivo.token), act );
    // issue
    for (account_name a: accs) {
-      push_action( N(enu.token), N(issue), "enumivo", mutable_variant_object()
+      push_action( N(enumivo.token), N(issue), "enumivo", mutable_variant_object()
                   ("to",      name(a) )
                   ("quantity", enumivo::chain::asset::from_string("9999.0000 AAA") )
                   ("memo", "")
@@ -163,10 +163,10 @@ BOOST_FIXTURE_TEST_CASE( get_table_test, TESTER ) try {
    act = mutable_variant_object()
          ("issuer",       "enumivo")
          ("maximum_supply", enumivo::chain::asset::from_string("1000000000.0000 CCC"));
-   push_action(N(enu.token), N(create), N(enu.token), act );
+   push_action(N(enumivo.token), N(create), N(enumivo.token), act );
    // issue
    for (account_name a: accs) {
-      push_action( N(enu.token), N(issue), "enumivo", mutable_variant_object()
+      push_action( N(enumivo.token), N(issue), "enumivo", mutable_variant_object()
                   ("to",      name(a) )
                   ("quantity", enumivo::chain::asset::from_string("7777.0000 CCC") )
                   ("memo", "")
@@ -178,10 +178,10 @@ BOOST_FIXTURE_TEST_CASE( get_table_test, TESTER ) try {
    act = mutable_variant_object()
          ("issuer",       "enumivo")
          ("maximum_supply", enumivo::chain::asset::from_string("1000000000.0000 BBB"));
-   push_action(N(enu.token), N(create), N(enu.token), act );
+   push_action(N(enumivo.token), N(create), N(enumivo.token), act );
    // issue
    for (account_name a: accs) {
-      push_action( N(enu.token), N(issue), "enumivo", mutable_variant_object()
+      push_action( N(enumivo.token), N(issue), "enumivo", mutable_variant_object()
                   ("to",      name(a) )
                   ("quantity", enumivo::chain::asset::from_string("8888.0000 BBB") )
                   ("memo", "")
@@ -192,7 +192,7 @@ BOOST_FIXTURE_TEST_CASE( get_table_test, TESTER ) try {
    // get table: normal case
    enumivo::chain_apis::read_only plugin(*(this->control), fc::microseconds::maximum());
    enumivo::chain_apis::read_only::get_table_rows_params p;
-   p.code = N(enu.token);
+   p.code = N(enumivo.token);
    p.scope = "inita";
    p.table = N(accounts);
    p.json = true;
@@ -312,26 +312,26 @@ BOOST_FIXTURE_TEST_CASE( get_table_test, TESTER ) try {
 BOOST_FIXTURE_TEST_CASE( get_table_by_seckey_test, TESTER ) try {
    produce_blocks(2);
 
-   create_accounts({ N(enu.token), N(enu.ram), N(enu.ramfee), N(enu.stake),
-      N(enu.blockpay), N(enu.votepay), N(enu.savings), N(enu.names) });
+   create_accounts({ N(enumivo.token), N(enumivo.ram), N(enumivo.ramfee), N(enumivo.stake),
+      N(enumivo.bpay), N(enumivo.vpay), N(enumivo.saving), N(enumivo.names) });
 
    std::vector<account_name> accs{N(inita), N(initb), N(initc), N(initd)};
    create_accounts(accs);
    produce_block();
 
-   set_code( N(enu.token), contracts::enu_token_wasm() );
-   set_abi( N(enu.token), contracts::enu_token_abi().data() );
+   set_code( N(enumivo.token), contracts::enumivo_token_wasm() );
+   set_abi( N(enumivo.token), contracts::enumivo_token_abi().data() );
    produce_blocks(1);
 
    // create currency
    auto act = mutable_variant_object()
          ("issuer",       "enumivo")
          ("maximum_supply", enumivo::chain::asset::from_string("1000000000.0000 ENU"));
-   push_action(N(enu.token), N(create), N(enu.token), act );
+   push_action(N(enumivo.token), N(create), N(enumivo.token), act );
 
    // issue
    for (account_name a: accs) {
-      push_action( N(enu.token), N(issue), "enumivo", mutable_variant_object()
+      push_action( N(enumivo.token), N(issue), "enumivo", mutable_variant_object()
                   ("to",      name(a) )
                   ("quantity", enumivo::chain::asset::from_string("10000.0000 ENU") )
                   ("memo", "")
@@ -339,8 +339,8 @@ BOOST_FIXTURE_TEST_CASE( get_table_by_seckey_test, TESTER ) try {
    }
    produce_blocks(1);
    
-   set_code( config::system_account_name, contracts::enu_system_wasm() );
-   set_abi( config::system_account_name, contracts::enu_system_abi().data() );
+   set_code( config::system_account_name, contracts::enumivo_system_wasm() );
+   set_abi( config::system_account_name, contracts::enumivo_system_abi().data() );
    
    base_tester::push_action(config::system_account_name, N(init),
                             config::system_account_name,  mutable_variant_object()
