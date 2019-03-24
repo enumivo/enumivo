@@ -75,7 +75,7 @@ wcmd create --to-console -n ignition
 # ------ DO NOT ALTER THE NEXT LINE -------
 ###INSERT prodkeys
 
-ecmd set contract enumivo unittests/contracts/enu.bios enu.bios.wasm enu.bios.abi
+ecmd set contract enumivo unittests/contracts/enumivo.bios enumivo.bios.wasm enumivo.bios.abi
 
 # Create required system accounts
 ecmd create key --to-console
@@ -83,31 +83,31 @@ pubsyskey=`grep "^Public key:" $logfile | tail -1 | sed "s/^Public key://"`
 prisyskey=`grep "^Private key:" $logfile | tail -1 | sed "s/^Private key://"`
 echo enumivo.* keys: $prisyskey $pubsyskey >> $logfile
 wcmd import -n ignition --private-key $prisyskey
-ecmd create account enumivo enu.blockpay $pubsyskey $pubsyskey
-ecmd create account enumivo enu.msig $pubsyskey $pubsyskey
-ecmd create account enumivo enu.names $pubsyskey $pubsyskey
-ecmd create account enumivo enu.ram $pubsyskey $pubsyskey
-ecmd create account enumivo enu.ramfee $pubsyskey $pubsyskey
-ecmd create account enumivo enu.savings $pubsyskey $pubsyskey
-ecmd create account enumivo enu.stake $pubsyskey $pubsyskey
-ecmd create account enumivo enu.token $pubsyskey $pubsyskey
-ecmd create account enumivo enu.votepay $pubsyskey $pubsyskey
-ecmd create account enumivo enu.wrap $pubsyskey $pubsyskey
+ecmd create account enumivo enumivo.bpay $pubsyskey $pubsyskey
+ecmd create account enumivo enumivo.msig $pubsyskey $pubsyskey
+ecmd create account enumivo enumivo.names $pubsyskey $pubsyskey
+ecmd create account enumivo enumivo.ram $pubsyskey $pubsyskey
+ecmd create account enumivo enumivo.ramfee $pubsyskey $pubsyskey
+ecmd create account enumivo enumivo.saving $pubsyskey $pubsyskey
+ecmd create account enumivo enumivo.stake $pubsyskey $pubsyskey
+ecmd create account enumivo enumivo.token $pubsyskey $pubsyskey
+ecmd create account enumivo enumivo.vpay $pubsyskey $pubsyskey
+ecmd create account enumivo enumivo.wrap $pubsyskey $pubsyskey
 
-ecmd set contract enu.token unittests/contracts/enu.token enu.token.wasm enu.token.abi
-ecmd set contract enu.msig unittests/contracts/enu.msig enu.msig.wasm enu.msig.abi
-ecmd set contract enu.wrap unittests/contracts/enu.wrap enu.wrap.wasm enu.wrap.abi
+ecmd set contract enumivo.token unittests/contracts/enumivo.token enumivo.token.wasm enumivo.token.abi
+ecmd set contract enumivo.msig unittests/contracts/enumivo.msig enumivo.msig.wasm enumivo.msig.abi
+ecmd set contract enumivo.wrap unittests/contracts/enumivo.wrap enumivo.wrap.wasm enumivo.wrap.abi
 
 echo ===== Start: $step ============ >> $logfile
-echo executing: enucli --wallet-url $wdurl --url http://$bioshost:$biosport push action enu.token create '[ "enumivo", "10000000000.0000 ENU" ]' -p enu.token | tee -a $logfile
-echo executing: enucli --wallet-url $wdurl --url http://$bioshost:$biosport push action enu.token issue '[ "enumivo", "1000000000.0000 ENU", "memo" ]' -p enumivo | tee -a $logfile
+echo executing: enucli --wallet-url $wdurl --url http://$bioshost:$biosport push action enumivo.token create '[ "enumivo", "10000000000.0000 ENU" ]' -p enumivo.token | tee -a $logfile
+echo executing: enucli --wallet-url $wdurl --url http://$bioshost:$biosport push action enumivo.token issue '[ "enumivo", "1000000000.0000 ENU", "memo" ]' -p enumivo | tee -a $logfile
 echo ----------------------- >> $logfile
-programs/enucli/enucli --wallet-url $wdurl --url http://$bioshost:$biosport push action enu.token create '[ "enumivo", "10000000000.0000 ENU" ]' -p enu.token >> $logfile 2>&1
-programs/enucli/enucli --wallet-url $wdurl --url http://$bioshost:$biosport push action enu.token issue '[ "enumivo", "1000000000.0000 ENU", "memo" ]' -p enumivo >> $logfile 2>&1
+programs/enucli/enucli --wallet-url $wdurl --url http://$bioshost:$biosport push action enumivo.token create '[ "enumivo", "10000000000.0000 ENU" ]' -p enumivo.token >> $logfile 2>&1
+programs/enucli/enucli --wallet-url $wdurl --url http://$bioshost:$biosport push action enumivo.token issue '[ "enumivo", "1000000000.0000 ENU", "memo" ]' -p enumivo >> $logfile 2>&1
 echo ==== End: $step ============== >> $logfile
 step=$(($step + 1))
 
-ecmd set contract enumivo unittests/contracts/enu.system enu.system.wasm enu.system.abi
+ecmd set contract enumivo unittests/contracts/enumivo.system enumivo.system.wasm enumivo.system.abi
 programs/enucli/enucli --wallet-url $wdurl --url http://$bioshost:$biosport push action enumivo init '[0, "4,ENU"]' -p enumivo >> $logfile 2>&1
 
 # Manual deployers, add a series of lines below this block that looks like:

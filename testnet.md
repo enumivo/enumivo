@@ -1,10 +1,10 @@
-# Enumivo Testnet
-To date, all work done to experiment with the Enumivo blockchain has been performed using a single instance of enunode hosting all 21 block producers. While this is a perfectly valid solution for validating features of the blockchain, developing new contracts, or whatever, it does not scale. Nor does it expose the sort of issues raised when contract and block data must be shared across multiple instances. Providing the ability to scale involves deploying multiple Enumivo nodes across many hosts and lining then into a peer-to-peer (p2p) network. Composing this network involves tailoring and distributing configuration files, coordinating starts and stops and other tasks.
+# ENU Testnet
+To date, all work done to experiment with the ENU blockchain has been performed using a single instance of enunode hosting all 21 block producers. While this is a perfectly valid solution for validating features of the blockchain, developing new contracts, or whatever, it does not scale. Nor does it expose the sort of issues raised when contract and block data must be shared across multiple instances. Providing the ability to scale involves deploying multiple enunode nodes across many hosts and lining then into a peer-to-peer (p2p) network. Composing this network involves tailoring and distributing configuration files, coordinating starts and stops and other tasks.
 
 Doing this manually is a tedious task and easily error prone. Fortunately a solution is provided, in the form of the Launcher application, described below.
 
 ## Testnet nodes, networks, and topology
-Before getting into the details of the Enumivo testnet, lets clarify some terms. In this document I use the terms "host" and "machine" fairly interchangeably. A host generally boils down to a single IP address, although in practice it could have more.
+Before getting into the details of the ENU testnet, lets clarify some terms. In this document I use the terms "host" and "machine" fairly interchangeably. A host generally boils down to a single IP address, although in practice it could have more.
 
 The next term is "node." A node is an instance of the enunode executable configured to serve as 0 or more producers. There is not a one-to-one mapping between nodes and hosts, a host may serve more than one node, but one node cannot span more than one host. 
 
@@ -18,7 +18,7 @@ Running a testnet on a single machine is the quickest way to get started. As you
 The downside is that you need a lot of hardware when running many nodes on a single host. Also the multiple nodes will contend with each other in terms of CPU cycles, limiting true concurrency, and also localhost network performance is much different from inter-host performance, even with very high speed lans.
 
 ### Distributed networks
-The most representative model of the live net is to spread the Enumivo nodes across many hosts. The Launcher app is able to start distributed nodes by the use of bash scripts pushed through ssh. In this case additional configuration is required to replace configured references to "localhost" or "127.0.0.1" with the actual host name or ip addresses of the various peer machines.
+The most representative model of the live net is to spread the enunode nodes across many hosts. The Launcher app is able to start distributed nodes by the use of bash scripts pushed through ssh. In this case additional configuration is required to replace configured references to "localhost" or "127.0.0.1" with the actual host name or ip addresses of the various peer machines.
 
 Launching a distributed testnet requires the operator to have ssh access to all the remote machines configured to authenticate without the need for a user entered password. This configuration is described in detail below. 
 
@@ -44,7 +44,7 @@ In a "mesh" network, each node is connected to as many peer nodes as possible.
 This is an example of a custom deployment where clusters of nodes are isolated except through a single crosslink.
 
 # The Launcher Application
-To address the complexity implied by distributing multiple Enumivo nodes across a LAN or a wider network, the launcher application was created. 
+To address the complexity implied by distributing multiple enunode nodes across a LAN or a wider network, the launcher application was created. 
 
 Based on a handful of command line arguments the Launcher is able to compose per-node configuration files, distribute these files securely amongst the peer hosts, then start up the multiple instances of enunode.
 
@@ -52,7 +52,7 @@ Enunode instances started this way have their output logged in individual text f
 
 ## Running the Launcher application
 
-The launcher program is used to configure and deploy producing and non-producing Enumivo nodes that talk to each other using configured routes. The configuration for each node is stored in separate directories, permitting multiple nodes to be active on the same host, assuming the machine has sufficient memory and disk space for multiple enunode instances. The launcher makes use of multiple configuration sources in order to deploy a testnet. A handful of command line arguments can be used to set up simple local networks. 
+The launcher program is used to configure and deploy producing and non-producing enunode nodes that talk to each other using configured routes. The configuration for each node is stored in separate directories, permitting multiple nodes to be active on the same host, assuming the machine has sufficient memory and disk space for multiple enunode instances. The launcher makes use of multiple configuration sources in order to deploy a testnet. A handful of command line arguments can be used to set up simple local networks. 
 
 To support deploying distributed networks, the launcher will read more detailed configuration from a JSON file. You can use the launcher to create a default JSON file based on the command line options you supply. Edit that file to substitute actual hostnames and other details 
 as needed, then rerun the launcher supplying this file.
@@ -74,7 +74,7 @@ launcher command line arguments:
                                         set the path to genesis.json
   -o [ --output ] arg                   save a copy of the generated topology 
                                         in this file
-  --skip-signature                      enunode does not require transaction 
+  --skip-signature                      ENUD does not require transaction 
                                         signatures.
   -i [ --timestamp ] arg                set the timestamp for the first block. 
                                         Use "now" to indicate the current time
