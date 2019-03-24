@@ -61,7 +61,7 @@ $ ./enunode -d ~/enu.data/generator_node --config-dir ~/enu.data/generator_node 
 ```bash
 $ ./enucli wallet create --to-console
 $ ./enucli wallet import --private-key 5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3
-$ ./enucli set contract enumivo ~/enumivo/build.release/contracts/enu.bios/ 
+$ ./enucli set contract enumivo ~/enumivo/build.release/contracts/enumivo.bios/ 
 ```
 
 ### Initialize the accounts txn_test_gen_plugin uses
