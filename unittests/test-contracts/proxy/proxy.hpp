@@ -8,9 +8,9 @@
 #include <enumivo/singleton.hpp>
 #include <enumivo/asset.hpp>
 
-// Extacted from enumivo.token contract:
+// Extacted from enu.token contract:
 namespace enumivo {
-   class [[enumivo::contract("enumivo.token")]] token : public enumivo::contract {
+   class [[enumivo::contract("enu.token")]] token : public enumivo::contract {
    public:
       using enumivo::contract::contract;
 
@@ -31,7 +31,7 @@ public:
    [[enumivo::action]]
    void setowner( enumivo::name owner, uint32_t delay );
 
-   [[enumivo::on_notify("enumivo.token::transfer")]]
+   [[enumivo::on_notify("enu.token::transfer")]]
    void on_transfer( enumivo::name        from,
                      enumivo::name        to,
                      enumivo::asset       quantity,

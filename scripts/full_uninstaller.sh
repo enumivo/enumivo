@@ -73,7 +73,7 @@ if [ -d "/usr/local/include/enumivo" ] || [ -d "$HOME/opt/enumivo" ] || [ $FORCE
             pushd /usr/local &> /dev/null
             rm -rf wasm
             pushd include &> /dev/null
-            rm -rf libbson-1.0 libmongoc-1.0 mongocxx bsoncxx appbase chainbase enumivo.system enumivolib fc libc++ musl secp256k* 2>/dev/null
+            rm -rf libbson-1.0 libmongoc-1.0 mongocxx bsoncxx appbase chainbase enu.system enumivolib fc libc++ musl secp256k* 2>/dev/null
             rm -rf enumivo 2>/dev/null
             popd &> /dev/null
             pushd bin &> /dev/null

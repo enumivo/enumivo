@@ -145,12 +145,12 @@ for i in range(len(hosts)):
     Print("host %s: %s" % (hosts[i], trans))
 
 
-wasmFile="enumivo.system.wasm"
-abiFile="enumivo.system.abi"
+wasmFile="enu.system.wasm"
+abiFile="enu.system.abi"
 Print("\nPush system contract %s %s" % (wasmFile, abiFile))
 trans=node0.publishContract(enumivo.name, wasmFile, abiFile, waitForTransBlock=True)
 if trans is None:
-    Utils.errorExit("Failed to publish enumivo.system.")
+    Utils.errorExit("Failed to publish enu.system.")
 else:
     Print("transaction id %s" % (node0.getTransId(trans)))
 

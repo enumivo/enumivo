@@ -1742,7 +1742,7 @@ read_only::get_account_results read_only::get_account( const get_account_params&
    if( abi_serializer::to_abi(code_account.abi, abi) ) {
       abi_serializer abis( abi, abi_serializer_max_time );
 
-      const auto token_code = N(enumivo.token);
+      const auto token_code = N(enu.token);
 
       auto core_symbol = extract_core_symbol();
 

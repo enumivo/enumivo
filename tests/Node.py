@@ -855,7 +855,7 @@ class Node(object):
     def getAccountEnuBalanceStr(self, scope):
         """Returns ENU currency0000 account balance from enucli get table command. Returned balance is string following syntax "98.0311 ENU". """
         assert isinstance(scope, str)
-        amount=self.getTableAccountBalance("enumivo.token", scope)
+        amount=self.getTableAccountBalance("enu.token", scope)
         if Utils.Debug: Utils.Print("getNodeAccountEnuBalance %s %s" % (scope, amount))
         assert isinstance(amount, str)
         return amount

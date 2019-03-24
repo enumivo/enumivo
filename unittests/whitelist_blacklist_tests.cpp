@@ -69,15 +69,15 @@ class whitelist_blacklist_tester {
 
          if( !bootstrap ) return;
 
-         chain->create_accounts({N(enumivo.token), N(alice), N(bob), N(charlie)});
-         chain->set_code(N(enumivo.token), contracts::enumivo_token_wasm() );
-         chain->set_abi(N(enumivo.token), contracts::enumivo_token_abi().data() );
-         chain->push_action( N(enumivo.token), N(create), N(enumivo.token), mvo()
-              ( "issuer", "enumivo.token" )
+         chain->create_accounts({N(enu.token), N(alice), N(bob), N(charlie)});
+         chain->set_code(N(enu.token), contracts::enumivo_token_wasm() );
+         chain->set_abi(N(enu.token), contracts::enumivo_token_abi().data() );
+         chain->push_action( N(enu.token), N(create), N(enu.token), mvo()
+              ( "issuer", "enu.token" )
               ( "maximum_supply", "1000000.00 TOK" )
          );
-         chain->push_action( N(enumivo.token), N(issue), N(enumivo.token), mvo()
-              ( "to", "enumivo.token" )
+         chain->push_action( N(enu.token), N(issue), N(enu.token), mvo()
+              ( "to", "enu.token" )
               ( "quantity", "1000000.00 TOK" )
               ( "memo", "issue" )
          );
@@ -92,7 +92,7 @@ class whitelist_blacklist_tester {
       }
 
       transaction_trace_ptr transfer( account_name from, account_name to, string quantity = "1.00 TOK" ) {
-         return chain->push_action( N(enumivo.token), N(transfer), from, mvo()
+         return chain->push_action( N(enu.token), N(transfer), from, mvo()
             ( "from", from )
             ( "to", to )
             ( "quantity", quantity )
@@ -125,10 +125,10 @@ BOOST_AUTO_TEST_SUITE(whitelist_blacklist_tests)
 
 BOOST_AUTO_TEST_CASE( actor_whitelist ) { try {
    whitelist_blacklist_tester<> test;
-   test.actor_whitelist = {config::system_account_name, N(enumivo.token), N(alice)};
+   test.actor_whitelist = {config::system_account_name, N(enu.token), N(alice)};
    test.init();
 
-   test.transfer( N(enumivo.token), N(alice), "1000.00 TOK" );
+   test.transfer( N(enu.token), N(alice), "1000.00 TOK" );
 
    test.transfer( N(alice), N(bob),  "100.00 TOK" );
 
@@ -138,7 +138,7 @@ BOOST_AUTO_TEST_CASE( actor_whitelist ) { try {
                        );
    signed_transaction trx;
    trx.actions.emplace_back( vector<permission_level>{{N(alice),config::active_name}, {N(bob),config::active_name}},
-                             N(enumivo.token), N(transfer),
+                             N(enu.token), N(transfer),
                              fc::raw::pack(transfer_args{
                                .from  = N(alice),
                                .to    = N(bob),
@@ -161,7 +161,7 @@ BOOST_AUTO_TEST_CASE( actor_blacklist ) { try {
    test.actor_blacklist = {N(bob)};
    test.init();
 
-   test.transfer( N(enumivo.token), N(alice), "1000.00 TOK" );
+   test.transfer( N(enu.token), N(alice), "1000.00 TOK" );
 
    test.transfer( N(alice), N(bob),  "100.00 TOK" );
 
@@ -172,7 +172,7 @@ BOOST_AUTO_TEST_CASE( actor_blacklist ) { try {
 
    signed_transaction trx;
    trx.actions.emplace_back( vector<permission_level>{{N(alice),config::active_name}, {N(bob),config::active_name}},
-                             N(enumivo.token), N(transfer),
+                             N(enu.token), N(transfer),
                              fc::raw::pack(transfer_args{
                                 .from  = N(alice),
                                 .to    = N(bob),
@@ -192,12 +192,12 @@ BOOST_AUTO_TEST_CASE( actor_blacklist ) { try {
 
 BOOST_AUTO_TEST_CASE( contract_whitelist ) { try {
    whitelist_blacklist_tester<> test;
-   test.contract_whitelist = {config::system_account_name, N(enumivo.token), N(bob)};
+   test.contract_whitelist = {config::system_account_name, N(enu.token), N(bob)};
    test.init();
 
-   test.transfer( N(enumivo.token), N(alice), "1000.00 TOK" );
+   test.transfer( N(enu.token), N(alice), "1000.00 TOK" );
 
-   test.transfer( N(alice), N(enumivo.token) );
+   test.transfer( N(alice), N(enu.token) );
 
    test.transfer( N(alice), N(bob) );
    test.transfer( N(alice), N(charlie), "100.00 TOK" );
@@ -244,9 +244,9 @@ BOOST_AUTO_TEST_CASE( contract_blacklist ) { try {
    test.contract_blacklist = {N(charlie)};
    test.init();
 
-   test.transfer( N(enumivo.token), N(alice), "1000.00 TOK" );
+   test.transfer( N(enu.token), N(alice), "1000.00 TOK" );
 
-   test.transfer( N(alice), N(enumivo.token) );
+   test.transfer( N(alice), N(enu.token) );
 
    test.transfer( N(alice), N(bob) );
    test.transfer( N(alice), N(charlie), "100.00 TOK" );
@@ -290,11 +290,11 @@ BOOST_AUTO_TEST_CASE( contract_blacklist ) { try {
 
 BOOST_AUTO_TEST_CASE( action_blacklist ) { try {
    whitelist_blacklist_tester<> test;
-   test.contract_whitelist = {config::system_account_name, N(enumivo.token), N(bob), N(charlie)};
+   test.contract_whitelist = {config::system_account_name, N(enu.token), N(bob), N(charlie)};
    test.action_blacklist = {{N(charlie), N(create)}};
    test.init();
 
-   test.transfer( N(enumivo.token), N(alice), "1000.00 TOK" );
+   test.transfer( N(enu.token), N(alice), "1000.00 TOK" );
 
    test.chain->produce_blocks();
 

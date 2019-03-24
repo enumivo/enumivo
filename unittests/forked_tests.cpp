@@ -162,21 +162,21 @@ BOOST_AUTO_TEST_CASE( forking ) try {
    wlog("set producer schedule to [dan,sam,pam]");
    c.produce_blocks(30);
 
-   auto r2 = c.create_accounts( {N(enumivo.token)} );
+   auto r2 = c.create_accounts( {N(enu.token)} );
    wdump((fc::json::to_pretty_string(r2)));
-   c.set_code( N(enumivo.token), contracts::enumivo_token_wasm() );
-   c.set_abi( N(enumivo.token), contracts::enumivo_token_abi().data() );
+   c.set_code( N(enu.token), contracts::enumivo_token_wasm() );
+   c.set_abi( N(enu.token), contracts::enumivo_token_abi().data() );
    c.produce_blocks(10);
 
 
-   auto cr = c.push_action( N(enumivo.token), N(create), N(enumivo.token), mutable_variant_object()
+   auto cr = c.push_action( N(enu.token), N(create), N(enu.token), mutable_variant_object()
               ("issuer",       "enumivo" )
               ("maximum_supply", core_from_string("10000000.0000"))
       );
 
    wdump((fc::json::to_pretty_string(cr)));
 
-   cr = c.push_action( N(enumivo.token), N(issue), config::system_account_name, mutable_variant_object()
+   cr = c.push_action( N(enu.token), N(issue), config::system_account_name, mutable_variant_object()
               ("to",       "dan" )
               ("quantity", core_from_string("100.0000"))
               ("memo", "")

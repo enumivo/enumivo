@@ -181,7 +181,7 @@ struct txn_test_gen_plugin_impl {
             trxs.emplace_back(std::move(trx));
          }
 
-         //set txn.test.t contract to enumivo.token & initialize it
+         //set txn.test.t contract to enu.token & initialize it
          {
             signed_transaction trx;
 
