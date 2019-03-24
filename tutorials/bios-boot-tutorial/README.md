@@ -10,12 +10,8 @@ The `bios-boot-tutorial.py` script simulates the Enumivo bios boot sequence.
 
 ``Steps``:
 
-1. Install enumivo binaries by following the steps outlined in below tutorial
-[Install enumivo binaries](https://github.com/enumivo/enumivo)
-
-2. Install enumivo.cdt binaries by following the steps outlined in below tutorial
-[Install enumivo.cdt binaries](https://github.com/enumivo/enumivo.cdt)
-
+1. Install enumivo binaries 
+2. Install enumivo.cdt binaries
 3. Compile enumivo.contracts
 
 ```bash
@@ -39,3 +35,4 @@ $ git clone https://github.com/enumivo/enumivo.git
 $ cd ./enumivo/tutorials/bios-boot-tutorial/
 $ python3 bios-boot-tutorial.py --enucli="enucli --wallet-url http://127.0.0.1:6666 " --enunode=enunode --enuwallet=enuwallet --contracts-dir="/ENUMIVO_CONTRACTS_DIRECTORY/" -a
 
+```

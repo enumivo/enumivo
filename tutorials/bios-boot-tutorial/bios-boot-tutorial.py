@@ -14,18 +14,18 @@ args = None
 logFile = None
 
 unlockTimeout = 999999999
-fastUnstakeSystem = './fast.refund/enu.system/enu.system.wasm'
+fastUnstakeSystem = './fast.refund/enumivo.system/enumivo.system.wasm'
 
 systemAccounts = [
-    'enu.blockpay',
-    'enu.msig',
-    'enu.names',
-    'enu.ram',
-    'enu.ramfee',
-    'enu.savings',
-    'enu.stake',
-    'enu.token',
-    'enu.votepay',
+    'enumivo.bpay',
+    'enumivo.msig',
+    'enumivo.names',
+    'enumivo.ram',
+    'enumivo.ramfee',
+    'enumivo.saving',
+    'enumivo.stake',
+    'enumivo.token',
+    'enumivo.vpay',
 ]
 
 def jsonArg(a):
@@ -284,17 +284,17 @@ def stepStartBoot():
     startNode(0, {'name': 'enumivo', 'pvt': args.private_key, 'pub': args.public_key})
     sleep(1.5)
 def stepInstallSystemContracts():
-    run(args.enucli + 'set contract enu.token ' + args.contracts_dir + '/enu.token/')
-    run(args.enucli + 'set contract enu.msig ' + args.contracts_dir + '/enu.msig/')
+    run(args.enucli + 'set contract enumivo.token ' + args.contracts_dir + '/enumivo.token/')
+    run(args.enucli + 'set contract enumivo.msig ' + args.contracts_dir + '/enumivo.msig/')
 def stepCreateTokens():
-    run(args.enucli + 'push action enu.token create \'["enumivo", "10000000000.0000 %s"]\' -p enu.token' % (args.symbol))
+    run(args.enucli + 'push action enumivo.token create \'["enumivo", "10000000000.0000 %s"]\' -p enumivo.token' % (args.symbol))
     totalAllocation = allocateFunds(0, len(accounts))
-    run(args.enucli + 'push action enu.token issue \'["enumivo", "%s", "memo"]\' -p enumivo' % intToCurrency(totalAllocation))
+    run(args.enucli + 'push action enumivo.token issue \'["enumivo", "%s", "memo"]\' -p enumivo' % intToCurrency(totalAllocation))
     sleep(1)
 def stepSetSystemContract():
-    retry(args.enucli + 'set contract enumivo ' + args.contracts_dir + '/enu.system/')
+    retry(args.enucli + 'set contract enumivo ' + args.contracts_dir + '/enumivo.system/')
     sleep(1)
-    run(args.enucli + 'push action enumivo setpriv' + jsonArg(['enu.msig', 1]) + '-p enumivo@active')
+    run(args.enucli + 'push action enumivo setpriv' + jsonArg(['enumivo.msig', 1]) + '-p enumivo@active')
 def stepInitSystemContract():
     run(args.enucli + 'push action enumivo init' + jsonArg(['0', '4,ENU']) + '-p enumivo@active')
     sleep(1)
@@ -332,7 +332,7 @@ commands = [
     ('k', 'kill',               stepKillAll,                True,    "Kill all enunode and enuwallet processes"),
     ('w', 'wallet',             stepStartWallet,            True,    "Start enuwallet, create wallet, fill with keys"),
     ('b', 'boot',               stepStartBoot,              True,    "Start boot node"),
-    ('s', 'sys',                createSystemAccounts,       True,    "Create system accounts (enu.*)"),
+    ('s', 'sys',                createSystemAccounts,       True,    "Create system accounts (enumivo.*)"),
     ('c', 'contracts',          stepInstallSystemContracts, True,    "Install system contracts (token, msig)"),
     ('t', 'tokens',             stepCreateTokens,           True,    "Create tokens"),
     ('S', 'sys-contract',       stepSetSystemContract,      True,    "Set system contract"),
@@ -351,7 +351,7 @@ commands = [
 
 parser.add_argument('--public-key', metavar='', help="Enumivo Public Key", default='ENU8Znrtgwt8TfpmbVpTKvA2oB8Nqey625CLN8bCN3TEbgx86Dsvr', dest="public_key")
 parser.add_argument('--private-Key', metavar='', help="Enumivo Private Key", default='5K463ynhZoCDDa4RDcr63cUwWLTnKqmdcoTKTHBjqoKfv4u5V7p', dest="private_key")
-parser.add_argument('--enucli', metavar='', help="Path to enucli binary", default='../../build/programs/enucli/enucli --wallet-url http://127.0.0.1:6666 ')
+parser.add_argument('--enucli', metavar='', help="Enucli command", default='../../build/programs/enucli/enucli --wallet-url http://127.0.0.1:6666 ')
 parser.add_argument('--enunode', metavar='', help="Path to enunode binary", default='../../build/programs/enunode/enunode')
 parser.add_argument('--enuwallet', metavar='', help="Path to enuwallet binary", default='../../build/programs/enuwallet/enuwallet')
 parser.add_argument('--contracts-dir', metavar='', help="Path to contracts directory", default='../../build/contracts/')
@@ -359,7 +359,7 @@ parser.add_argument('--nodes-dir', metavar='', help="Path to nodes directory", d
 parser.add_argument('--genesis', metavar='', help="Path to genesis.json", default="./genesis.json")
 parser.add_argument('--wallet-dir', metavar='', help="Path to wallet directory", default='./wallet/')
 parser.add_argument('--log-path', metavar='', help="Path to log file", default='./output.log')
-parser.add_argument('--symbol', metavar='', help="The enu.system symbol", default='ENU')
+parser.add_argument('--symbol', metavar='', help="The enumivo.system symbol", default='ENU')
 parser.add_argument('--user-limit', metavar='', help="Max number of users. (0 = no limit)", type=int, default=3000)
 parser.add_argument('--max-user-keys', metavar='', help="Maximum user keys to import into wallet", type=int, default=10)
 parser.add_argument('--ram-funds', metavar='', help="How much funds for each user to spend on ram", type=float, default=0.1)
