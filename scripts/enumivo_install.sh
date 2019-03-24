@@ -27,7 +27,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-# https://github.com/enumivo/enumivo/blob/master/LICENSE.txt
+# https://github.com/enumivo/enumivo/blob/master/LICENSE
 ##########################################################################
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -64,9 +64,9 @@ if ! make install; then
 fi
 popd &> /dev/null 
 
-printf "===================================================================================================\\n"
+printf "==============================================================================================\\n"
 printf "Enumivo has been installed into ${OPT_LOCATION}/enumivo/bin!\\n"
 printf "If you need to, you can fully uninstall using enumivo_uninstall.sh && scripts/clean_old_install.sh.\\n"
-printf "===================================================================================================\\n\\n"
+printf "==============================================================================================\\n\\n"
 
 printf "Enumivo Website: https://enumivo.org\\n"

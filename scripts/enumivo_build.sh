@@ -253,6 +253,7 @@ if [ "$ARCH" == "Darwin" ]; then
    # Check if cmake is already installed or not and use source install location
    if [ -z $CMAKE ]; then export CMAKE=/usr/local/bin/cmake; fi
    export OS_NAME=MacOSX
+   # opt/gettext: enucli requires Intl, which requires gettext; it's keg only though and we don't want to force linking
    # HOME/lib/cmake: mongo_db_plugin.cpp:25:10: fatal error: 'bsoncxx/builder/basic/kvp.hpp' file not found
    LOCAL_CMAKE_FLAGS="-DCMAKE_PREFIX_PATH=/usr/local/opt/gettext;$HOME/lib/cmake ${LOCAL_CMAKE_FLAGS}" 
    FILE="${REPO_ROOT}/scripts/enumivo_build_darwin.sh"
@@ -270,7 +271,7 @@ pushd $SRC_LOCATION &> /dev/null
 popd &> /dev/null
 
 printf "\\n========================================================================\\n"
-printf "======================= Starting Enumivo Build =======================\\n"
+printf "======================= Starting Enumivo Build =========================\\n"
 printf "## CMAKE_BUILD_TYPE=%s\\n" "${CMAKE_BUILD_TYPE}"
 printf "## ENABLE_COVERAGE_TESTING=%s\\n" "${ENABLE_COVERAGE_TESTING}"
 
@@ -298,5 +299,5 @@ printf "${BIN_LOCATION}/mongod --dbpath ${MONGODB_DATA_LOCATION} -f ${MONGODB_CO
 printf "cd ./build && PATH=\$PATH:$HOME/opt/mongodb/bin make test\\n" # PATH is set as currently 'mongo' binary is required for the mongodb test
 printf "${txtrst}==============================================================================================\\n"
 printf "For more information:\\n"
-printf "Enumivo Website: https://enumivo.org\\n"
+printf "Enumivo website: https://enumivo.org\\n"
 

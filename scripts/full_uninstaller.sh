@@ -53,7 +53,7 @@ if [ -d "/usr/local/include/enumivo" ] || [ -d "$HOME/opt/enumivo" ] || [ $FORCE
             fi
             rm -rf $HOME/opt/enumivo
             rm -f $HOME/bin/enulauncher
-            rm -rf $HOME/lib/cmake/enumivo
+            rm -rf $HOME/lib/cmake/enumivos
             rm -rf $HOME/opt/llvm
             rm -f $HOME/opt/boost
             rm -rf $HOME/src/boost_*
@@ -73,7 +73,7 @@ if [ -d "/usr/local/include/enumivo" ] || [ -d "$HOME/opt/enumivo" ] || [ $FORCE
             pushd /usr/local &> /dev/null
             rm -rf wasm
             pushd include &> /dev/null
-            rm -rf libbson-1.0 libmongoc-1.0 mongocxx bsoncxx appbase chainbase enu.system enulib fc libc++ musl secp256k* 2>/dev/null
+            rm -rf libbson-1.0 libmongoc-1.0 mongocxx bsoncxx appbase chainbase enumivo.system enumivolib fc libc++ musl secp256k* 2>/dev/null
             rm -rf enumivo 2>/dev/null
             popd &> /dev/null
             pushd bin &> /dev/null
