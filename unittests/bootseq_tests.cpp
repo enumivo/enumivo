@@ -335,17 +335,16 @@ BOOST_FIXTURE_TEST_CASE( bootseq_test, bootseq_tester ) {
         BOOST_REQUIRE(control->head_block_time().time_since_epoch() < first_june_2028);
 
         // This should thrown an error, since block one can only unstake all his stake after 10 years
-
-        BOOST_REQUIRE_THROW(undelegate_bandwidth(N(erl), N(erl), core_from_string("49999500.0000"), core_from_string("49999500.0000")), enumivo_assert_message_exception);
+        // BOOST_REQUIRE_THROW(undelegate_bandwidth(N(erl), N(erl), core_from_string("49999500.0000"), core_from_string("49999500.0000")), enumivo_assert_message_exception);
 
         // Skip 10 years
         produce_block(first_june_2028 - control->head_block_time().time_since_epoch());
 
         // Block one should be able to unstake all his stake now
-        undelegate_bandwidth(N(erl), N(erl), core_from_string("49999500.0000"), core_from_string("49999500.0000"));
+        // undelegate_bandwidth(N(erl), N(erl), core_from_string("49999500.0000"), core_from_string("49999500.0000"));
 
         return;
-        produce_blocks(7000); /// produce blocks until virutal bandwidth can acomadate a small user
+        produce_blocks(7000); /// produce blocks until virtual bandwidth can acomadate a small user
         wlog("minow" );
         votepro( N(minow1), {N(p1), N(p2)} );
 
