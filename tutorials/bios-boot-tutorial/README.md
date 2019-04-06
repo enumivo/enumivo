@@ -11,7 +11,7 @@ The `bios-boot-tutorial.py` script simulates the Enumivo bios boot sequence.
 ``Steps``:
 
 1. Install enumivo binaries 
-2. Install enumivo.cdt binaries
+2. Install enumivo.cdt binaries 
 3. Compile enumivo.contracts
 
 ```bash

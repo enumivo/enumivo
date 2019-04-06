@@ -1629,7 +1629,7 @@ class compiler_builtins : public context_aware_api {
 
 
 /*
- * This api will be removed
+ * This api will be removed with fix
  */
 class call_depth_api : public context_aware_api {
    public:

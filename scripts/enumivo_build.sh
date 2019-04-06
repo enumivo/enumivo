@@ -165,7 +165,7 @@ fi
 
 if [ ! -d "${REPO_ROOT}/.git" ]; then
    printf "\\nThis build script only works with sources cloned from git\\n"
-   printf "Please clone a new enumivo directory with 'git clone https://github.com/enumivo/enumivo --recursive'\\n"
+   printf "Please clone a new Enumivo directory with 'git clone https://github.com/enumivo/enumivo --recursive'\\n"
    exit 1
 fi
 
@@ -271,7 +271,7 @@ pushd $SRC_LOCATION &> /dev/null
 popd &> /dev/null
 
 printf "\\n========================================================================\\n"
-printf "======================= Starting Enumivo Build =========================\\n"
+printf "======================== Starting Enumivo Build ========================\\n"
 printf "## CMAKE_BUILD_TYPE=%s\\n" "${CMAKE_BUILD_TYPE}"
 printf "## ENABLE_COVERAGE_TESTING=%s\\n" "${ENABLE_COVERAGE_TESTING}"
 
@@ -299,5 +299,4 @@ printf "${BIN_LOCATION}/mongod --dbpath ${MONGODB_DATA_LOCATION} -f ${MONGODB_CO
 printf "cd ./build && PATH=\$PATH:$HOME/opt/mongodb/bin make test\\n" # PATH is set as currently 'mongo' binary is required for the mongodb test
 printf "${txtrst}==============================================================================================\\n"
 printf "For more information:\\n"
-printf "Enumivo website: https://enumivo.org\\n"
-
+printf "Enumivo Website: https://enumivo.org\\n"
