@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_SUITE(ram_tests)
  * ram_tests test case
  *************************************************************************************/
 BOOST_FIXTURE_TEST_CASE(ram_tests, enumivo_system::enumivo_system_tester) { try {
-   auto init_request_bytes = 80000 + 7110; // `7110' is for table token row
+   auto init_request_bytes = 80000 + 7150; // `7110' is for table token row
    const auto increment_contract_bytes = 10000;
    const auto table_allocation_bytes = 12000;
    BOOST_REQUIRE_MESSAGE(table_allocation_bytes > increment_contract_bytes, "increment_contract_bytes must be less than table_allocation_bytes for this test setup to work");
