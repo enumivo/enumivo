@@ -2,6 +2,7 @@ if(ENUMIVO_ROOT STREQUAL "" OR NOT ENUMIVO_ROOT)
    set(ENUMIVO_ROOT "@ENU_ROOT_DIR@")
 endif()
 list(APPEND CMAKE_MODULE_PATH ${ENUMIVO_ROOT}/lib/cmake/enumivo)
+list(APPEND CMAKE_MODULE_PATH ${ENUMIVO_ROOT}/lib64/cmake/enumivo)
 include(EnumivoTester)
 
 function(EXTRACT_MAJOR_MINOR_FROM_VERSION version success major minor)
